@@ -15,7 +15,7 @@ class Deck {
 
 		std::string DrawCard();
 
-		std::vector<std::vector<std::string>> DealHands(int hand_size, int number_of_players);
+		std::vector<std::vector<std::string>> DealHands(int, int);
 
 	private:
 		std::vector<std::string> full_deck;
