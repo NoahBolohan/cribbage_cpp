@@ -6,7 +6,12 @@
 int main() {
 	Deck deck;
 	
-	std::cout << deck.DrawCard() << std::endl;
+	deck.ShuffleDeck();
+	std::vector<std::vector<std::string>> hands = deck.DealHands(6, 2);
+
+	for (auto card : hands.at(0)) {
+		std::cout << card << std::endl;
+	}
 
 	system("pause");
 
