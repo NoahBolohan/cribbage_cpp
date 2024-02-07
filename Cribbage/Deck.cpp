@@ -31,6 +31,10 @@ void Deck::ShuffleDeck() {
 	std::random_shuffle(full_deck.begin(), full_deck.end());
 }
 
+void Deck::NextPlayer() {
+	current_player_index = (current_player_index + 1) % number_of_players;
+}
+
 std::vector<std::string> Deck::DrawCard() {
 	std::vector<std::string> drawn_card = full_deck.at(0);
 	full_deck.erase(full_deck.begin());
@@ -38,16 +42,17 @@ std::vector<std::string> Deck::DrawCard() {
 	return drawn_card;
 }
 
-std::vector<std::vector<std::vector<std::string>>> Deck::DealHands(int hand_size, int number_of_players) {
+std::vector<std::vector<std::vector<std::string>>> Deck::DealHands(int hand_size, int n_players) {
 
+	number_of_players = n_players;
 	std::vector<std::vector<std::vector<std::string>>> hands(number_of_players);
 
 	int number_of_cards_left_to_deal = hand_size * number_of_players;
-	int player_index = 0;
+	current_player_index = 0;
 
 	while (number_of_cards_left_to_deal > 0) {
-		hands.at(player_index).push_back(DrawCard());
-		player_index = (player_index + 1) % number_of_players;
+		hands.at(current_player_index).push_back(DrawCard());
+		NextPlayer();
 		number_of_cards_left_to_deal--;
 	}
 

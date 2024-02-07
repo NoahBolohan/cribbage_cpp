@@ -11,6 +11,7 @@ class Deck {
 
 		void ResetDeck();
 		void ShuffleDeck();
+		void NextPlayer();
 
 		std::vector<std::string> DrawCard();
 
@@ -18,6 +19,9 @@ class Deck {
 
 	private:
 		std::vector<std::vector<std::string>> full_deck;
+
+		int number_of_players;
+		int current_player_index;
 };
 
 #endif

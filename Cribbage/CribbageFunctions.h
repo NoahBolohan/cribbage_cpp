@@ -13,8 +13,7 @@ class Cribbage {
 		void PassToCrib(std::vector<std::string>, std::vector<std::string>);
 		void DrawStarter();
 		void ThePlay(int);
-		void TheGo();
-		void Pegging();
+		void TheShow();
 
 	private:
 		int number_of_players;
