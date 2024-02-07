@@ -5,9 +5,11 @@
 
 int main() {
 	Deck deck;
-	int number_of_players = 2;
+	int number_of_players = 2; //2 or 3
 
 	Cribbage cribbage(number_of_players, deck);
+
+	cribbage.Round();
 
 	system("pause");
 

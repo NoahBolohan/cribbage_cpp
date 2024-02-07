@@ -13,10 +13,15 @@ class Deck {
 		void ShuffleDeck();
 		void NextPlayer();
 		void NextPlayer(int);
+		void DisplayHand(int);
+		void DealHands(int, int, int);
+
+		int GetNumberOfPlayers();
 
 		std::vector<std::string> DrawCard();
+		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);
 
-		std::vector<std::vector<std::vector<std::string>>> DealHands(int, int, int);
+		std::vector<std::vector<std::vector<std::string>>> GetHands();
 
 	private:
 		std::vector<std::vector<std::string>> full_deck;
@@ -24,6 +29,7 @@ class Deck {
 		int number_of_players;
 		int current_player_index;
 		int dealer_index;
+		std::vector<std::vector<std::vector<std::string>>> hands;
 };
 
 #endif

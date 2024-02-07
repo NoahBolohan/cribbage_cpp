@@ -10,10 +10,12 @@ class Cribbage {
 		Cribbage(int, Deck);
 
 		void Deal();
-		void PassToCrib(std::vector<std::string>, std::vector<std::string>);
+		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
 		void ThePlay();
 		void TheShow();
+
+		void Round();
 
 	private:
 		int number_of_players;
