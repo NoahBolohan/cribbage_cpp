@@ -75,6 +75,10 @@ int Deck::GetNumberOfPlayers() {
 	return number_of_players;
 }
 
+int Deck::GetDealerIndex() {
+	return dealer_index;
+}
+
 std::vector<std::vector<std::string>> Deck::HandToPile(int hand_index, std::vector<int> card_indices) {
 	std::vector<std::vector<std::string>> cards_to_send;
 	std::sort(card_indices.begin(), card_indices.end(), std::greater<>());

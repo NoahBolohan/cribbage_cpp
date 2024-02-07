@@ -82,12 +82,30 @@ void Cribbage::DrawStarter() {
 	starter = deck.DrawCard();
 
 	std::cout << std::endl << "The starter is the " << starter.at(0) << " of " << starter.at(1) << "." << std::endl;
+
+	if (starter.at(0) == "Jack") {
+		std::cout << std::endl << "2 points to the dealer for the Jack's heels!" << std::endl;
+		AddPoints(deck.GetDealerIndex(), 2);
+	}
 }
 
 void Cribbage::ThePlay() {
 
+	std::cout << std::endl << "Starting the play. The score is the following:" << std::endl;
+	DisplayScore();
+
 	while (pegging_total <= 31) {
 
+	}
+}
+
+void Cribbage::AddPoints(int player_index, int n_points) {
+	scores.at(player_index) = scores.at(player_index) + n_points;
+}
+
+void Cribbage::DisplayScore() {
+	for (int i = 0; i < scores.size(); i++) {
+		std::cout << std::endl << "Player " << i << ": " << scores.at(i) << " points" << std::endl;
 	}
 }
 
@@ -95,4 +113,5 @@ void Cribbage::Round() {
 	deck.ShuffleDeck();
 	Deal();
 	DrawStarter();
+	ThePlay();
 }

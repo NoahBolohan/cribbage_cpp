@@ -17,6 +17,7 @@ class Deck {
 		void DealHands(int, int, int);
 
 		int GetNumberOfPlayers();
+		int GetDealerIndex();
 
 		std::vector<std::string> DrawCard();
 		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);

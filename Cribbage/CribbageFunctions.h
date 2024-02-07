@@ -14,6 +14,8 @@ class Cribbage {
 		void DrawStarter();
 		void ThePlay();
 		void TheShow();
+		void AddPoints(int, int);
+		void DisplayScore();
 
 		void Round();
 
