@@ -19,7 +19,7 @@ void Cribbage::Deal() {
 	deck.DealHands(6,number_of_players);
 }
 
-void Cribbage::PassToCrib(std::string card1, std::string card2) {
+void Cribbage::PassToCrib(std::vector<std::string> card1, std::vector<std::string> card2) {
 	crib.push_back(card1);
 	crib.push_back(card2);
 }

@@ -1,12 +1,16 @@
+#ifndef CRIBBAGE_HEADER
+#define CRIBBAGE_HEADER
+
 #include <string>
 #include <vector>
+#include "DeckFunctions.h"
 
 class Cribbage {
 	public:
 		Cribbage(int, Deck);
 
 		void Deal();
-		void PassToCrib(std::string, std::string);
+		void PassToCrib(std::vector<std::string>, std::vector<std::string>);
 		void DrawStarter();
 		void ThePlay(int);
 		void TheGo();
@@ -17,9 +21,9 @@ class Cribbage {
 
 		Deck deck;
 		std::vector<int> scores;
-		std::vector<std::vector<std::string>> hands;
-		std::vector<std::string> crib;
-		std::string starter;
+		std::vector<std::vector<std::vector<std::string>>> hands;
+		std::vector<std::vector<std::string>> crib;
+		std::vector<std::string> starter;
 
 		const int score_target = 121;
 
@@ -27,3 +31,5 @@ class Cribbage {
 		int dealer = 0;
 
 };
+
+#endif
