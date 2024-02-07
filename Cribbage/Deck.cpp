@@ -35,6 +35,15 @@ void Deck::NextPlayer() {
 	current_player_index = (current_player_index + 1) % number_of_players;
 }
 
+void Deck::NextPlayer(int player_index) {
+	if (player_index < 0) {
+		current_player_index = (dealer_index + 1) % number_of_players;
+	}
+	else {
+		current_player_index = (player_index + 1) % number_of_players;
+	}
+}
+
 std::vector<std::string> Deck::DrawCard() {
 	std::vector<std::string> drawn_card = full_deck.at(0);
 	full_deck.erase(full_deck.begin());
@@ -42,13 +51,15 @@ std::vector<std::string> Deck::DrawCard() {
 	return drawn_card;
 }
 
-std::vector<std::vector<std::vector<std::string>>> Deck::DealHands(int hand_size, int n_players) {
+std::vector<std::vector<std::vector<std::string>>> Deck::DealHands(int d_idx, int hand_size, int n_players) {
 
 	number_of_players = n_players;
+	dealer_index = d_idx;
+	NextPlayer(d_idx);
+
 	std::vector<std::vector<std::vector<std::string>>> hands(number_of_players);
 
 	int number_of_cards_left_to_deal = hand_size * number_of_players;
-	current_player_index = 0;
 
 	while (number_of_cards_left_to_deal > 0) {
 		hands.at(current_player_index).push_back(DrawCard());

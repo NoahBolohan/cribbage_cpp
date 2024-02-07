@@ -12,7 +12,7 @@ class Cribbage {
 		void Deal();
 		void PassToCrib(std::vector<std::string>, std::vector<std::string>);
 		void DrawStarter();
-		void ThePlay(int);
+		void ThePlay();
 		void TheShow();
 
 	private:

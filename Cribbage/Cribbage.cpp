@@ -16,7 +16,7 @@ Cribbage::Cribbage(int n_players, Deck d) {
 }
 
 void Cribbage::Deal() {
-	deck.DealHands(6,number_of_players);
+	deck.DealHands(0, 6,number_of_players);
 }
 
 void Cribbage::PassToCrib(std::vector<std::string> card1, std::vector<std::string> card2) {
@@ -28,7 +28,9 @@ void Cribbage::DrawStarter() {
 	starter = deck.DrawCard();
 }
 
-void Cribbage::ThePlay(int starting_player) {
+void Cribbage::ThePlay() {
+	deck.NextPlayer(-1);
+
 	while (pegging_total <= 31) {
 
 	}
