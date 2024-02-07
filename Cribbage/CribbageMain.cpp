@@ -9,6 +9,8 @@ int main() {
 
 	Cribbage cribbage(number_of_players, deck);
 
+	std::cout << "Welcome to cribbage!" << std::endl;
+
 	cribbage.Round();
 
 	system("pause");
