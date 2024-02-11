@@ -15,9 +15,6 @@ Deck::Deck() {
 }
 
 void Deck::ResetDeck() {
-	std::vector<std::string> card_values = { "Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King" };
-	std::vector<std::string> card_suits = { "Hearts","Diamonds","Clubs","Spades" };
-
 	full_deck.clear();
 
 	for (std::string v : card_values) {
@@ -43,7 +40,8 @@ void Deck::NextPlayer(int player_index) {
 void Deck::DisplayHand(int hand_index) {
 	int setw_size = 0;
 	for (auto card : hands.at(hand_index)) {
-		setw_size = card.at(0).size() > setw_size ? card.at(0).size() : setw_size;
+		int card_size = static_cast<int>(card.at(0).size());
+		setw_size = card_size > setw_size ? card_size : setw_size;
 	}
 
 	for (int card_index = 0; card_index < hands.at(hand_index).size(); card_index++) {
@@ -79,6 +77,10 @@ int Deck::GetDealerIndex() {
 	return dealer_index;
 }
 
+int Deck::GetCurrentPlayerIndex() {
+	return current_player_index;
+}
+
 std::vector<std::vector<std::string>> Deck::HandToPile(int hand_index, std::vector<int> card_indices) {
 	std::vector<std::vector<std::string>> cards_to_send;
 	std::sort(card_indices.begin(), card_indices.end(), std::greater<>());
@@ -89,6 +91,44 @@ std::vector<std::vector<std::string>> Deck::HandToPile(int hand_index, std::vect
 	}
 
 	return cards_to_send;
+}
+
+std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, int n_cards) {
+	std::vector<std::vector<std::string>> cards_to_be_chosen;
+	int card_index;
+
+	std::vector<int> card_indices(hands.at(hand_index).size());
+	for (int i = 0; i < hands.at(hand_index).size(); i++) {
+		card_indices[i] = i;;
+	}
+
+	int* cin_in_indices;
+	std::cout << std::endl << "Choose " << n_cards << " cards:";
+
+	for (int i = 0; i < n_cards; i++) {
+		
+		std::cout << std::endl;
+		std::cin >> card_index;
+
+		while (std::find(card_indices.begin(), card_indices.end(), card_index) == card_indices.end()) {
+			std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
+			std::cin >> card_index;
+		}
+
+		card_indices.erase(
+			std::remove(card_indices.begin(),
+				card_indices.end(),
+				card_index
+			),
+			card_indices.end()
+		);
+
+		cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index));
+
+		hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+	}
+
+	return cards_to_be_chosen;
 }
 
 std::vector<std::string> Deck::DrawCard() {
