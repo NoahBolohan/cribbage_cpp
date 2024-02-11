@@ -93,41 +93,49 @@ std::vector<std::vector<std::string>> Deck::HandToPile(int hand_index, std::vect
 	return cards_to_send;
 }
 
-std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, int n_cards) {
+std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, int n_cards, std::string player_type) {
 	std::vector<std::vector<std::string>> cards_to_be_chosen;
-	int card_index;
 
-	std::vector<int> card_indices(hands.at(hand_index).size());
-	for (int i = 0; i < hands.at(hand_index).size(); i++) {
-		card_indices[i] = i;;
-	}
+	if (player_type == "user") {
+		int card_index;
 
-	int* cin_in_indices;
-	std::cout << std::endl << "Choose " << n_cards << " cards:";
-
-	for (int i = 0; i < n_cards; i++) {
-		
-		std::cout << std::endl;
-		std::cin >> card_index;
-
-		while (std::find(card_indices.begin(), card_indices.end(), card_index) == card_indices.end()) {
-			std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
-			std::cin >> card_index;
+		std::vector<int> card_indices(hands.at(hand_index).size());
+		for (int i = 0; i < hands.at(hand_index).size(); i++) {
+			card_indices[i] = i;;
 		}
 
-		card_indices.erase(
-			std::remove(card_indices.begin(),
-				card_indices.end(),
-				card_index
-			),
-			card_indices.end()
-		);
+		std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):";
 
-		cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index));
+		for (int i = 0; i < n_cards; i++) {
 
-		hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+			std::cout << std::endl;
+			std::cin >> card_index;
+
+			while (std::find(card_indices.begin(), card_indices.end(), card_index) == card_indices.end()) {
+				std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
+				std::cin >> card_index;
+			}
+
+			card_indices.erase(
+				std::remove(card_indices.begin(),
+					card_indices.end(),
+					card_index
+				),
+				card_indices.end()
+			);
+
+			cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index));
+
+			hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+		}
 	}
+	else {
+		cards_to_be_chosen.push_back(hands.at(hand_index).at(0));
+		hands.at(hand_index).erase(hands.at(hand_index).begin());
 
+		cards_to_be_chosen.push_back(hands.at(hand_index).at(0));
+		hands.at(hand_index).erase(hands.at(hand_index).begin());
+	}
 	return cards_to_be_chosen;
 }
 

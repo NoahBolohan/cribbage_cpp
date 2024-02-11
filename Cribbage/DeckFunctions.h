@@ -22,7 +22,7 @@ class Deck {
 
 		std::vector<std::string> DrawCard();
 		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);
-		std::vector<std::vector<std::string>> ChooseCardsFromHand(int,int);
+		std::vector<std::vector<std::string>> ChooseCardsFromHand(int,int,std::string);
 
 		std::vector<std::vector<std::vector<std::string>>> GetHands();
 
@@ -33,8 +33,8 @@ class Deck {
 		int current_player_index;
 		int dealer_index;
 		std::vector<std::vector<std::vector<std::string>>> hands;
-		const std::vector<std::string> card_values = { "Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King" };
-		const std::vector<std::string> card_suits = { "Hearts","Diamonds","Clubs","Spades" };
+		std::vector<std::string> card_values = { "Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King" };
+		std::vector<std::string> card_suits = { "Hearts","Diamonds","Clubs","Spades" };
 };
 
 #endif
