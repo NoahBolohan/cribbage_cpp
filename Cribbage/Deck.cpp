@@ -8,8 +8,10 @@
 
 #include "DeckFunctions.h"
 
-Deck::Deck() {
+Deck::Deck(int n_players) {
 	std::srand(unsigned(std::time(0)));
+
+	number_of_players = n_players;
 
 	ResetDeck();
 }
@@ -37,6 +39,20 @@ void Deck::NextPlayer(int player_index) {
 	current_player_index = player_index < 0 ? (dealer_index + 1) % number_of_players : (player_index + 1) % number_of_players;
 }
 
+void Deck::NextPlayerFromActivePlayers(std::vector<int> active_players) {
+
+	NextPlayer();
+
+	while (std::find(
+		active_players.begin(),
+		active_players.end(),
+		current_player_index
+	) == active_players.end()) {
+
+		NextPlayer();
+	}
+}
+
 void Deck::DisplayHand(int hand_index) {
 	int setw_size = 0;
 	for (auto card : hands.at(hand_index)) {
@@ -49,13 +65,12 @@ void Deck::DisplayHand(int hand_index) {
 	}
 }
 
-void Deck::DealHands(int d_idx, int hand_size, int n_players) {
+void Deck::DealHands(int d_idx, int hand_size) {
 
-	number_of_players = n_players;
 	dealer_index = d_idx;
 	NextPlayer(d_idx);
 
-	for (int i = 0; i < n_players; i++) {
+	for (int i = 0; i < number_of_players; i++) {
 		std::vector<std::vector<std::string>> empty_hand;
 		hands.push_back(empty_hand);
 	}
@@ -67,6 +82,52 @@ void Deck::DealHands(int d_idx, int hand_size, int n_players) {
 		NextPlayer();
 		number_of_cards_left_to_deal--;
 	}
+}
+
+void Deck::DefineSidePiles(std::vector<std::string> side_pile_names) {
+	for (int i = 0; i < number_of_players; i++) {
+		std::map<std::string, std::vector<std::vector<std::string>>> empty_side_piles;
+
+		for (auto side_pile_name : side_pile_names) {
+			std::vector<std::vector<std::string>> empty_side_pile;
+
+			empty_side_piles.insert({ side_pile_name, empty_side_pile });
+		}
+
+		side_piles.push_back(empty_side_piles);
+	}
+}
+
+void Deck::ToSidePile(int player_idx, std::string pile_name, std::vector<std::vector<std::string>> cards_to_send_to_pile) {
+
+	for (auto card : cards_to_send_to_pile) {
+		side_piles.at(player_idx)[pile_name].push_back(card);
+	}
+}
+
+void Deck::ToSidePile(int player_idx, std::string pile_name, std::vector<std::string> card_to_send_to_pile) {
+	side_piles.at(player_idx)[pile_name].push_back(card_to_send_to_pile);
+}
+
+void Deck::DefineCommonPiles(std::vector<std::string> side_pile_names) {
+
+	for (std::string side_pile_name : side_pile_names) {
+		std::vector<std::vector<std::string>> empty_side_pile;
+
+		common_piles.insert({ side_pile_name, empty_side_pile });
+	}
+}
+
+void Deck::ToCommonPile(std::string pile_name, std::vector<std::vector<std::string>> cards_to_send_to_pile) {
+
+	for (auto card : cards_to_send_to_pile) {
+		common_piles[pile_name].push_back(card);
+	}
+}
+
+void Deck::ToCommonPile(std::string pile_name, std::vector<std::string> card_to_send_to_pile) {
+
+	common_piles[pile_name].push_back(card_to_send_to_pile);
 }
 
 int Deck::GetNumberOfPlayers() {
@@ -94,6 +155,7 @@ std::vector<std::vector<std::string>> Deck::HandToPile(int hand_index, std::vect
 }
 
 std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, int n_cards, std::string player_type) {
+
 	std::vector<std::vector<std::string>> cards_to_be_chosen;
 
 	if (player_type == "user") {
@@ -148,4 +210,12 @@ std::vector<std::string> Deck::DrawCard() {
 
 std::vector<std::vector<std::vector<std::string>>> Deck::GetHands() {
 	return hands;
+}
+
+std::vector<std::map<std::string, std::vector<std::vector<std::string>>>> Deck::GetSidePiles() {
+	return side_piles;
+}
+
+std::map<std::string, std::vector<std::vector<std::string>>> Deck::GetCommonPiles() {
+	return common_piles;
 }

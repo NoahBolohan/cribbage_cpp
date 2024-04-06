@@ -3,16 +3,20 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "DeckFunctions.h"
 
 class Cribbage {
 	public:
-		Cribbage(int, Deck);
+		Cribbage(int);
 
 		void Deal();
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
 		void ThePlay();
+		void UpTo31();
+		void RemovePlayerFromThePlay(int);
+		void RemovePlayerFrom31(int);
 		void TheShow();
 		void AddPoints(int, int);
 		void DisplayScore();
@@ -24,15 +28,31 @@ class Cribbage {
 
 		Deck deck;
 		std::vector<int> scores;
-		std::vector<std::vector<std::vector<std::string>>> hands;
-		std::vector<std::vector<std::string>> crib;
+		std::vector<int> active_player_indices_for_play;
+		std::vector<int> active_player_indices_for_31;
 		std::vector<std::string> starter;
 
 		const int score_target = 121;
 
-		int pegging_total = 0;
+		int play_total = 0;
 		int dealer = 0;
+		int user_index = 0;
 
+		std::map<std::string, int> card_value_points = {
+			{"Ace", 1},
+			{"2", 2},
+			{"3", 3},
+			{"4", 4},
+			{"5", 5},
+			{"6", 6},
+			{"7", 7},
+			{"8", 8},
+			{"9", 9},
+			{"10", 10},
+			{"Jack", 10},
+			{"Queen", 10},
+			{"King", 10}
+		};
 };
 
 #endif

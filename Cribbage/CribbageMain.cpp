@@ -4,10 +4,9 @@
 #include "DeckFunctions.h"
 
 int main() {
-	Deck deck;
 	int number_of_players = 2; //2 or 3
 
-	Cribbage cribbage(number_of_players, deck);
+	Cribbage cribbage(number_of_players);
 
 	std::cout << "Welcome to cribbage!" << std::endl;
 
