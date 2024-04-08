@@ -67,6 +67,8 @@ void Deck::DisplayHand(int hand_index) {
 
 void Deck::DealHands(int d_idx, int hand_size) {
 
+	hands.clear();
+
 	dealer_index = d_idx;
 	NextPlayer(d_idx);
 

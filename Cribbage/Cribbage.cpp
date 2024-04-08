@@ -12,13 +12,18 @@ Cribbage::Cribbage(int n_players) : deck(n_players) {
 
 	number_of_players = n_players;
 
-	for (int i = 0; i < n_players; i++) {
-		scores.push_back(0);
-	}
+	InitializeScores();
 
 	deck.DefineSidePiles(std::vector<std::string> {"the_play"});
-	deck.DefineCommonPiles(std::vector<std::string> {"crib"});
+	deck.DefineCommonPiles(std::vector<std::string> {"crib", "the_play"});
+}
 
+void Cribbage::InitializeScores() {
+	scores.clear();
+
+	for (int i = 0; i < number_of_players; i++) {
+		scores.push_back(0);
+	}
 }
 
 void Cribbage::Deal() {
@@ -42,8 +47,8 @@ void Cribbage::Deal() {
 }
 
 void Cribbage::PassToCrib(std::vector<std::vector<std::string>> cards) {
-	deck.GetCommonPiles()["crib"].push_back(cards.at(0));
-	deck.GetCommonPiles()["crib"].push_back(cards.at(1));
+	deck.ToCommonPile("crib", cards.at(0));
+	deck.ToCommonPile("crib", cards.at(1));
 }
 
 void Cribbage::DrawStarter() {
@@ -54,6 +59,17 @@ void Cribbage::DrawStarter() {
 		std::cout << std::endl << "2 points to the dealer for the Jack's heels!" << std::endl;
 		AddPoints(deck.GetDealerIndex(), 2);
 	}
+}
+
+void Cribbage::ThePlayPoints() {
+
+}
+
+void Cribbage::GoPoints() {
+	AddPoints(
+		deck.GetCurrentPlayerIndex(),
+		play_total < 31 ? 1 : 2
+	);
 }
 
 void Cribbage::ThePlay() {
@@ -79,6 +95,7 @@ void Cribbage::UpTo31() {
 	int min_card_point_value = 11;
 
 	active_player_indices_for_31.clear();
+
 	for (auto player_index : active_player_indices_for_play) {
 		active_player_indices_for_31.push_back(player_index);
 	}
@@ -99,7 +116,6 @@ void Cribbage::UpTo31() {
 		}
 
 		if (play_total + min_card_point_value > 31) {
-			std::cout << min_card_point_value << std::endl;
 			if (deck.GetCurrentPlayerIndex() == user_index) {
 				std::cout << std::endl << "You cannot play. The turn passes." << std::endl;
 			}
@@ -134,6 +150,7 @@ void Cribbage::UpTo31() {
 				played_card = deck.ChooseCardsFromHand(deck.GetCurrentPlayerIndex(), 1, "com").at(0);
 			}
 			deck.ToSidePile(deck.GetCurrentPlayerIndex(), "the_play", played_card);
+			deck.ToCommonPile("the_play", played_card);
 
 			if (deck.GetCurrentPlayerIndex() == user_index) {
 				std::cout << std::endl << "You ";
@@ -146,12 +163,16 @@ void Cribbage::UpTo31() {
 			play_total += card_value_points[played_card.at(0)];
 
 			std::cout << "The play total is now " << play_total << ".";
+
+			ThePlayPoints();
 		}
 
 		if (active_player_indices_for_play.size() > 0) {
 			deck.NextPlayerFromActivePlayers(active_player_indices_for_play);
 		}
 	}
+
+	GoPoints();
 }
 
 void Cribbage::RemovePlayerFromThePlay(int player_index) {

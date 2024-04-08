@@ -10,9 +10,12 @@ class Cribbage {
 	public:
 		Cribbage(int);
 
+		void InitializeScores();
 		void Deal();
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
+		void ThePlayPoints();
+		void GoPoints();
 		void ThePlay();
 		void UpTo31();
 		void RemovePlayerFromThePlay(int);
