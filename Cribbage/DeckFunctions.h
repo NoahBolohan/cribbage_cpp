@@ -23,6 +23,7 @@ class Deck {
 		void DefineCommonPiles(std::vector<std::string>);
 		void ToCommonPile(std::string, std::vector<std::vector<std::string>>);
 		void ToCommonPile(std::string, std::vector<std::string>);
+		void ResetCommonPile(std::string);
 
 		int GetNumberOfPlayers();
 		int GetDealerIndex();

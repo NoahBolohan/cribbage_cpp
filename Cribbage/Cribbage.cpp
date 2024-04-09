@@ -64,8 +64,80 @@ void Cribbage::DrawStarter() {
 	}
 }
 
+void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
+	std::cout << std::endl;
+
+	if (deck.GetCurrentPlayerIndex() == user_index) {
+		std::cout << announcement << "! " << n_points << " points for you!" << std::endl;
+	}
+	else {
+		std::cout << announcement << "! " << n_points << " points for player " << deck.GetCurrentPlayerIndex() << "!" << std::endl;
+	}
+}
+
 void Cribbage::ThePlayPoints() {
 	std::vector<std::vector<std::string>> crib = deck.GetCommonPiles()["crib"];
+
+	// Check fifteen-two
+	if (play_total == 15) {
+		AddPoints(deck.GetCurrentPlayerIndex(), 2);
+		AnnouncePoints(2, "Fifteen-two");
+	}
+
+	// Check runs
+
+	// Check pairs
+	for (int n_cards = 2; n_cards <= 4; n_cards++) {
+		
+		switch (n_cards) {
+			case 4:
+				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+					if (CheckPairsForLength(n_cards, 12, "Four-of-a-kind")) {
+						break;
+					}
+				}
+			case 3:
+				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+					if (CheckPairsForLength(n_cards, 6, "Nice triple")) {
+						break;
+					}
+				}
+			case 2:
+				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+					if (CheckPairsForLength(n_cards, 2, "That's a pair")) {
+						break;
+					}
+				}
+			default:
+				break;
+		}
+	}
+}
+
+
+bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::string announcement) {
+
+	std::vector<std::string> values;
+	bool return_value = false;
+
+	for (int card_index_from_back = 1; card_index_from_back <= n_cards_to_check; card_index_from_back++) {
+		values.push_back(
+			deck.GetCommonPiles()["the_play"].end()[-card_index_from_back].at(0)
+		);
+	}
+
+	if (std::adjacent_find(
+		values.begin(),
+		values.end(),
+		std::not_equal_to<>()
+	) == values.end()) {
+
+		AddPoints(deck.GetCurrentPlayerIndex(), n_points);
+		AnnouncePoints(n_points, announcement);
+		return_value = true;
+	}
+
+	return return_value;
 }
 
 void Cribbage::GoPoints() {
@@ -87,6 +159,7 @@ void Cribbage::ThePlay() {
 	while (active_player_indices_for_play.size() > 0) {
 		play_total = 0;
 		Cribbage::UpTo31();
+		deck.ResetCommonPile("the_play");
 	}
 
 	std::cout << std::endl << "The play is done. The score is the following:" << std::endl;

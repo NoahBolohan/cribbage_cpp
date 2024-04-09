@@ -137,6 +137,10 @@ void Deck::ToCommonPile(std::string pile_name, std::vector<std::string> card_to_
 	common_piles[pile_name].push_back(card_to_send_to_pile);
 }
 
+void Deck::ResetCommonPile(std::string pile_name) {
+	common_piles[pile_name].clear();
+}
+
 int Deck::GetNumberOfPlayers() {
 	return number_of_players;
 }

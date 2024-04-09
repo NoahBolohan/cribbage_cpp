@@ -15,7 +15,9 @@ class Cribbage {
 		void Deal();
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
+		void AnnouncePoints(int, std::string);
 		void ThePlayPoints();
+		bool CheckPairsForLength(int, int, std::string);
 		void GoPoints();
 		void ThePlay();
 		void UpTo31();
