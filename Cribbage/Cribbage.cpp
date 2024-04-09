@@ -85,9 +85,46 @@ void Cribbage::ThePlayPoints() {
 	}
 
 	// Check runs
+	for (int n_cards = 7; n_cards >= 3; n_cards--) {
+
+		switch (n_cards) {
+		case 7:
+			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+				if (CheckRunsForLength(n_cards, 7, "Run of seven")) {
+					break;
+				}
+			}
+		case 6:
+			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+				if (CheckRunsForLength(n_cards, 6, "Run of six")) {
+					break;
+				}
+			}
+		case 5:
+			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+				if (CheckRunsForLength(n_cards, 5, "Run of five")) {
+					break;
+				}
+			}
+		case 4:
+			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+				if (CheckRunsForLength(n_cards, 4, "Run of four")) {
+					break;
+				}
+			}
+		case 3:
+			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
+				if (CheckRunsForLength(n_cards, 3, "Run of three")) {
+					break;
+				}
+			}
+		default:
+			break;
+		}
+	}
 
 	// Check pairs
-	for (int n_cards = 2; n_cards <= 4; n_cards++) {
+	for (int n_cards = 4; n_cards >= 2; n_cards--) {
 		
 		switch (n_cards) {
 			case 4:
@@ -112,6 +149,43 @@ void Cribbage::ThePlayPoints() {
 				break;
 		}
 	}
+}
+
+bool Cribbage::CheckRunsForLength(int n_cards_to_check, int n_points, std::string announcement) {
+
+	std::vector<std::string> values;
+	bool return_value = false;
+
+	for (int card_index_from_back = 1; card_index_from_back <= n_cards_to_check; card_index_from_back++) {
+		values.push_back(
+			deck.GetCommonPiles()["the_play"].end()[-card_index_from_back].at(0)
+		);
+	}
+
+	std::vector<int> values_indices;
+	std::vector<int> range_indices;
+
+	for (auto value : values) {
+		values_indices.push_back(run_ordering[value]);
+		if (value == "Ace") {
+			values_indices.push_back(13);
+		}
+	}
+
+	std::sort(values_indices.begin(), values_indices.end());
+
+	for (int i = values_indices.at(0); i <= values_indices.back(); i++) {
+		range_indices.push_back(i);
+	}
+
+	if (values_indices == range_indices) {
+
+		AddPoints(deck.GetCurrentPlayerIndex(), n_points);
+		AnnouncePoints(n_points, announcement);
+		return_value = true;
+	}
+
+	return return_value;
 }
 
 bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::string announcement) {

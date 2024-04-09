@@ -18,6 +18,7 @@ class Cribbage {
 		void AnnouncePoints(int, std::string);
 		void ThePlayPoints();
 		bool CheckPairsForLength(int, int, std::string);
+		bool CheckRunsForLength(int, int, std::string);
 		void GoPoints();
 		void ThePlay();
 		void UpTo31();
@@ -37,8 +38,13 @@ class Cribbage {
 		std::vector<int> active_player_indices_for_play;
 		std::vector<int> active_player_indices_for_31;
 		std::vector<std::string> starter;
-		const std::vector<std::string> side_pile_names = { "the_play" };
-		const std::vector<std::string> common_pile_names = { "crib", "the_play" };
+		const std::vector<std::string> side_pile_names = { 
+			"the_play"
+		};
+		const std::vector<std::string> common_pile_names = {
+			"crib",
+			"the_play"
+		};
 		const int score_target = 121;
 
 		int play_total = 0;
@@ -59,6 +65,22 @@ class Cribbage {
 			{"Jack", 10},
 			{"Queen", 10},
 			{"King", 10}
+		};
+
+		std::map<std::string, int> run_ordering = {
+			{"Ace", 0},
+			{"2", 1},
+			{"3", 2},
+			{"4", 3},
+			{"5", 4},
+			{"6", 5},
+			{"7", 6},
+			{"8", 7},
+			{"9", 8},
+			{"10", 9},
+			{"Jack", 10},
+			{"Queen", 11},
+			{"King", 12}
 		};
 };
 
