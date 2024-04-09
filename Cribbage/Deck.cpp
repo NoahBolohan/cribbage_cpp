@@ -166,9 +166,10 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 	std::vector<std::vector<std::string>> cards_to_be_chosen;
 
 	if (player_type == "user") {
-		int card_index;
 
 		std::vector<int> card_indices;
+		std::vector<int> card_indices_to_choose;
+		int card_index_input;
 
 		for (int i = 0; i < hands.at(hand_index).size(); i++) {
 			card_indices.push_back(i);
@@ -178,26 +179,24 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 
 		for (int i = 0; i < n_cards; i++) {
 
-			std::cin >> card_index;
+			std::cin >> card_index_input;
 
-			while (std::find(card_indices.begin(), card_indices.end(), card_index) == card_indices.end()) {
+			while (std::find(card_indices.begin(), card_indices.end(), card_index_input) == card_indices.end() && std::find(card_indices_to_choose.begin(), card_indices_to_choose.end(), card_index_input) != card_indices_to_choose.end()) {
 				std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
-				std::cin >> card_index;
+				std::cin >> card_index_input;
 			}
 
-			card_indices.erase(
-				std::remove(card_indices.begin(),
-					card_indices.end(),
-					card_index
-				),
-				card_indices.end()
-			);
+			card_indices_to_choose.push_back(card_index_input);
+			cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index_input));
+		}
+		
+		std::sort(card_indices_to_choose.begin(), card_indices_to_choose.end(), std::greater<int>());
 
-			cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index));
-
+		for (auto card_index : card_indices_to_choose) {
 			hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
 		}
 	}
+
 	else {
 		cards_to_be_chosen.push_back(hands.at(hand_index).at(0));
 		hands.at(hand_index).erase(hands.at(hand_index).begin());
