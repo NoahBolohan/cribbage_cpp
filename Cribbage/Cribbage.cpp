@@ -449,6 +449,9 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 		// Check runs
 
 		// Check pairs
+		if (subset.size() == 2) {
+			CheckPairsForLength(subset, 2, "Nice pair");
+		}
 
 		// Check flush
 
