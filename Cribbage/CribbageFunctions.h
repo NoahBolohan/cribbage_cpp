@@ -11,6 +11,7 @@ class Cribbage {
 		Cribbage(int);
 
 		void InitializeScores();
+		void InitializePiles();
 		void Deal();
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
@@ -34,7 +35,8 @@ class Cribbage {
 		std::vector<int> active_player_indices_for_play;
 		std::vector<int> active_player_indices_for_31;
 		std::vector<std::string> starter;
-
+		const std::vector<std::string> side_pile_names = { "the_play" };
+		const std::vector<std::string> common_pile_names = { "crib", "the_play" };
 		const int score_target = 121;
 
 		int play_total = 0;

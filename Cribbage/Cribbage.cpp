@@ -13,9 +13,6 @@ Cribbage::Cribbage(int n_players) : deck(n_players) {
 	number_of_players = n_players;
 
 	InitializeScores();
-
-	deck.DefineSidePiles(std::vector<std::string> {"the_play"});
-	deck.DefineCommonPiles(std::vector<std::string> {"crib", "the_play"});
 }
 
 void Cribbage::InitializeScores() {
@@ -25,6 +22,12 @@ void Cribbage::InitializeScores() {
 		scores.push_back(0);
 	}
 }
+
+void Cribbage::InitializePiles() {
+	deck.DefineSidePiles(side_pile_names);
+	deck.DefineCommonPiles(side_pile_names);
+}
+
 
 void Cribbage::Deal() {
 	deck.DealHands(0, 6);
@@ -62,7 +65,7 @@ void Cribbage::DrawStarter() {
 }
 
 void Cribbage::ThePlayPoints() {
-
+	std::vector<std::vector<std::string>> crib = deck.GetCommonPiles()["crib"];
 }
 
 void Cribbage::GoPoints() {
@@ -207,6 +210,7 @@ void Cribbage::DisplayScore() {
 }
 
 void Cribbage::Round() {
+	InitializePiles();
 	deck.ShuffleDeck();
 	Deal();
 	DrawStarter();

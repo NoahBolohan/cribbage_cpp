@@ -87,6 +87,9 @@ void Deck::DealHands(int d_idx, int hand_size) {
 }
 
 void Deck::DefineSidePiles(std::vector<std::string> side_pile_names) {
+
+	side_piles.clear();
+
 	for (int i = 0; i < number_of_players; i++) {
 		std::map<std::string, std::vector<std::vector<std::string>>> empty_side_piles;
 
@@ -112,6 +115,8 @@ void Deck::ToSidePile(int player_idx, std::string pile_name, std::vector<std::st
 }
 
 void Deck::DefineCommonPiles(std::vector<std::string> side_pile_names) {
+
+	common_piles.clear();
 
 	for (std::string side_pile_name : side_pile_names) {
 		std::vector<std::vector<std::string>> empty_side_pile;
@@ -163,16 +168,16 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 	if (player_type == "user") {
 		int card_index;
 
-		std::vector<int> card_indices(hands.at(hand_index).size());
+		std::vector<int> card_indices;
+
 		for (int i = 0; i < hands.at(hand_index).size(); i++) {
-			card_indices[i] = i;;
+			card_indices.push_back(i);
 		}
 
-		std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):";
+		std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):" << std::endl;
 
 		for (int i = 0; i < n_cards; i++) {
 
-			std::cout << std::endl;
 			std::cin >> card_index;
 
 			while (std::find(card_indices.begin(), card_indices.end(), card_index) == card_indices.end()) {

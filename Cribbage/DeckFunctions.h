@@ -20,11 +20,9 @@ class Deck {
 		void DefineSidePiles(std::vector<std::string>);
 		void ToSidePile(int, std::string, std::vector<std::vector<std::string>>);
 		void ToSidePile(int, std::string, std::vector<std::string>);
-		void ClearSidePiles();
 		void DefineCommonPiles(std::vector<std::string>);
 		void ToCommonPile(std::string, std::vector<std::vector<std::string>>);
 		void ToCommonPile(std::string, std::vector<std::string>);
-		void ClearCommonPiles();
 
 		int GetNumberOfPlayers();
 		int GetDealerIndex();
