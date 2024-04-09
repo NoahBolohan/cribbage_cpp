@@ -105,7 +105,7 @@ void Cribbage::ThePlayPoints() {
 					n_cards
 				);
 
-				if (CheckRunsForLength(cards_to_check, 7, "Run of seven")) {
+				if (CheckRuns(cards_to_check, 7, "Run of seven")) {
 					break;
 				}
 			}
@@ -117,7 +117,7 @@ void Cribbage::ThePlayPoints() {
 					n_cards
 				);
 
-				if (CheckRunsForLength(cards_to_check, 6, "Run of six")) {
+				if (CheckRuns(cards_to_check, 6, "Run of six")) {
 					break;
 				}
 			}
@@ -129,7 +129,7 @@ void Cribbage::ThePlayPoints() {
 					n_cards
 				);
 
-				if (CheckRunsForLength(cards_to_check, 5, "Run of five")) {
+				if (CheckRuns(cards_to_check, 5, "Run of five")) {
 					break;
 				}
 			}
@@ -141,7 +141,7 @@ void Cribbage::ThePlayPoints() {
 					n_cards
 				);
 
-				if (CheckRunsForLength(cards_to_check, 4, "Run of four")) {
+				if (CheckRuns(cards_to_check, 4, "Run of four")) {
 					break;
 				}
 			}
@@ -153,7 +153,7 @@ void Cribbage::ThePlayPoints() {
 					n_cards
 				);
 
-				if (CheckRunsForLength(cards_to_check, 3, "Run of three")) {
+				if (CheckRuns(cards_to_check, 3, "Run of three")) {
 					break;
 				}
 			}
@@ -174,7 +174,7 @@ void Cribbage::ThePlayPoints() {
 						n_cards
 					);
 
-					if (CheckPairsForLength(cards_to_check, 12, "Four-of-a-kind")) {
+					if (CheckPairs(cards_to_check, 12, "Four-of-a-kind")) {
 						break;
 					}
 				}
@@ -186,7 +186,7 @@ void Cribbage::ThePlayPoints() {
 						n_cards
 					);
 
-					if (CheckPairsForLength(cards_to_check, 6, "Nice triple")) {
+					if (CheckPairs(cards_to_check, 6, "Nice triple")) {
 						break;
 					}
 				}
@@ -198,7 +198,7 @@ void Cribbage::ThePlayPoints() {
 						n_cards
 					);
 
-					if (CheckPairsForLength(cards_to_check, 2, "That's a pair")) {
+					if (CheckPairs(cards_to_check, 2, "That's a pair")) {
 						break;
 					}
 				}
@@ -208,7 +208,29 @@ void Cribbage::ThePlayPoints() {
 	}
 }
 
-bool Cribbage::CheckRunsForLength(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
+bool Cribbage::CheckFlush(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
+
+	std::vector<std::string> suits;
+	bool return_value = false;
+
+	for (auto card : cards_to_check) {
+		suits.push_back(card.at(1));
+	}
+
+	if (std::adjacent_find(
+		suits.begin(),
+		suits.end(),
+		std::not_equal_to<>()
+	) == suits.end()) {
+
+		AddPoints(deck.GetCurrentPlayerIndex(), n_points, announcement);
+		return_value = true;
+	}
+
+	return return_value;
+}
+
+bool Cribbage::CheckRuns(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
 
 	std::vector<std::string> values;
 	bool return_value = false;
@@ -242,7 +264,7 @@ bool Cribbage::CheckRunsForLength(std::vector<std::vector<std::string>> cards_to
 	return return_value;
 }
 
-bool Cribbage::CheckPairsForLength(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
+bool Cribbage::CheckPairs(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
 
 	std::vector<std::string> values;
 	bool return_value = false;
@@ -450,10 +472,13 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 
 		// Check pairs
 		if (subset.size() == 2) {
-			CheckPairsForLength(subset, 2, "Nice pair");
+			CheckPairs(subset, 2, "Nice pair");
 		}
 
 		// Check flush
+		if (subset.size() == 5) {
+			CheckPairs(subset, 5, "What a flush");
+		}
 
 		// Check nob
 		if (subset.size() == 1) {
