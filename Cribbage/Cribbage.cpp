@@ -346,6 +346,44 @@ void Cribbage::RemovePlayerFrom31(int player_index) {
 	);
 }
 
+void Cribbage::TheShow() {
+
+	deck.NextPlayer(-1);
+
+	for (int i = 0; i < deck.GetNumberOfPlayers(); i++) {
+
+		int player_index = deck.GetCurrentPlayerIndex();
+
+		std::vector<std::vector<std::string>> cards_to_count = deck.GetSidePiles().at(player_index)["the_play"];
+		cards_to_count.push_back(starter);
+
+		TheShowPoints(player_index, cards_to_count);
+
+		if (player_index == deck.GetDealerIndex()) {
+			cards_to_count.clear();
+			cards_to_count = deck.GetCommonPiles()["crib"];
+			cards_to_count.push_back(starter);
+
+			TheShowPoints(player_index, cards_to_count);
+		}
+
+		deck.NextPlayer();
+	}
+}
+
+void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::string>> cards_to_count) {
+	
+	// Check fifteens
+
+	// Check runs
+
+	// Check pairs
+
+	// Check flush
+
+	// Check nob
+}
+
 void Cribbage::AddPoints(int player_index, int n_points) {
 	scores.at(player_index) = scores.at(player_index) + n_points;
 }
@@ -363,4 +401,5 @@ void Cribbage::Round() {
 	Deal();
 	DrawStarter();
 	ThePlay();
+	TheShow();
 }
