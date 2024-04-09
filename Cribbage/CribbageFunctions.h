@@ -26,7 +26,7 @@ class Cribbage {
 		void RemovePlayerFrom31(int);
 		void TheShow();
 		void TheShowPoints(int, std::vector<std::vector<std::string>>);
-		void AddPoints(int, int);
+		void AddPoints(int, int, std::string);
 		void DisplayScore();
 
 		void Round();

@@ -7,6 +7,7 @@
 
 #include "CribbageFunctions.h"
 #include "DeckFunctions.h"
+#include "Functions.h"
 
 Cribbage::Cribbage(int n_players) : deck(n_players) {
 
@@ -59,8 +60,7 @@ void Cribbage::DrawStarter() {
 	std::cout << std::endl << "The starter is the " << starter.at(0) << " of " << starter.at(1) << "." << std::endl;
 
 	if (starter.at(0) == "Jack") {
-		std::cout << std::endl << "2 points to the dealer for the Jack's heels!" << std::endl;
-		AddPoints(deck.GetDealerIndex(), 2);
+		AddPoints(deck.GetDealerIndex(), 2, "Jack's heels");
 	}
 }
 
@@ -80,8 +80,7 @@ void Cribbage::ThePlayPoints() {
 
 	// Check fifteen-two
 	if (play_total == 15) {
-		AddPoints(deck.GetCurrentPlayerIndex(), 2);
-		AnnouncePoints(2, "Fifteen-two");
+		AddPoints(deck.GetCurrentPlayerIndex(), 2, "Fifteen-two");
 	}
 
 	// Check runs
@@ -180,8 +179,7 @@ bool Cribbage::CheckRunsForLength(int n_cards_to_check, int n_points, std::strin
 
 	if (values_indices == range_indices) {
 
-		AddPoints(deck.GetCurrentPlayerIndex(), n_points);
-		AnnouncePoints(n_points, announcement);
+		AddPoints(deck.GetCurrentPlayerIndex(), n_points, announcement);
 		return_value = true;
 	}
 
@@ -205,8 +203,7 @@ bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::stri
 		std::not_equal_to<>()
 	) == values.end()) {
 
-		AddPoints(deck.GetCurrentPlayerIndex(), n_points);
-		AnnouncePoints(n_points, announcement);
+		AddPoints(deck.GetCurrentPlayerIndex(), n_points, announcement);
 		return_value = true;
 	}
 
@@ -216,7 +213,8 @@ bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::stri
 void Cribbage::GoPoints() {
 	AddPoints(
 		deck.GetCurrentPlayerIndex(),
-		play_total < 31 ? 1 : 2
+		play_total < 31 ? 1 : 2,
+		"Go"
 	);
 }
 
@@ -348,6 +346,8 @@ void Cribbage::RemovePlayerFrom31(int player_index) {
 
 void Cribbage::TheShow() {
 
+	std::cout << "The Show has started." << std::endl;
+
 	deck.NextPlayer(-1);
 
 	for (int i = 0; i < deck.GetNumberOfPlayers(); i++) {
@@ -373,19 +373,43 @@ void Cribbage::TheShow() {
 
 void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::string>> cards_to_count) {
 	
-	// Check fifteens
+	for (auto &card_indices : ComputeSubsets(0, cards_to_count.size())) {
 
-	// Check runs
+		std::vector<std::vector<std::string>> subset;
 
-	// Check pairs
+		for (int i : card_indices) {
+			subset.push_back(cards_to_count.at(i));
+		}
 
-	// Check flush
+		// Check fifteens
+		int value_sum = 0;
 
-	// Check nob
+		for (auto card : subset) {
+			value_sum += card_value_points[card.at(0)];
+		}
+
+		if (value_sum == 15) {
+			AddPoints(deck.GetCurrentPlayerIndex(), 2, "Fifteen for two");
+		}
+
+		// Check runs
+
+		// Check pairs
+
+		// Check flush
+
+		// Check nob
+		if (subset.size() == 1) {
+			if (subset.at(0).at(0) == "Jack" && subset.at(0).at(1) == starter.at(1)) {
+				AddPoints(deck.GetCurrentPlayerIndex(), 1, "One for the Jack's nob");
+			}
+		}
+	}
 }
 
-void Cribbage::AddPoints(int player_index, int n_points) {
+void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
 	scores.at(player_index) = scores.at(player_index) + n_points;
+	AnnouncePoints(n_points, announcement);
 }
 
 void Cribbage::DisplayScore() {
