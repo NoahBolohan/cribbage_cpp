@@ -114,7 +114,6 @@ void Cribbage::ThePlayPoints() {
 	}
 }
 
-
 bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::string announcement) {
 
 	std::vector<std::string> values;
@@ -168,8 +167,6 @@ void Cribbage::ThePlay() {
 
 void Cribbage::UpTo31() {
 
-	int min_card_point_value = 11;
-
 	active_player_indices_for_31.clear();
 
 	for (auto player_index : active_player_indices_for_play) {
@@ -177,6 +174,8 @@ void Cribbage::UpTo31() {
 	}
 
 	while (play_total <= 31 && std::find(active_player_indices_for_31.begin(), active_player_indices_for_31.end(), deck.GetCurrentPlayerIndex()) != active_player_indices_for_31.end()) {
+
+		int min_card_point_value = 11;
 		std::vector<std::string> played_card;
 
 		std::cout << std::endl << "Play total is " << play_total << ". It is ";
@@ -187,7 +186,9 @@ void Cribbage::UpTo31() {
 			std::cout << "player " << deck.GetCurrentPlayerIndex() << "s turn." << std::endl;
 		}
 
-		for (auto card : deck.GetHands().at(deck.GetCurrentPlayerIndex())) {
+		std::vector<std::vector<std::string>> current_players_hand = deck.GetHands().at(deck.GetCurrentPlayerIndex());
+
+		for (auto card : current_players_hand) {
 			min_card_point_value = std::min(card_value_points[card.at(0)], min_card_point_value);
 		}
 
@@ -238,9 +239,9 @@ void Cribbage::UpTo31() {
 
 			play_total += card_value_points[played_card.at(0)];
 
-			std::cout << "The play total is now " << play_total << ".";
-
 			ThePlayPoints();
+
+			std::cout << "The play total is now " << play_total << ".";
 		}
 
 		if (active_player_indices_for_play.size() > 0) {
