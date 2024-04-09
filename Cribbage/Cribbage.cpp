@@ -75,6 +75,16 @@ void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
 	}
 }
 
+std::vector<std::vector<std::string>> Cribbage::GetCardsFromEnd(std::vector<std::vector<std::string>> cards, int n_cards) {
+
+	std::vector<std::vector<std::string>> cards_to_check = {
+						cards.end() - n_cards,
+						cards.end() - 1
+	};
+
+	return cards_to_check;
+}
+
 void Cribbage::ThePlayPoints() {
 	std::vector<std::vector<std::string>> crib = deck.GetCommonPiles()["crib"];
 
@@ -89,31 +99,61 @@ void Cribbage::ThePlayPoints() {
 		switch (n_cards) {
 		case 7:
 			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-				if (CheckRunsForLength(n_cards, 7, "Run of seven")) {
+
+				std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+					deck.GetCommonPiles()["the_play"],
+					n_cards
+				);
+
+				if (CheckRunsForLength(cards_to_check, 7, "Run of seven")) {
 					break;
 				}
 			}
 		case 6:
 			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-				if (CheckRunsForLength(n_cards, 6, "Run of six")) {
+
+				std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+					deck.GetCommonPiles()["the_play"],
+					n_cards
+				);
+
+				if (CheckRunsForLength(cards_to_check, 6, "Run of six")) {
 					break;
 				}
 			}
 		case 5:
 			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-				if (CheckRunsForLength(n_cards, 5, "Run of five")) {
+
+				std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+					deck.GetCommonPiles()["the_play"],
+					n_cards
+				);
+
+				if (CheckRunsForLength(cards_to_check, 5, "Run of five")) {
 					break;
 				}
 			}
 		case 4:
 			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-				if (CheckRunsForLength(n_cards, 4, "Run of four")) {
+
+				std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+					deck.GetCommonPiles()["the_play"],
+					n_cards
+				);
+
+				if (CheckRunsForLength(cards_to_check, 4, "Run of four")) {
 					break;
 				}
 			}
 		case 3:
 			if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-				if (CheckRunsForLength(n_cards, 3, "Run of three")) {
+
+				std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+					deck.GetCommonPiles()["the_play"],
+					n_cards
+				);
+
+				if (CheckRunsForLength(cards_to_check, 3, "Run of three")) {
 					break;
 				}
 			}
@@ -124,23 +164,41 @@ void Cribbage::ThePlayPoints() {
 
 	// Check pairs
 	for (int n_cards = 4; n_cards >= 2; n_cards--) {
-		
+
 		switch (n_cards) {
 			case 4:
 				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-					if (CheckPairsForLength(n_cards, 12, "Four-of-a-kind")) {
+
+					std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+						deck.GetCommonPiles()["the_play"],
+						n_cards
+					);
+
+					if (CheckPairsForLength(cards_to_check, 12, "Four-of-a-kind")) {
 						break;
 					}
 				}
 			case 3:
 				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-					if (CheckPairsForLength(n_cards, 6, "Nice triple")) {
+
+					std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+						deck.GetCommonPiles()["the_play"],
+						n_cards
+					);
+
+					if (CheckPairsForLength(cards_to_check, 6, "Nice triple")) {
 						break;
 					}
 				}
 			case 2:
 				if (deck.GetCommonPiles()["the_play"].size() >= n_cards) {
-					if (CheckPairsForLength(n_cards, 2, "That's a pair")) {
+
+					std::vector<std::vector<std::string>> cards_to_check = GetCardsFromEnd(
+						deck.GetCommonPiles()["the_play"],
+						n_cards
+					);
+
+					if (CheckPairsForLength(cards_to_check, 2, "That's a pair")) {
 						break;
 					}
 				}
@@ -150,15 +208,13 @@ void Cribbage::ThePlayPoints() {
 	}
 }
 
-bool Cribbage::CheckRunsForLength(int n_cards_to_check, int n_points, std::string announcement) {
+bool Cribbage::CheckRunsForLength(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
 
 	std::vector<std::string> values;
 	bool return_value = false;
 
-	for (int card_index_from_back = 1; card_index_from_back <= n_cards_to_check; card_index_from_back++) {
-		values.push_back(
-			deck.GetCommonPiles()["the_play"].end()[-card_index_from_back].at(0)
-		);
+	for (auto card : cards_to_check) {
+		values.push_back(card.at(0));
 	}
 
 	std::vector<int> values_indices;
@@ -186,15 +242,13 @@ bool Cribbage::CheckRunsForLength(int n_cards_to_check, int n_points, std::strin
 	return return_value;
 }
 
-bool Cribbage::CheckPairsForLength(int n_cards_to_check, int n_points, std::string announcement) {
+bool Cribbage::CheckPairsForLength(std::vector<std::vector<std::string>> cards_to_check, int n_points, std::string announcement) {
 
 	std::vector<std::string> values;
 	bool return_value = false;
 
-	for (int card_index_from_back = 1; card_index_from_back <= n_cards_to_check; card_index_from_back++) {
-		values.push_back(
-			deck.GetCommonPiles()["the_play"].end()[-card_index_from_back].at(0)
-		);
+	for (auto card : cards_to_check) {
+		values.push_back(card.at(0));
 	}
 
 	if (std::adjacent_find(

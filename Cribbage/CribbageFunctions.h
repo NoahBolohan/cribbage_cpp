@@ -17,8 +17,8 @@ class Cribbage {
 		void DrawStarter();
 		void AnnouncePoints(int, std::string);
 		void ThePlayPoints();
-		bool CheckPairsForLength(int, int, std::string);
-		bool CheckRunsForLength(int, int, std::string);
+		bool CheckPairsForLength(std::vector<std::vector<std::string>>, int, std::string);
+		bool CheckRunsForLength(std::vector<std::vector<std::string>>, int, std::string);
 		void GoPoints();
 		void ThePlay();
 		void UpTo31();
@@ -28,6 +28,9 @@ class Cribbage {
 		void TheShowPoints(int, std::vector<std::vector<std::string>>);
 		void AddPoints(int, int, std::string);
 		void DisplayScore();
+
+		std::vector<std::vector<std::string>> GetCardsFromEnd(std::vector<std::vector<std::string>>, int);
+
 
 		void Round();
 
