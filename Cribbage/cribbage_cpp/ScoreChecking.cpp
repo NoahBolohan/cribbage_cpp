@@ -87,7 +87,44 @@ bool Cribbage::CheckRuns(std::vector<std::vector<std::string>> cards_to_check, i
 	return return_value;
 }
 
-void Cribbage::CheckRunsForShow(std::vector<std::vector<std::string>> cards) {}
+void Cribbage::CheckRunsForShow(std::vector<std::vector<std::string>> cards) {
+
+	bool has_runs = false;
+
+	for (int subset_length = cards.size(); subset_length >= 3; subset_length--) {
+
+		if (!has_runs) {
+			for (auto& card_indices : ComputeSubsets(0, cards.size(), subset_length)) {
+
+				std::vector<std::vector<std::string>> subset;
+
+				for (int i : card_indices) {
+					subset.push_back(cards.at(i));
+				}
+
+				switch (subset_length) {
+					case 5:
+						if (CheckRuns(subset, 5, "Run of five")) {
+							has_runs = true;
+						}
+						break;
+					case 4:
+						if (CheckRuns(subset, 4, "Run of four")) {
+							has_runs = true;
+						}
+						break;
+					case 3:
+						if (CheckRuns(subset, 3, "Run of three")) {
+							has_runs = true;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+}
 
 void Cribbage::CheckPairsForShow(std::vector<std::vector<std::string>> cards) {
 
@@ -117,11 +154,11 @@ void Cribbage::CheckPairsForShow(std::vector<std::vector<std::string>> cards) {
 
 void Cribbage::CheckFlushForShow(std::vector<std::vector<std::string>> cards) {
 
-	if (CheckFlush(cards, 5, "Flush of 5")) {
+	if (CheckFlush(cards, 5, "Flush of five")) {
 		return;
 	}
 	else {
 		std::vector<std::vector<std::string>> cards_without_starter(cards.begin(), cards.begin() + 4);
-		CheckFlush(cards_without_starter, 4, "Flush of 4");
+		CheckFlush(cards_without_starter, 4, "Flush of four");
 	}
 }
