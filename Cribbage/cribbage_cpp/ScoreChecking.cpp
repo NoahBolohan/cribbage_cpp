@@ -115,4 +115,13 @@ void Cribbage::CheckPairsForShow(std::vector<std::vector<std::string>> cards) {
 	}
 }
 
-void Cribbage::CheckFlushForShow(std::vector<std::vector<std::string>> cards) {}
+void Cribbage::CheckFlushForShow(std::vector<std::vector<std::string>> cards) {
+
+	if (CheckFlush(cards, 5, "Flush of 5")) {
+		return;
+	}
+	else {
+		std::vector<std::vector<std::string>> cards_without_starter(cards.begin(), cards.begin() + 4);
+		CheckFlush(cards_without_starter, 4, "Flush of 4");
+	}
+}

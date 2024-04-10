@@ -142,6 +142,7 @@ void Cribbage::GoPoints() {
 
 void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::string>> cards_to_count) {
 
+	// Check fifteens
 	for (auto& card_indices : ComputeSubsets(0, cards_to_count.size())) {
 
 		std::vector<std::vector<std::string>> subset;
@@ -160,13 +161,6 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 		if (value_sum == 15) {
 			AddPoints(deck.GetCurrentPlayerIndex(), 2, "Fifteen for two");
 		}
-
-		// Check nob
-		if (subset.size() == 1) {
-			if (subset.at(0).at(0) == "Jack" && subset.at(0).at(1) == starter.at(1)) {
-				AddPoints(deck.GetCurrentPlayerIndex(), 1, "One for the Jack's nob");
-			}
-		}
 	}
 
 	// Check runs
@@ -177,8 +171,14 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 
 	// Check flush
 	CheckFlushForShow(cards_to_count);
-}
 
+	// Check nob
+	for (auto card : cards_to_count) {
+		if (card.at(0) == "Jack" && card.at(1) == starter.at(1)) {
+			AddPoints(deck.GetCurrentPlayerIndex(), 1, "One for the Jack's nob");
+		}
+	}
+}
 
 void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
 	scores.at(player_index) = scores.at(player_index) + n_points;
