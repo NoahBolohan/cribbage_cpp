@@ -468,18 +468,6 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 			AddPoints(deck.GetCurrentPlayerIndex(), 2, "Fifteen for two");
 		}
 
-		// Check runs
-
-		// Check pairs
-		if (subset.size() == 2) {
-			CheckPairs(subset, 2, "Nice pair");
-		}
-
-		// Check flush
-		if (subset.size() == 5) {
-			CheckPairs(subset, 5, "What a flush");
-		}
-
 		// Check nob
 		if (subset.size() == 1) {
 			if (subset.at(0).at(0) == "Jack" && subset.at(0).at(1) == starter.at(1)) {
@@ -487,7 +475,46 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 			}
 		}
 	}
+
+	// Check runs
+	CheckRunsForShow(cards_to_count);
+
+	// Check pairs
+	CheckPairsForShow(cards_to_count);
+
+	// Check flush
+	CheckFlushForShow(cards_to_count);
 }
+
+void Cribbage::CheckRunsForShow(std::vector<std::vector<std::string>> cards) {}
+
+void Cribbage::CheckPairsForShow(std::vector<std::vector<std::string>> cards) {
+
+	std::map<std::string, int> value_counter;
+
+	for (auto card : cards) {
+		if (value_counter.find(card.at(0)) == value_counter.end()) {
+			value_counter[card.at(0)] = 1;
+		}
+		else {
+			value_counter[card.at(0)] += 1;
+		}
+	}
+
+	for (auto const &item: value_counter) {
+		if (item.second == 2) {
+			AddPoints(deck.GetCurrentPlayerIndex(), 2, "That's a pair");
+		}
+		else if (item.second == 3) {
+			AddPoints(deck.GetCurrentPlayerIndex(), 3, "Nice triple");
+		}
+		else if (item.second == 4) {
+			AddPoints(deck.GetCurrentPlayerIndex(), 4, "Four-of-a-kind");
+		}
+	}
+}
+
+void Cribbage::CheckFlushForShow(std::vector<std::vector<std::string>> cards) {}
 
 void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
 	scores.at(player_index) = scores.at(player_index) + n_points;
