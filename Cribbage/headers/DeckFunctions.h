@@ -8,15 +8,17 @@
 
 class Deck {
 	public:
+		// Deck
 		Deck(int);
-
 		void ResetDeck();
 		void ShuffleDeck();
-		void NextPlayer();
-		void NextPlayer(int);
-		void NextPlayerFromActivePlayers(std::vector<int>);
+
+		// Hands
 		void DisplayHand(int);
 		void DealHands(int, int);
+		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);
+
+		// Piles
 		void DefineSidePiles(std::vector<std::string>);
 		void ToSidePile(int, std::string, std::vector<std::vector<std::string>>);
 		void ToSidePile(int, std::string, std::vector<std::string>);
@@ -24,15 +26,20 @@ class Deck {
 		void ToCommonPile(std::string, std::vector<std::vector<std::string>>);
 		void ToCommonPile(std::string, std::vector<std::string>);
 		void ResetCommonPile(std::string);
+		
+		// Cards
+		std::vector<std::string> DrawCard();
+		std::vector<std::vector<std::string>> ChooseCardsFromHand(int,int,std::string);
 
+		// Players
+		void NextPlayer();
+		void NextPlayer(int);
+		void NextPlayerFromActivePlayers(std::vector<int>);
+
+		// Getters
 		int GetNumberOfPlayers();
 		int GetDealerIndex();
 		int GetCurrentPlayerIndex();
-
-		std::vector<std::string> DrawCard();
-		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);
-		std::vector<std::vector<std::string>> ChooseCardsFromHand(int,int,std::string);
-
 		std::vector<std::vector<std::vector<std::string>>> GetHands();
 		std::vector<std::map<std::string, std::vector<std::vector<std::string>>>> GetSidePiles();
 		std::map<std::string, std::vector<std::vector<std::string>>> GetCommonPiles();

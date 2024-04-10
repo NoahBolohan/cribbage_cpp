@@ -8,35 +8,42 @@
 
 class Cribbage {
 	public:
+		// Game processes
 		Cribbage(int);
 
 		void InitializeScores();
+		void Round();
 		void InitializePiles();
 		void Deal();
-		void PassToCrib(std::vector<std::vector<std::string>>);
 		void DrawStarter();
-		void AnnouncePoints(int, std::string);
+		void ThePlay();
+		void UpTo31();
+		void TheShow();
+
+		// Points
 		void ThePlayPoints();
+		void GoPoints();
+		void TheShowPoints(int, std::vector<std::vector<std::string>>);
+
+		void AddPoints(int, int, std::string);
+		void AnnouncePoints(int, std::string);
+		void DisplayScore();
+
+		// Score-checking
 		bool CheckFlush(std::vector<std::vector<std::string>>, int, std::string);
 		bool CheckPairs(std::vector<std::vector<std::string>>, int, std::string);
 		bool CheckRuns(std::vector<std::vector<std::string>>, int, std::string);
-		void GoPoints();
-		void ThePlay();
-		void UpTo31();
-		void RemovePlayerFromThePlay(int);
-		void RemovePlayerFrom31(int);
-		void TheShow();
-		void TheShowPoints(int, std::vector<std::vector<std::string>>);
+		
 		void CheckRunsForShow(std::vector<std::vector<std::string>>);
 		void CheckPairsForShow(std::vector<std::vector<std::string>>);
 		void CheckFlushForShow(std::vector<std::vector<std::string>>);
-		void AddPoints(int, int, std::string);
-		void DisplayScore();
+		
 
+		// Misc
+		void RemovePlayerFromThePlay(int);
+		void RemovePlayerFrom31(int);
+		void PassToCrib(std::vector<std::vector<std::string>>);
 		std::vector<std::vector<std::string>> GetCardsFromEnd(std::vector<std::vector<std::string>>, int);
-
-
-		void Round();
 
 	private:
 		int number_of_players;
