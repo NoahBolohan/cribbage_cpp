@@ -172,69 +172,80 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 	std::vector<int> card_indices_to_choose;
 	int card_index_input;
 
-	for (int i = 0; i < hands.at(hand_index).size(); i++) {
-		card_indices.push_back(i);
-	}
+	try {
+		if (n_cards > hands.at(hand_index).size()) {
+			throw std::runtime_error("Not enough cards in hand.");
+		}
 
-	if (player_type == "user") {
+		for (int i = 0; i < hands.at(hand_index).size(); i++) {
+			card_indices.push_back(i);
+		}
 
-		std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):" << std::endl;
+		if (player_type == "user") {
 
-		for (int i = 0; i < n_cards; i++) {
+			std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):" << std::endl;
 
-			std::cin >> card_index_input;
+			for (int i = 0; i < n_cards; i++) {
 
-			while (
-				std::find(
-					card_indices.begin(),
-					card_indices.end(),
-					card_index_input
-				) == card_indices.end() && 
-				std::find(
-					card_indices_to_choose.begin(),
-					card_indices_to_choose.end(),
-					card_index_input
-				) != card_indices_to_choose.end()
-			) {
-				std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
 				std::cin >> card_index_input;
+
+				while (
+					std::find(
+						card_indices.begin(),
+						card_indices.end(),
+						card_index_input
+					) == card_indices.end() &&
+					std::find(
+						card_indices_to_choose.begin(),
+						card_indices_to_choose.end(),
+						card_index_input
+					) != card_indices_to_choose.end()
+					) {
+					std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
+					std::cin >> card_index_input;
+				}
+
+				card_indices_to_choose.push_back(card_index_input);
+				cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index_input));
 			}
 
-			card_indices_to_choose.push_back(card_index_input);
-			cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index_input));
+			std::sort(card_indices_to_choose.begin(), card_indices_to_choose.end(), std::greater<int>());
+
+			for (auto card_index : card_indices_to_choose) {
+				hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+			}
 		}
-		
-		std::sort(card_indices_to_choose.begin(), card_indices_to_choose.end(), std::greater<int>());
 
-		for (auto card_index : card_indices_to_choose) {
-			hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
-		}
-	}
+		else {
+			for (int i = 0; i < n_cards; i++) {
 
-	else {
-		for (int i = 0; i < n_cards; i++) {
-
-			card_index_input = std::rand() % card_indices.size();
-
-			while (
-				std::find(
-					card_indices_to_choose.begin(),
-					card_indices_to_choose.end(),
-					card_index_input
-				) != card_indices_to_choose.end()
-				) {
 				card_index_input = std::rand() % card_indices.size();
+
+				while (
+					std::find(
+						card_indices_to_choose.begin(),
+						card_indices_to_choose.end(),
+						card_index_input
+					) != card_indices_to_choose.end()
+					) {
+					card_index_input = std::rand() % card_indices.size();
+				}
+				card_indices_to_choose.push_back(card_index_input);
+				cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index_input));
 			}
-			card_indices_to_choose.push_back(card_index_input);
-			cards_to_be_chosen.push_back(hands.at(hand_index).at(card_index_input));
-		}
 
-		std::sort(card_indices_to_choose.begin(), card_indices_to_choose.end(), std::greater<int>());
+			std::sort(card_indices_to_choose.begin(), card_indices_to_choose.end(), std::greater<int>());
 
-		for (auto card_index : card_indices_to_choose) {
-			hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+			for (auto card_index : card_indices_to_choose) {
+				hands.at(hand_index).erase(hands.at(hand_index).begin() + card_index);
+			}
 		}
 	}
+
+	catch (const std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
 	return cards_to_be_chosen;
 }
 
