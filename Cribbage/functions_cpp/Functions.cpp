@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "Functions.h"
+#include "../headers/Functions.h"
 
 std::vector<std::vector<int>> ComputeSubsets(int a, int b) {
 

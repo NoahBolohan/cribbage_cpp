@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#include "CribbageFunctions.h"
-#include "DeckFunctions.h"
-#include "Functions.h"
+#include "headers/CribbageFunctions.h"
+#include "headers/DeckFunctions.h"
+#include "headers/Functions.h"
 
 int main() {
 	int number_of_players = 2; //2 for now, 3 eventually

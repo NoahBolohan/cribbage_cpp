@@ -5,9 +5,9 @@
 #include <cstdlib> // std::rand, std::srand
 #include <algorithm> // std::max. std::min, std::remove
 
-#include "CribbageFunctions.h"
-#include "DeckFunctions.h"
-#include "Functions.h"
+#include "../headers/CribbageFunctions.h"
+#include "../headers/DeckFunctions.h"
+#include "../headers/Functions.h"
 
 void Cribbage::RemovePlayerFromThePlay(int player_index) {
 	active_player_indices_for_play.erase(

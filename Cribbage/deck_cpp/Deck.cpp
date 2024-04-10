@@ -6,7 +6,7 @@
 #include <cstdlib> // std::rand, std::srand
 #include <iomanip> // std::setw
 
-#include "DeckFunctions.h"
+#include "../headers/DeckFunctions.h"
 
 Deck::Deck(int n_players) {
 	std::srand(unsigned(std::time(0)));
