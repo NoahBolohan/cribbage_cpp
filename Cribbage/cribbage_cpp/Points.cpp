@@ -183,6 +183,10 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
 	scores.at(player_index) = scores.at(player_index) + n_points;
 	AnnouncePoints(n_points, announcement);
+
+	if (scores.at(player_index) >= score_target) {
+		game_over = true;
+	}
 }
 
 void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
@@ -197,8 +201,7 @@ void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
 }
 
 void Cribbage::DisplayScore() {
-	std::cout << std::endl;
 	for (int i = 0; i < scores.size(); i++) {
-		std::cout << "Player " << i << ": " << scores.at(i) << " points" << std::endl;
+		std::cout << std::endl << "Player " << i << ": " << scores.at(i) << " points";
 	}
 }

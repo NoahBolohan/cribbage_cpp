@@ -11,9 +11,10 @@ int main() {
 
 	std::cout << "Welcome to cribbage!" << std::endl;
 
-	cribbage.Round();
+	cribbage.StartGame();
 
-	system("pause");
+	std::cout << std::endl;
+ 	system("pause");
 
 	return 0;
 }

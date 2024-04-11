@@ -11,6 +11,7 @@ class Cribbage {
 		// Game processes
 		Cribbage(int);
 
+		void StartGame();
 		void InitializeScores();
 		void Round();
 		void InitializePiles();
@@ -19,6 +20,7 @@ class Cribbage {
 		void ThePlay();
 		void UpTo31();
 		void TheShow();
+		void EndGame();
 
 		// Points
 		void ThePlayPoints();
@@ -49,6 +51,7 @@ class Cribbage {
 		int number_of_players;
 
 		Deck deck;
+		
 		std::vector<int> scores;
 		std::vector<int> active_player_indices_for_play;
 		std::vector<int> active_player_indices_for_31;
@@ -60,8 +63,11 @@ class Cribbage {
 			"crib",
 			"the_play"
 		};
-		const int score_target = 121;
+		const int score_target = 40;
 
+		bool game_over = false;
+
+		int n_round = 1;
 		int play_total = 0;
 		int dealer = 0;
 		int user_index = 0;

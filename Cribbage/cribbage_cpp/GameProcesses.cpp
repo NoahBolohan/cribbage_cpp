@@ -10,10 +10,18 @@
 #include "../headers/Functions.h"
 
 Cribbage::Cribbage(int n_players) : deck(n_players) {
-
 	number_of_players = n_players;
+}
 
+void Cribbage::StartGame() {
+	game_over = false;
 	InitializeScores();
+
+	while (!game_over) {
+		Round();
+		n_round++;
+	}
+	EndGame();
 }
 
 void Cribbage::InitializeScores() {
@@ -25,12 +33,17 @@ void Cribbage::InitializeScores() {
 }
 
 void Cribbage::Round() {
-	InitializePiles();
-	deck.ShuffleDeck();
-	Deal();
-	DrawStarter();
-	ThePlay();
-	TheShow();
+	if (!game_over) {
+		std::cout << "Starting round " << n_round << "." << std::endl;
+		InitializePiles();
+		deck.ShuffleDeck();
+		Deal();
+		DrawStarter();
+		ThePlay();
+	}
+	if (!game_over) {
+		TheShow();
+	}
 }
 
 
@@ -78,14 +91,17 @@ void Cribbage::ThePlay() {
 		active_player_indices_for_play.push_back(i);
 	}
 
-	while (active_player_indices_for_play.size() > 0) {
+	while (active_player_indices_for_play.size() > 0 && !game_over) {
 		play_total = 0;
 		Cribbage::UpTo31();
 		deck.ResetCommonPile("the_play");
 	}
 
-	std::cout << std::endl << "The play is done. The score is the following:" << std::endl;
-	DisplayScore();
+	if (!game_over) {
+		std::cout << std::endl << "The play is done. The score is the following:" << std::endl;
+		DisplayScore();
+	}
+
 }
 
 void Cribbage::UpTo31() {
@@ -96,11 +112,12 @@ void Cribbage::UpTo31() {
 		active_player_indices_for_31.push_back(player_index);
 	}
 
-	while (play_total <= 31 && std::find(active_player_indices_for_31.begin(), active_player_indices_for_31.end(), deck.GetCurrentPlayerIndex()) != active_player_indices_for_31.end()) {
+	while (!game_over && play_total <= 31 && std::find(active_player_indices_for_31.begin(), active_player_indices_for_31.end(), deck.GetCurrentPlayerIndex()) != active_player_indices_for_31.end()) {
 
 		int min_card_point_value = 11;
 		std::vector<std::string> played_card;
 
+		std::cout << std::endl;
 		std::cout << std::endl << "Play total is " << play_total << ". It is ";
 		if (deck.GetCurrentPlayerIndex() == user_index) {
 			std::cout << "your turn." << std::endl;
@@ -162,7 +179,9 @@ void Cribbage::UpTo31() {
 
 			play_total += card_value_points[played_card.at(0)];
 
-			ThePlayPoints();
+			if (!game_over) {
+				ThePlayPoints();
+			}
 
 			std::cout << "The play total is now " << play_total << ".";
 		}
@@ -172,7 +191,9 @@ void Cribbage::UpTo31() {
 		}
 	}
 
-	GoPoints();
+	if (!game_over) {
+		GoPoints();
+	}
 }
 
 void Cribbage::TheShow() {
@@ -188,16 +209,34 @@ void Cribbage::TheShow() {
 		std::vector<std::vector<std::string>> cards_to_count = deck.GetSidePiles().at(player_index)["the_play"];
 		cards_to_count.push_back(starter);
 
-		TheShowPoints(player_index, cards_to_count);
+		if (!game_over) {
+			TheShowPoints(player_index, cards_to_count);
+		}
 
 		if (player_index == deck.GetDealerIndex()) {
 			cards_to_count.clear();
 			cards_to_count = deck.GetCommonPiles()["crib"];
 			cards_to_count.push_back(starter);
 
-			TheShowPoints(player_index, cards_to_count);
+			if (!game_over) {
+				TheShowPoints(player_index, cards_to_count);
+			}
 		}
 
-		deck.NextPlayer();
+		if (!game_over) {
+			deck.NextPlayer();
+		}
 	}
+}
+
+void Cribbage::EndGame() {
+	std::cout << std::endl;
+	if (deck.GetCurrentPlayerIndex() == user_index) {
+		std::cout << "Congratulations!!! You are the winner!!!" << std::endl;
+	}
+	else {
+		std::cout << "Player " << deck.GetCurrentPlayerIndex() << " is the winner, better luck next time!" << std::endl;
+	}
+	std::cout << "The final score is:" << std::endl;
+	DisplayScore();
 }
