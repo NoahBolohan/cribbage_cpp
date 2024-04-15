@@ -8,14 +8,37 @@
 #include "../headers/CribbageFunctions.h"
 #include "../headers/DeckFunctions.h"
 #include "../headers/Functions.h"
+#include "../headers/Windows.h"
+#include <pdcurses/curses.h>
 
-Cribbage::Cribbage(int n_players) : deck(n_players) {
+Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window_dims) : deck(n_players) {
+	initscr();
+
+	//resize_term(63, 240);
+	resize_term(30,120);
+	refresh();
+
 	number_of_players = n_players;
+	
+	header_border_win = create_newwin_border(window_dims["header"]);
+	board_border_win = create_newwin_border(window_dims["board"]);
+
+	header_win = create_newwin(window_dims["header"]);
+	board_win = create_newwin(window_dims["board"]);
 }
 
 void Cribbage::StartGame() {
 	game_over = false;
 	InitializeScores();
+
+	GenerateBoard();
+	GenerateHeader();
+	GenerateDeck();
+	
+	WDisplayBoard("3p_simple_hori");
+	WDisplayHeader();
+
+	refresh_wins();
 
 	while (!game_over) {
 		Round();

@@ -5,11 +5,12 @@
 #include <vector>
 #include <map>
 #include "DeckFunctions.h"
+#include <pdcurses/curses.h>
 
 class Cribbage {
 	public:
 		// Game processes
-		Cribbage(int);
+		Cribbage(int, std::map<std::string, std::vector<int>>);
 
 		void StartGame();
 		void InitializeScores();
@@ -40,6 +41,20 @@ class Cribbage {
 		void CheckPairsForShow(std::vector<std::vector<std::string>>);
 		void CheckFlushForShow(std::vector<std::vector<std::string>>);
 		
+		// ASCII
+		void GenerateHeader();
+		void GenerateBoard();
+		void GenerateDeck();
+
+		// Display
+		void WDisplayHeader();
+		void WDisplayBoard(std::string);
+		void WPrintWAtCoord(WINDOW*, std::string, std::string, bool);
+		void WPrintWAtCoord(WINDOW*, std::string, std::vector<int>, std::string, bool);
+		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>);
+		void refresh_wins();
+		void refresh_wins(std::vector<WINDOW*>);
+		void reset_win(WINDOW*);
 
 		// Misc
 		void RemovePlayerFromThePlay(int);
@@ -103,6 +118,25 @@ class Cribbage {
 			{"Queen", 11},
 			{"King", 12}
 		};
+
+		WINDOW* header_border_win;
+		WINDOW* board_border_win;
+		WINDOW* text_border_win;
+
+		WINDOW* header_win;
+		WINDOW* board_win;
+		WINDOW* text_win;
+
+		std::map < std::string, std::vector<int> > coords = {
+			{"header", {0, 0}},
+			{"board", {0, 0}}
+		};
+
+		// ASCII members
+		std::map<std::string, std::vector < std::string>> cribbage_boards;
+		std::vector<std::string> header;
+		std::map<std::string, std::map<std::string, std::vector<std::string>>> ascii_deck;
+
 };
 
 #endif
