@@ -39,7 +39,4 @@
 **/Release/
 
 # Visual Studio
-*.vcxproj
-*.vcxproj.*
-*.sln
 **/.vs/
