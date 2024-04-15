@@ -22,23 +22,32 @@ Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window
 	
 	header_border_win = create_newwin_border(window_dims["header"]);
 	board_border_win = create_newwin_border(window_dims["board"]);
+	text_area_border_win = create_newwin_border(window_dims["text_area"]);
+	play_area_border_win = create_newwin_border(window_dims["play_area"]);
 
 	header_win = create_newwin(window_dims["header"]);
 	board_win = create_newwin(window_dims["board"]);
+	text_area_win = create_newwin(window_dims["text_area"]);
+	play_area_win = create_newwin(window_dims["play_area"]);
 }
 
 void Cribbage::StartGame() {
 	game_over = false;
 	InitializeScores();
 
+	GenerateColourPairs();
+
 	GenerateBoard();
 	GenerateHeader();
 	GenerateDeck();
 	
-	WDisplayBoard("3p_simple_hori");
+	WDisplayBoard("2p_simple_hori");
 	WDisplayHeader();
+	WDisplayTextArea();
+	WDisplayPlayArea();
 
 	refresh_wins();
+	getch();
 
 	while (!game_over) {
 		Round();

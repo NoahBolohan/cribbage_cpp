@@ -49,12 +49,18 @@ class Cribbage {
 		// Display
 		void WDisplayHeader();
 		void WDisplayBoard(std::string);
+		void WDisplayTextArea();
+		void WDisplayPlayArea();
+		void WDisplayCard(WINDOW*, std::string, std::string);
+		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
 		void WPrintWAtCoord(WINDOW*, std::string, std::string, bool);
 		void WPrintWAtCoord(WINDOW*, std::string, std::vector<int>, std::string, bool);
 		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>);
+		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<int>, std::vector<std::string>);
 		void refresh_wins();
 		void refresh_wins(std::vector<WINDOW*>);
 		void reset_win(WINDOW*);
+		void GenerateColourPairs();
 
 		// Misc
 		void RemovePlayerFromThePlay(int);
@@ -121,15 +127,20 @@ class Cribbage {
 
 		WINDOW* header_border_win;
 		WINDOW* board_border_win;
-		WINDOW* text_border_win;
+		WINDOW* text_area_border_win;
+		WINDOW* play_area_border_win;
 
 		WINDOW* header_win;
 		WINDOW* board_win;
-		WINDOW* text_win;
+		WINDOW* text_area_win;
+		WINDOW* play_area_win;
 
 		std::map < std::string, std::vector<int> > coords = {
+			{"origin", {0, 0}},
 			{"header", {0, 0}},
-			{"board", {0, 0}}
+			{"board", {0, 0}},
+			{"text_area", {0, 0}},
+			{"play_area", {0, 0}}
 		};
 
 		// ASCII members
