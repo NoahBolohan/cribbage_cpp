@@ -12,6 +12,10 @@ void Cribbage::WDisplayBoard(std::string board_name) {
 	WPrintWSAAtCoord(board_win, "board", cribbage_boards[board_name]);
 }
 
+void Cribbage::WDisplayColouredBoard(std::string board_name) {
+	MVWPrintWColoured(board_win, coords["board"].at(0), coords["board"].at(1), cribbage_boards_coloured[board_name]);
+}
+
 void Cribbage::WDisplayTextArea() {
 	WPrintWSAAtCoord(text_area_win, "text_area", { "Example for text window." });
 }
@@ -127,7 +131,7 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 		if (coords.find(coord_name) == coords.end()) {
 			throw std::invalid_argument(coord_name + " not in coords keys");
 		}
-		mvwprintw_sa(
+		MVWPrintWSA(
 			window,
 			coords[coord_name].at(0),
 			coords[coord_name].at(1),
@@ -151,7 +155,7 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 		if (coords.find(coord_name) == coords.end()) {
 			throw std::invalid_argument(coord_name + " not in coords keys");
 		}
-		mvwprintw_sa(
+		MVWPrintWSA(
 			window,
 			coords[coord_name].at(0) + offset.at(0),
 			coords[coord_name].at(1) + offset.at(1),
@@ -192,4 +196,8 @@ void Cribbage::GenerateColourPairs() {
 	start_color();
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);
 	init_pair(2, COLOR_RED, COLOR_WHITE);
+	init_pair(3, COLOR_CYAN, COLOR_BLACK);
+	init_pair(4, COLOR_RED, COLOR_BLACK);
+	init_pair(5, COLOR_GREEN, COLOR_BLACK);
+	init_pair(6, COLOR_YELLOW, COLOR_BLACK);
 }

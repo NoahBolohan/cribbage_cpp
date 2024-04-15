@@ -20,15 +20,15 @@ Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window
 
 	number_of_players = n_players;
 	
-	header_border_win = create_newwin_border(window_dims["header"]);
-	board_border_win = create_newwin_border(window_dims["board"]);
-	text_area_border_win = create_newwin_border(window_dims["text_area"]);
-	play_area_border_win = create_newwin_border(window_dims["play_area"]);
+	header_border_win = CreateNewWinBorder(window_dims["header"]);
+	board_border_win = CreateNewWinBorder(window_dims["board"]);
+	text_area_border_win = CreateNewWinBorder(window_dims["text_area"]);
+	play_area_border_win = CreateNewWinBorder(window_dims["play_area"]);
 
-	header_win = create_newwin(window_dims["header"]);
-	board_win = create_newwin(window_dims["board"]);
-	text_area_win = create_newwin(window_dims["text_area"]);
-	play_area_win = create_newwin(window_dims["play_area"]);
+	header_win = CreateNewWin(window_dims["header"]);
+	board_win = CreateNewWin(window_dims["board"]);
+	text_area_win = CreateNewWin(window_dims["text_area"]);
+	play_area_win = CreateNewWin(window_dims["play_area"]);
 }
 
 void Cribbage::StartGame() {
@@ -41,7 +41,7 @@ void Cribbage::StartGame() {
 	GenerateHeader();
 	GenerateDeck();
 	
-	WDisplayBoard("2p_simple_hori");
+	WDisplayColouredBoard("2p_simple_hori");
 	WDisplayHeader();
 	WDisplayTextArea();
 	WDisplayPlayArea();
