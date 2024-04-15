@@ -45,19 +45,27 @@ class Cribbage {
 		void GenerateHeader();
 		void GenerateBoard();
 		void GenerateDeck();
+		void GenerateCardAsciis();
+		std::vector<std::string> GenerateAsciiDeckFaceUp(std::vector < std::string>);
 
 		// Display
 		void WDisplayHeader();
 		void WDisplayBoard(std::string);
-		void WDisplayColouredBoard(std::string);
-		void WDisplayTextArea();
+		void WDisplayEmptyColouredBoard(std::string);
 		void WDisplayPlayArea();
+		void WDisplayPlayerHand(int);
+		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
+		void WDisplayTextArea();
 		void WDisplayCard(WINDOW*, std::string, std::string);
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
+		void WDisplayPartialCard(WINDOW*, std::string, std::string);
+		void WDisplayPartialCard(WINDOW*, std::string, std::string, std::vector<int>);
+
 		void WPrintWAtCoord(WINDOW*, std::string, std::string, bool);
 		void WPrintWAtCoord(WINDOW*, std::string, std::vector<int>, std::string, bool);
 		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>);
 		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<int>, std::vector<std::string>);
+
 		void refresh_wins();
 		void refresh_wins(std::vector<WINDOW*>);
 		void reset_win(WINDOW*);
@@ -148,7 +156,9 @@ class Cribbage {
 		std::map<std::string, std::vector < std::string>> cribbage_boards;
 		std::map<std::string, std::map<int, std::vector < std::string>>> cribbage_boards_coloured;
 		std::vector<std::string> header;
-		std::map<std::string, std::map<std::string, std::vector<std::string>>> ascii_deck;
+		std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> ascii_cards;
+		std::vector<std::string> card_back;
+		std::vector<std::string> ascii_deck_face_down;
 
 };
 

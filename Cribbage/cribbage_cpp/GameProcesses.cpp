@@ -20,12 +20,12 @@ Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window
 
 	number_of_players = n_players;
 	
-	header_border_win = CreateNewWinBorder(window_dims["header"]);
+	//header_border_win = CreateNewWinBorder(window_dims["header"]);
 	board_border_win = CreateNewWinBorder(window_dims["board"]);
 	text_area_border_win = CreateNewWinBorder(window_dims["text_area"]);
 	play_area_border_win = CreateNewWinBorder(window_dims["play_area"]);
 
-	header_win = CreateNewWin(window_dims["header"]);
+	//header_win = CreateNewWin(window_dims["header"]);
 	board_win = CreateNewWin(window_dims["board"]);
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);
@@ -38,11 +38,12 @@ void Cribbage::StartGame() {
 	GenerateColourPairs();
 
 	GenerateBoard();
-	GenerateHeader();
+	//GenerateHeader();
 	GenerateDeck();
+	GenerateCardAsciis();
 	
-	WDisplayColouredBoard("2p_simple_hori");
-	WDisplayHeader();
+	WDisplayEmptyColouredBoard("2p_simple_hori");
+	//WDisplayHeader();
 	WDisplayTextArea();
 	WDisplayPlayArea();
 

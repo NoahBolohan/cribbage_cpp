@@ -12,9 +12,9 @@ int main() {
 		number_of_players,
 		{ 
 			{"board", {13, 57, 0, 0}},
-			{"header", {7, 32, 0, 57}},
+			//{"header", {7, 32, 0, 57}},
 			{"text_area", {7, 57, 13, 0}},
-			{"play_area", {13, 32, 7, 57}}
+			{"play_area", {20, 37, 0, 57}}
 		}
 	);
 
