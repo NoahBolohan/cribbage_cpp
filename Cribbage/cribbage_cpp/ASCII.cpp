@@ -268,10 +268,16 @@ void Cribbage::GenerateDeck() {
 				" --- "
 			};
 
+			value_string1 = "|v";
+			suit_string = "|s";
+
+			value_string1.at(1) = v;
+			suit_string.at(1) = v=s;
+
 			ascii_cards["partial"][value][suit] = {
 				" -",
-				"|" + v,
-				"|" + s,
+				value_string1,
+				suit_string,
 				"| ",
 				" -"
 			};

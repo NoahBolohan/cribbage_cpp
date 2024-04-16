@@ -30,8 +30,8 @@ void Cribbage::WDisplayPlayArea() {
 		{ 
 			{"Ace", "Diamonds"},
 			{"2", "Clubs"},
-			//{"5", "Spades"},
-			//{"6", "Hearts"}
+			{"5", "Spades"},
+			{"6", "Hearts"}
 		}
 	);
 
@@ -69,7 +69,7 @@ void Cribbage::WDisplayThePlayPile(std::vector <std::vector <std::string>> cards
 		WDisplayCard(play_area_win, cards.at(0).at(0), cards.at(0).at(1), {6, 8});
 	}
 	else if (cards.size() > 1) {
-		//WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), {6, 8 + 2 * (int(cards.size()) - 1)});
+		WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), {6, 8 + 2 * (int(cards.size()) - 1)});
 
 		for (int i = 0; i < cards.size() - 1; i++) {
 			WDisplayPartialCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { 6, 8 + 2*i });
