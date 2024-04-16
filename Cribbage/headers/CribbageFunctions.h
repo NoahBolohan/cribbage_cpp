@@ -7,6 +7,8 @@
 #include "DeckFunctions.h"
 #include <pdcurses/curses.h>
 
+class Deck;
+
 class Cribbage {
 	public:
 		// Game processes
@@ -42,22 +44,24 @@ class Cribbage {
 		void CheckFlushForShow(std::vector<std::vector<std::string>>);
 		
 		// ASCII
-		void GenerateHeader();
+		void GenerateWelcomeText();
 		void GenerateBoard();
 		void GenerateDeck();
 		void GenerateCardAsciis();
 		std::vector<std::string> GenerateAsciiDeckFaceUp(std::vector < std::string>);
 
 		// Display
-		void WDisplayHeader();
+		void WDisplayWelcomeText();
 		void WDisplayBoard();
 		void WDisplayEmptyColouredBoard();
 		void WDisplayPeg(int);
 		void WDisplayPlayArea();
+		void WDisplayInitialPlayArea();
 		void WDisplayPlayerHand(int, bool hide_cards = false);
 		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
 		void WDisplayCrib(std::vector <std::vector <std::string>>);
-		void WDisplayTextArea();
+		void WPrintToTextArea(std::vector<std::string>, bool append = false);
+		void MVWPrintToTextArea(std::vector<std::string>, bool append = false);
 		void WDisplayCard(WINDOW*, std::string, std::string);
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
 		void WDisplayPartialCard(WINDOW*, std::string, std::string);
@@ -72,6 +76,9 @@ class Cribbage {
 		void refresh_wins(std::vector<WINDOW*>);
 		void reset_win(WINDOW*);
 		void GenerateColourPairs();
+
+		// Getters
+		WINDOW* GetTextAreaWin();
 
 		// Misc
 		void RemovePlayerFromThePlay(int);
@@ -104,6 +111,8 @@ class Cribbage {
 		int dealer = 0;
 		int user_index = 0;
 
+
+		// Maps
 		std::map<std::string, int> card_value_points = {
 			{"Ace", 1},
 			{"2", 2},
@@ -136,12 +145,10 @@ class Cribbage {
 			{"King", 12}
 		};
 
-		WINDOW* header_border_win;
 		WINDOW* board_border_win;
 		WINDOW* text_area_border_win;
 		WINDOW* play_area_border_win;
 
-		WINDOW* header_win;
 		WINDOW* board_win;
 		WINDOW* text_area_win;
 		WINDOW* play_area_win;
@@ -152,9 +159,10 @@ class Cribbage {
 
 		std::map<int, WINDOW*> player_windows;
 
+		int text_area_height = 1;
+
 		std::map < std::string, std::vector<int> > coords = {
 			{"origin", {0, 0}},
-			{"header", {0, 0}},
 			{"board", {0, 0}},
 			{"text_area", {0, 0}},
 			{"play_area", {0, 0}}
@@ -167,7 +175,8 @@ class Cribbage {
 		std::map<std::string, std::vector < std::string>> cribbage_boards;
 		std::map<std::string, std::map<int, std::vector < std::string>>> cribbage_boards_coloured;
 		std::map<std::string, std::map<int, std::vector < std::vector<int>>>> cribbage_boards_coloured_routes;
-		std::vector<std::string> header;
+		std::vector<std::string> welcome_text;
+		std::vector<std::string> text_area_contents;
 		std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> ascii_cards;
 		std::vector<std::string> card_back;
 		std::vector<std::string> ascii_deck_face_down;

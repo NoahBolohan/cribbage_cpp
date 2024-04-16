@@ -4,8 +4,8 @@
 #include "../headers/Windows.h"
 #include "../headers/CribbageFunctions.h"
 
-void Cribbage::WDisplayHeader() {
-	WPrintWSAAtCoord(header_win, "header", header);
+void Cribbage::WDisplayWelcomeText() {
+	WPrintWSAAtCoord(text_area_win, "text_area", welcome_text);
 }
 
 void Cribbage::WDisplayBoard() {
@@ -39,10 +39,50 @@ void Cribbage::WDisplayPeg(int player_index) {
 		'O'
 	);
 	wattroff(board_win, COLOR_PAIR(player_index + 1));
+
+	refresh_wins({ board_win });
 }
 
-void Cribbage::WDisplayTextArea() {
-	WPrintWSAAtCoord(text_area_win, "text_area", { "Example for text window." });
+void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append) {
+	if (append) {
+		for (auto line : lines) {
+			text_area_contents.push_back(line);
+			if (text_area_contents.size() > text_area_height) {
+				text_area_contents.erase(text_area_contents.begin(), text_area_contents.begin() + text_area_height);
+			}
+		}
+	}
+	else {
+		text_area_contents = lines;
+	}
+	reset_win(text_area_win);
+	WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
+	refresh_wins({ text_area_win });
+}
+
+void Cribbage::MVWPrintToTextArea(std::vector<std::string> lines, bool append) {
+	if (append) {
+		for (auto line : lines) {
+			text_area_contents.push_back(line);
+			if (text_area_contents.size() > text_area_height) {
+				text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - text_area_height);
+			}
+		}
+	}
+	else {
+		text_area_contents = lines;
+	}
+	reset_win(text_area_win);
+	WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
+	refresh_wins({ text_area_win });
+}
+
+void Cribbage::WDisplayInitialPlayArea() {
+
+	wattron(play_area_win, COLOR_PAIR(5));
+	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
+	wattroff(play_area_win, COLOR_PAIR(5));
+	refresh_wins({ play_area_win });
 }
 
 void Cribbage::WDisplayPlayArea() {
@@ -51,42 +91,36 @@ void Cribbage::WDisplayPlayArea() {
 	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
 	wattroff(play_area_win, COLOR_PAIR(5));
 
-	WDisplayThePlayPile(
-		{ 
-			{"Ace", "Diamonds"},
-			{"2", "Clubs"},
-			{"5", "Spades"},
-			{"6", "Hearts"}
-		}
-	);
+	WDisplayThePlayPile(deck.GetCommonPiles()["the_play"]);
 
 	WDisplayPlayerHand(0);
 	WDisplayPlayerHand(1, true);
 
-	//WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, GenerateAsciiDeckFaceUp({"Jack","Clubs"}));
+	refresh_wins({ play_area_win });
 }
 
 void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
 	if (hide_cards) {
 		wattron(player_windows[player_index], COLOR_PAIR(5));
-		WPrintWSAAtCoord(player_windows[player_index], "origin", card_back);
-		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,6 }, card_back);
-		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,12 }, card_back);
-		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,18 }, card_back);
-		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,24 }, card_back);
-		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,30 }, card_back);
+		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+			WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,6*i }, card_back);
+		}
 		wattroff(player_windows[player_index], COLOR_PAIR(5));
 	}
 	else {
-		WDisplayCard(player_windows[player_index], "Ace", "Clubs");
-		WDisplayCard(player_windows[player_index], "4", "Diamonds", { 0,6 });
-		WDisplayCard(player_windows[player_index], "King", "Spades", { 0,12 });
-		WDisplayCard(player_windows[player_index], "9", "Hearts", { 0,18 });
-		WDisplayCard(player_windows[player_index], "3", "Spades", { 0,24 });
-		WDisplayCard(player_windows[player_index], "Queen", "Diamonds", { 0,30 });
+		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+			WDisplayCard(
+				player_windows[player_index],
+				deck.GetHands().at(player_index).at(i).at(0),
+				deck.GetHands().at(player_index).at(i).at(1),
+				{ 0,6*i }
+			);
+
+		}
 	}
 	
+	refresh_wins({ player_windows[player_index] });
 }
 
 void Cribbage::WDisplayThePlayPile(std::vector <std::vector <std::string>> cards) {
@@ -232,7 +266,7 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 		);
 		wmove(
 			window,
-			coords[coord_name].at(0) + lines.size(),
+			coords[coord_name].at(0) + lines.size()-1,
 			coords[coord_name].at(1) + lines.back().size()
 		);
 	}
@@ -269,7 +303,6 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 
 void Cribbage::refresh_wins() {
 	wrefresh(board_win);
-	//wrefresh(header_win);
 	wrefresh(text_area_win);
 	wrefresh(play_area_win);
 	wrefresh(player0_win);

@@ -31,6 +31,8 @@ Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::st
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);
 
+	text_area_height = window_dims["text_area"].at(0)-2;
+
 	player0_win = CreateNewWin(window_dims["player0"]);
 	player1_win = CreateNewWin(window_dims["player1"]);
 	player2_win = CreateNewWin(window_dims["player2"]);
@@ -49,16 +51,15 @@ void Cribbage::StartGame() {
 	GenerateColourPairs();
 
 	GenerateBoard();
-	//GenerateHeader();
+	GenerateWelcomeText();
 	GenerateDeck();
 	GenerateCardAsciis();
 	
 	WDisplayEmptyColouredBoard();
 	WDisplayPeg(0);
 	WDisplayPeg(1);
-	//WDisplayHeader();
-	WDisplayTextArea();
-	WDisplayPlayArea();
+	WDisplayWelcomeText();
+	WDisplayInitialPlayArea();
 
 	refresh_wins();
 	getch();
@@ -84,7 +85,8 @@ void Cribbage::InitializeScores() {
 
 void Cribbage::Round() {
 	if (!game_over) {
-		std::cout << "Starting round " << n_round << "." << std::endl;
+
+		WPrintToTextArea({ "Starting round " + std::to_string(n_round) + "..."}, true);
 		InitializePiles();
 		deck.ShuffleDeck();
 		Deal();
@@ -102,23 +104,19 @@ void Cribbage::InitializePiles() {
 	deck.DefineCommonPiles(side_pile_names);
 }
 
-
 void Cribbage::Deal() {
+	WPrintToTextArea({ "Dealing hands..." }, true);
 	deck.DealHands(0, 6);
+	WDisplayPlayArea();
+	WPrintToTextArea({ "You must send 2 cards to the crib." }, true);
 
 	for (int hand_index = 0; hand_index < deck.GetNumberOfPlayers(); hand_index++) {
 
 		if (hand_index == user_index) {
-			std::cout << std::endl << "Your hand is:" << std::endl;
-
-			std::cout << std::endl;
-			deck.DisplayHand(hand_index);
-
-			std::cout << std::endl << "You must send 2 cards to the crib." << std::endl;
-			PassToCrib(deck.ChooseCardsFromHand(hand_index, 2, "user"));
+			PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "user"));
 		}
 		else {
-			PassToCrib(deck.ChooseCardsFromHand(hand_index, 2, "com"));
+			PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "com"));
 		}
 	}
 }
@@ -210,11 +208,11 @@ void Cribbage::UpTo31() {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
 				std::cout << std::endl << "Your turn to play." << std::endl;
 				deck.DisplayHand(deck.GetCurrentPlayerIndex());
-				played_card = deck.ChooseCardsFromHand(deck.GetCurrentPlayerIndex(), 1, "user").at(0);
+				played_card = deck.ChooseCardsFromHand(*this, deck.GetCurrentPlayerIndex(), 1, "user").at(0);
 			}
 			else {
 				std::cout << std::endl << "Com " << deck.GetCurrentPlayerIndex() << "s turn to play." << std::endl;
-				played_card = deck.ChooseCardsFromHand(deck.GetCurrentPlayerIndex(), 1, "com").at(0);
+				played_card = deck.ChooseCardsFromHand(*this, deck.GetCurrentPlayerIndex(), 1, "com").at(0);
 			}
 			deck.ToSidePile(deck.GetCurrentPlayerIndex(), "the_play", played_card);
 			deck.ToCommonPile("the_play", played_card);

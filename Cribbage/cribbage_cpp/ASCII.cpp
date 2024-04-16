@@ -3,13 +3,11 @@
 
 #include "../headers/CribbageFunctions.h"
 
-void Cribbage::GenerateHeader() {
-	header = {
+void Cribbage::GenerateWelcomeText() {
+	welcome_text = {
 			"Welcome to Cribbage!",
 			"",
-			"Rules:",
-			"------",
-			"1. Have fun!"
+			"Hit any key to start..."
 	};
 }
 

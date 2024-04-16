@@ -43,3 +43,7 @@ std::vector<std::vector<std::string>> Cribbage::GetCardsFromEnd(std::vector<std:
 
 	return cards_to_check;
 }
+
+WINDOW* Cribbage::GetTextAreaWin() {
+	return text_area_win;
+}

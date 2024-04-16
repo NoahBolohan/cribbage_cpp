@@ -7,6 +7,8 @@
 #include <iomanip> // std::setw
 
 #include "../headers/DeckFunctions.h"
+#include "../headers/CribbageFunctions.h"
+#include <pdcurses/curses.h>
 
 std::vector<std::string> Deck::DrawCard() {
 	std::vector<std::string> drawn_card = full_deck.at(0);
@@ -15,11 +17,12 @@ std::vector<std::string> Deck::DrawCard() {
 	return drawn_card;
 }
 
-std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, int n_cards, std::string player_type) {
+std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage cribbage, int hand_index, int n_cards, std::string player_type) {
 
 	std::vector<std::vector<std::string>> cards_to_be_chosen;
 	std::vector<int> card_indices;
 	std::vector<int> card_indices_to_choose;
+	char temp_input[80];
 	int card_index_input;
 
 	try {
@@ -33,11 +36,14 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 
 		if (player_type == "user") {
 
-			std::cout << std::endl << "Choose " << n_cards << " card(s) (enter the card indices on the left):" << std::endl;
+			cribbage.WPrintToTextArea({ "Choose card(s) (enter the card indices on the left):" }, true);
 
 			for (int i = 0; i < n_cards; i++) {
 
-				std::cin >> card_index_input;
+				cribbage.WPrintToTextArea({ "\n" }, true);
+				wgetstr(cribbage.GetTextAreaWin(),temp_input);
+				card_index_input = atoi(temp_input);
+
 
 				while (
 					std::find(
@@ -51,8 +57,9 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 						card_index_input
 					) != card_indices_to_choose.end()
 					) {
-					std::cout << std::endl << "Invalid card choice. Please choose again." << std::endl;
-					std::cin >> card_index_input;
+					cribbage.WPrintToTextArea({ "Invalid card choice. Please choose again." }, true);
+					getstr(temp_input);
+					card_index_input = atoi(temp_input);
 				}
 
 				card_indices_to_choose.push_back(card_index_input);
@@ -93,7 +100,7 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(int hand_index, 
 	}
 
 	catch (const std::exception& e) {
-		std::cerr << e.what() << std::endl;
+		cribbage.WPrintToTextArea({ e.what()});
 	}
 
 	return cards_to_be_chosen;
