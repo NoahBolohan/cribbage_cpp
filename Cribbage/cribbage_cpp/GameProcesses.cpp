@@ -29,6 +29,16 @@ Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window
 	board_win = CreateNewWin(window_dims["board"]);
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);
+
+	player0_win = CreateNewWin(window_dims["player0"]);
+	player1_win = CreateNewWin(window_dims["player1"]);
+	player2_win = CreateNewWin(window_dims["player2"]);
+
+	player_windows = {
+		{0, player0_win},
+		{1, player1_win},
+		{2, player2_win}
+	};
 }
 
 void Cribbage::StartGame() {

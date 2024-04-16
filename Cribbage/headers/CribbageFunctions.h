@@ -53,8 +53,9 @@ class Cribbage {
 		void WDisplayBoard(std::string);
 		void WDisplayEmptyColouredBoard(std::string);
 		void WDisplayPlayArea();
-		void WDisplayPlayerHand(int);
+		void WDisplayPlayerHand(int, bool);
 		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
+		void WDisplayCrib(std::vector <std::vector <std::string>>);
 		void WDisplayTextArea();
 		void WDisplayCard(WINDOW*, std::string, std::string);
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
@@ -143,6 +144,12 @@ class Cribbage {
 		WINDOW* board_win;
 		WINDOW* text_area_win;
 		WINDOW* play_area_win;
+
+		WINDOW* player0_win;
+		WINDOW* player1_win;
+		WINDOW* player2_win;
+
+		std::map<int, WINDOW*> player_windows;
 
 		std::map < std::string, std::vector<int> > coords = {
 			{"origin", {0, 0}},

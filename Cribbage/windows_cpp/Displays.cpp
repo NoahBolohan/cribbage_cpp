@@ -26,7 +26,7 @@ void Cribbage::WDisplayPlayArea() {
 	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
 	wattroff(play_area_win, COLOR_PAIR(1));
 
-	WDisplayThePlayPile(
+	WDisplayCrib(
 		{ 
 			{"Ace", "Diamonds"},
 			{"2", "Clubs"},
@@ -35,45 +35,51 @@ void Cribbage::WDisplayPlayArea() {
 		}
 	);
 
-	WDisplayPlayerHand(0);
-	WDisplayPlayerHand(1);
+	WDisplayPlayerHand(0, false);
+	WDisplayPlayerHand(1, true);
 
 	//WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, GenerateAsciiDeckFaceUp({"Jack","Clubs"}));
 }
 
-void Cribbage::WDisplayPlayerHand(int player_index) {
+void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
-	if (player_index == 0) {
-		WDisplayCard(play_area_win, "Ace", "Clubs", { 13,0 });
-		WDisplayCard(play_area_win, "4", "Diamonds", { 13, 6 });
-		WDisplayCard(play_area_win, "King", "Spades", { 13, 12 });
-		WDisplayCard(play_area_win, "9", "Hearts", { 13, 18 });
-		WDisplayCard(play_area_win, "3", "Spades", { 13, 24 });
-		WDisplayCard(play_area_win, "Queen", "Diamonds", { 13, 30 });
+	if (hide_cards) {
+		wattron(player_windows[player_index], COLOR_PAIR(1));
+		WPrintWSAAtCoord(player_windows[player_index], "origin", card_back);
+		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,6 }, card_back);
+		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,12 }, card_back);
+		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,18 }, card_back);
+		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,24 }, card_back);
+		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,30 }, card_back);
+		wattroff(player_windows[player_index], COLOR_PAIR(1));
 	}
 	else {
-		wattron(play_area_win, COLOR_PAIR(1));
-		WPrintWSAAtCoord(play_area_win, "origin", card_back);
-		WPrintWSAAtCoord(play_area_win, "origin", { 0,6 }, card_back);
-		WPrintWSAAtCoord(play_area_win, "origin", { 0,12 }, card_back);
-		WPrintWSAAtCoord(play_area_win, "origin", { 0,18 }, card_back);
-		WPrintWSAAtCoord(play_area_win, "origin", { 0,24 }, card_back);
-		WPrintWSAAtCoord(play_area_win, "origin", { 0,30 }, card_back);
-		wattroff(play_area_win, COLOR_PAIR(1));
+		WDisplayCard(player_windows[player_index], "Ace", "Clubs");
+		WDisplayCard(player_windows[player_index], "4", "Diamonds", { 0,6 });
+		WDisplayCard(player_windows[player_index], "King", "Spades", { 0,12 });
+		WDisplayCard(player_windows[player_index], "9", "Hearts", { 0,18 });
+		WDisplayCard(player_windows[player_index], "3", "Spades", { 0,24 });
+		WDisplayCard(player_windows[player_index], "Queen", "Diamonds", { 0,30 });
 	}
 	
 }
 
 void Cribbage::WDisplayThePlayPile(std::vector <std::vector <std::string>> cards) {
 	if (cards.size() == 1) {
-		WDisplayCard(play_area_win, cards.at(0).at(0), cards.at(0).at(1), {6, 8});
+		WDisplayCard(play_area_win, cards.at(0).at(0), cards.at(0).at(1), {6, 7});
 	}
 	else if (cards.size() > 1) {
-		WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), {6, 8 + 2 * (int(cards.size()) - 1)});
+		WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), {6, 7 + 2 * (int(cards.size()) - 1)});
 
 		for (int i = 0; i < cards.size() - 1; i++) {
-			WDisplayPartialCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { 6, 8 + 2*i });
+			WDisplayPartialCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { 6, 7 + 2*i });
 		}
+	}
+}
+
+void Cribbage::WDisplayCrib(std::vector <std::vector <std::string>> cards) {
+	for (int i = 0; i < cards.size(); i++) {
+		WDisplayCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { 6, 7 + 6 * i });
 	}
 }
 
@@ -241,6 +247,9 @@ void Cribbage::refresh_wins() {
 	//wrefresh(header_win);
 	wrefresh(text_area_win);
 	wrefresh(play_area_win);
+	wrefresh(player0_win);
+	wrefresh(player1_win);
+	wrefresh(player2_win);
 }
 
 void Cribbage::refresh_wins(std::vector<WINDOW*> wins_to_refresh) {
