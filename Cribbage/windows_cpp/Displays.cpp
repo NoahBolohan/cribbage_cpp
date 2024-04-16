@@ -26,7 +26,7 @@ void Cribbage::WDisplayPlayArea() {
 	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
 	wattroff(play_area_win, COLOR_PAIR(1));
 
-	WDisplayCrib(
+	WDisplayThePlayPile(
 		{ 
 			{"Ace", "Diamonds"},
 			{"2", "Clubs"},
@@ -35,7 +35,7 @@ void Cribbage::WDisplayPlayArea() {
 		}
 	);
 
-	WDisplayPlayerHand(0, false);
+	WDisplayPlayerHand(0);
 	WDisplayPlayerHand(1, true);
 
 	//WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, GenerateAsciiDeckFaceUp({"Jack","Clubs"}));

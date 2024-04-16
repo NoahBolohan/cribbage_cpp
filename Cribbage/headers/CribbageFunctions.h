@@ -53,7 +53,7 @@ class Cribbage {
 		void WDisplayBoard(std::string);
 		void WDisplayEmptyColouredBoard(std::string);
 		void WDisplayPlayArea();
-		void WDisplayPlayerHand(int, bool);
+		void WDisplayPlayerHand(int, bool hide_cards = false);
 		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
 		void WDisplayCrib(std::vector <std::vector <std::string>>);
 		void WDisplayTextArea();
@@ -162,6 +162,7 @@ class Cribbage {
 		// ASCII members
 		std::map<std::string, std::vector < std::string>> cribbage_boards;
 		std::map<std::string, std::map<int, std::vector < std::string>>> cribbage_boards_coloured;
+		std::map<std::string, std::map<int, std::vector < int>>> cribbage_boards_coloured_routes;
 		std::vector<std::string> header;
 		std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> ascii_cards;
 		std::vector<std::string> card_back;

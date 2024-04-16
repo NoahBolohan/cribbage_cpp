@@ -215,6 +215,22 @@ void Cribbage::GenerateBoard() {
 			}
 		}
 	);
+
+	cribbage_boards_coloured_routes.insert(
+		{
+			"2p_simple_hori",
+			{
+				{
+					3,
+					{{8,52}}
+				},
+				{
+					4,
+					{}
+				}
+			}
+		}
+	);
 }
 
 void Cribbage::GenerateDeck() {
