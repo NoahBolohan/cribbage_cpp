@@ -8,12 +8,37 @@ void Cribbage::WDisplayHeader() {
 	WPrintWSAAtCoord(header_win, "header", header);
 }
 
-void Cribbage::WDisplayBoard(std::string board_name) {
+void Cribbage::WDisplayBoard() {
 	WPrintWSAAtCoord(board_win, "board", cribbage_boards[board_name]);
 }
 
-void Cribbage::WDisplayEmptyColouredBoard(std::string board_name) {
+void Cribbage::WDisplayEmptyColouredBoard() {
 	MVWPrintWColoured(board_win, coords["board"].at(0), coords["board"].at(1), cribbage_boards_coloured[board_name]);
+}
+
+void Cribbage::WDisplayPeg(int player_index) {
+
+	if (scores.at(player_index) > 0) {
+		wattron(board_win, COLOR_PAIR(player_index + 1));
+		mvwaddch(
+			board_win,
+			peg_coords[player_index].at(0),
+			peg_coords[player_index].at(1),
+			cribbage_boards_coloured[board_name][player_index + 1].at(peg_coords[player_index].at(0))[peg_coords[player_index].at(1)]
+		);
+		wattroff(board_win, COLOR_PAIR(player_index + 1));
+	}
+
+	peg_coords[player_index] = cribbage_boards_coloured_routes[board_name][player_index + 1].at(scores.at(player_index));
+
+	wattron(board_win, COLOR_PAIR(player_index+1));
+	mvwaddch(
+		board_win,
+		peg_coords[player_index].at(0),
+		peg_coords[player_index].at(1),
+		'O'
+	);
+	wattroff(board_win, COLOR_PAIR(player_index + 1));
 }
 
 void Cribbage::WDisplayTextArea() {
@@ -22,9 +47,9 @@ void Cribbage::WDisplayTextArea() {
 
 void Cribbage::WDisplayPlayArea() {
 
-	wattron(play_area_win, COLOR_PAIR(1));
+	wattron(play_area_win, COLOR_PAIR(5));
 	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
-	wattroff(play_area_win, COLOR_PAIR(1));
+	wattroff(play_area_win, COLOR_PAIR(5));
 
 	WDisplayThePlayPile(
 		{ 
@@ -44,14 +69,14 @@ void Cribbage::WDisplayPlayArea() {
 void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
 	if (hide_cards) {
-		wattron(player_windows[player_index], COLOR_PAIR(1));
+		wattron(player_windows[player_index], COLOR_PAIR(5));
 		WPrintWSAAtCoord(player_windows[player_index], "origin", card_back);
 		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,6 }, card_back);
 		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,12 }, card_back);
 		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,18 }, card_back);
 		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,24 }, card_back);
 		WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,30 }, card_back);
-		wattroff(player_windows[player_index], COLOR_PAIR(1));
+		wattroff(player_windows[player_index], COLOR_PAIR(5));
 	}
 	else {
 		WDisplayCard(player_windows[player_index], "Ace", "Clubs");
@@ -84,10 +109,10 @@ void Cribbage::WDisplayCrib(std::vector <std::vector <std::string>> cards) {
 }
 
 void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit) {
-	int n_colour_pair = 2;
+	int n_colour_pair = 6;
 
 	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 1;
+		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
 	WPrintWSAAtCoord(window, "origin", ascii_cards["full"][value][suit]);
@@ -95,10 +120,10 @@ void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit)
 }
 
 void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit, std::vector<int> offset) {
-	int n_colour_pair = 2;
+	int n_colour_pair = 6;
 
 	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 1;
+		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
 	WPrintWSAAtCoord(window, "origin", offset, ascii_cards["full"][value][suit]);
@@ -106,10 +131,10 @@ void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit,
 }
 
 void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::string suit) {
-	int n_colour_pair = 2;
+	int n_colour_pair = 6;
 
 	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 1;
+		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
 	WPrintWSAAtCoord(window, "origin", ascii_cards["partial"][value][suit]);
@@ -117,10 +142,10 @@ void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::strin
 }
 
 void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::string suit, std::vector<int> offset) {
-	int n_colour_pair = 2;
+	int n_colour_pair = 6;
 
 	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 1;
+		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
 	WPrintWSAAtCoord(window, "origin", offset, ascii_cards["partial"][value][suit]);
@@ -265,10 +290,11 @@ void Cribbage::reset_win(WINDOW* window) {
 
 void Cribbage::GenerateColourPairs() {
 	start_color();
-	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_RED, COLOR_WHITE);
-	init_pair(3, COLOR_CYAN, COLOR_BLACK);
-	init_pair(4, COLOR_RED, COLOR_BLACK);
-	init_pair(5, COLOR_GREEN, COLOR_BLACK);
-	init_pair(6, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(3, COLOR_GREEN, COLOR_BLACK);
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(5, COLOR_BLACK, COLOR_WHITE);
+	init_pair(6, COLOR_RED, COLOR_WHITE);
+	
 }

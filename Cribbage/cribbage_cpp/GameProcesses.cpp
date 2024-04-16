@@ -11,7 +11,7 @@
 #include "../headers/Windows.h"
 #include <pdcurses/curses.h>
 
-Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window_dims) : deck(n_players) {
+Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::string, std::vector<int>> window_dims) : deck(n_players) {
 	initscr();
 
 	//resize_term(63, 240);
@@ -19,6 +19,7 @@ Cribbage::Cribbage(int n_players, std::map<std::string, std::vector<int>> window
 	refresh();
 
 	number_of_players = n_players;
+	board_name = board_name_input;
 	
 	//header_border_win = CreateNewWinBorder(window_dims["header"]);
 	board_border_win = CreateNewWinBorder(window_dims["board"]);
@@ -52,7 +53,9 @@ void Cribbage::StartGame() {
 	GenerateDeck();
 	GenerateCardAsciis();
 	
-	WDisplayEmptyColouredBoard("2p_simple_hori");
+	WDisplayEmptyColouredBoard();
+	WDisplayPeg(0);
+	WDisplayPeg(1);
 	//WDisplayHeader();
 	WDisplayTextArea();
 	WDisplayPlayArea();
@@ -69,9 +72,13 @@ void Cribbage::StartGame() {
 
 void Cribbage::InitializeScores() {
 	scores.clear();
+	peg_coords.clear();
 
 	for (int i = 0; i < number_of_players; i++) {
 		scores.push_back(0);
+		peg_coords.insert(
+			{ i, {} }
+		);
 	}
 }
 

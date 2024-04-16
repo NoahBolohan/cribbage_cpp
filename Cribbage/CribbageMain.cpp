@@ -10,6 +10,7 @@ int main() {
 
 	Cribbage cribbage(
 		number_of_players,
+		"2p_simple_hori",
 		{ 
 			{"board", {13, 57, 0, 0}},
 			//{"header", {7, 32, 0, 57}},
