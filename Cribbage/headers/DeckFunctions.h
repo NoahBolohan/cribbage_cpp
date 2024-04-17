@@ -11,12 +11,13 @@ class Cribbage;
 class Deck {
 	public:
 		// Deck
-		Deck(int);
+		Deck(int, int);
 		void ResetDeck();
 		void ShuffleDeck();
 
 		// Hands
 		void DisplayHand(int);
+		void DealHands(int);
 		void DealHands(int, int);
 		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);
 
@@ -34,6 +35,7 @@ class Deck {
 		std::vector<std::vector<std::string>> ChooseCardsFromHand(Cribbage&, int,int,std::string);
 
 		// Players
+		void NextDealer();
 		void NextPlayer();
 		void NextPlayer(int);
 		void NextPlayerFromActivePlayers(std::vector<int>);

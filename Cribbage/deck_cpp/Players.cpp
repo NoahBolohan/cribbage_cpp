@@ -8,6 +8,10 @@
 
 #include "../headers/DeckFunctions.h"
 
+void Deck::NextDealer() {
+	dealer_index = (dealer_index + 1) % number_of_players;
+}
+
 void Deck::NextPlayer() {
 	current_player_index = (current_player_index + 1) % number_of_players;
 }

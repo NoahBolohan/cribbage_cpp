@@ -181,8 +181,8 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 }
 
 void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
-	WDisplayPeg(player_index);
 	scores.at(player_index) = scores.at(player_index) + n_points;
+	WDisplayPeg(player_index);
 	AnnouncePoints(n_points, announcement);
 
 	if (scores.at(player_index) >= score_target) {

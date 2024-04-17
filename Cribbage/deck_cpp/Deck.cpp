@@ -8,10 +8,11 @@
 
 #include "../headers/DeckFunctions.h"
 
-Deck::Deck(int n_players) {
+Deck::Deck(int n_players, int starting_dealer) {
 	std::srand(unsigned(std::time(0)));
 
 	number_of_players = n_players;
+	dealer_index = starting_dealer;
 
 	ResetDeck();
 }
@@ -28,5 +29,6 @@ void Deck::ResetDeck() {
 }
 
 void Deck::ShuffleDeck() {
+	ResetDeck();
 	std::random_shuffle(full_deck.begin(), full_deck.end());
 }

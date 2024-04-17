@@ -29,7 +29,7 @@ void Cribbage::WDisplayPeg(int player_index) {
 		wattroff(board_win, COLOR_PAIR(player_index + 1));
 	}
 
-	peg_coords[player_index] = cribbage_boards_coloured_routes[board_name][player_index + 1].at(scores.at(player_index));
+	peg_coords[player_index] = cribbage_boards_coloured_routes[board_name][player_index + 1].at(std::min(121, scores.at(player_index)));
 
 	wattron(board_win, COLOR_PAIR(player_index+1));
 	mvwaddch(

@@ -13,7 +13,7 @@ int main() {
 		"2p_simple_hori",
 		{ 
 			{"board", {13, 57, 0, 0}},
-			{"text_area", {8, 57, 13, 0}},
+			{"text_area", {20, 57, 13, 0}},
 			{"play_area", {21, 37, 0, 57}},
 			{"player0", {8, 37, 13, 57}},
 			{"player1", {7, 37, 0, 57}},
@@ -22,6 +22,8 @@ int main() {
 	);
 
 	cribbage.StartGame();
+
+	getch();
 
 	return 0;
 }

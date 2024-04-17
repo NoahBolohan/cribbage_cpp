@@ -11,11 +11,14 @@
 #include "../headers/Windows.h"
 #include <pdcurses/curses.h>
 
-Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::string, std::vector<int>> window_dims) : deck(n_players) {
+Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::string, std::vector<int>> window_dims) : deck(n_players, 0) {
 	initscr();
 
 	//resize_term(63, 240);
-	resize_term(30,120);
+	resize_term(
+		window_dims["board"].at(0) + window_dims["text_area"].at(0),
+		window_dims["board"].at(1) + window_dims["play_area"].at(1)
+	);
 	refresh();
 
 	number_of_players = n_players;
@@ -91,8 +94,8 @@ void Cribbage::Round() {
 		DrawStarter();
 		WDisplayPlayArea();
 		ThePlay();
-		wgetch(text_area_win);
 	}
+
 	if (!game_over) {
 		TheShow();
 	}
@@ -105,8 +108,19 @@ void Cribbage::InitializePiles() {
 }
 
 void Cribbage::Deal() {
-	WPrintToTextArea({ "Dealing hands..." }, true);
-	deck.DealHands(0, 6);
+	if (n_round == 1) {
+		deck.DealHands(6);
+	}
+	else {
+		deck.DealHands(deck.GetCurrentPlayerIndex(), 6);
+	}
+	
+	if (deck.GetCurrentPlayerIndex() == user_index) {
+		WPrintToTextArea({ "You are dealing the hands..." }, true);
+	}
+	else {
+		WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is dealing the hands..." }, true);
+	}
 	WDisplayPlayArea();
 	WPrintToTextArea({ "You must send 2 cards to the crib." }, true);
 
@@ -133,7 +147,7 @@ void Cribbage::DrawStarter() {
 void Cribbage::ThePlay() {
 
 	//std::cout << std::endl << "Starting the play. The score is the following:" << std::endl;
-	WPrintToTextArea({ "Starting the play." }, true);
+	WPrintToTextArea({ "Starting the Play." }, true);
 	//DisplayScore();
 
 	for (int i = 0; i < deck.GetNumberOfPlayers(); i++) {
@@ -148,7 +162,7 @@ void Cribbage::ThePlay() {
 
 	if (!game_over) {
 		//std::cout << std::endl << "The play is done. The score is the following:" << std::endl;
-		WPrintToTextArea({ "The play is done." }, true);
+		WPrintToTextArea({ "The Play is done." }, true);
 		//DisplayScore();
 	}
 
@@ -246,7 +260,7 @@ void Cribbage::UpTo31() {
 
 void Cribbage::TheShow() {
 
-	std::cout << "The Show has started." << std::endl;
+	WPrintToTextArea({ "The Show has started." }, true);
 
 	deck.NextPlayer(-1);
 
@@ -275,16 +289,19 @@ void Cribbage::TheShow() {
 			deck.NextPlayer();
 		}
 	}
+
+	WPrintToTextArea({ "The Show is done." }, true);
 }
 
 void Cribbage::EndGame() {
 	std::cout << std::endl;
 	if (deck.GetCurrentPlayerIndex() == user_index) {
-		std::cout << "Congratulations!!! You are the winner!!!" << std::endl;
+		WPrintToTextArea({ "Congratulations!!! You are the winner!!!" }, true);
 	}
 	else {
 		std::cout << "Player " << deck.GetCurrentPlayerIndex() << " is the winner, better luck next time!" << std::endl;
+		WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is the winner, better luck next time!" }, true);
 	}
-	std::cout << "The final score is:" << std::endl;
-	DisplayScore();
+	//std::cout << "The final score is:" << std::endl;
+	//DisplayScore();
 }

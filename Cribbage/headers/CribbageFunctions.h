@@ -102,7 +102,7 @@ class Cribbage {
 			"crib",
 			"the_play"
 		};
-		const int score_target = 40;
+		const int score_target = 121;
 
 		bool game_over = false;
 
