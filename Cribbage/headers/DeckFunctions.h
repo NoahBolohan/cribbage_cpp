@@ -31,7 +31,7 @@ class Deck {
 		
 		// Cards
 		std::vector<std::string> DrawCard();
-		std::vector<std::vector<std::string>> ChooseCardsFromHand(Cribbage, int,int,std::string);
+		std::vector<std::vector<std::string>> ChooseCardsFromHand(Cribbage&, int,int,std::string);
 
 		// Players
 		void NextPlayer();

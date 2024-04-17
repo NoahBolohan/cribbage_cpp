@@ -17,7 +17,7 @@ std::vector<std::string> Deck::DrawCard() {
 	return drawn_card;
 }
 
-std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage cribbage, int hand_index, int n_cards, std::string player_type) {
+std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage &cribbage, int hand_index, int n_cards, std::string player_type) {
 
 	std::vector<std::vector<std::string>> cards_to_be_chosen;
 	std::vector<int> card_indices;
@@ -36,7 +36,7 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage cribbag
 
 		if (player_type == "user") {
 
-			cribbage.WPrintToTextArea({ "Choose card(s) (enter the card indices on the left):" }, true, "newline");
+			cribbage.WPrintToTextArea({ "Choose card(s) (enter the card index beneath):" }, true, "newline");
 
 			for (int i = 0; i < n_cards; i++) {
 

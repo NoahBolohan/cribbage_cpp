@@ -90,7 +90,7 @@ void Cribbage::Round() {
 		Deal();
 		DrawStarter();
 		WDisplayPlayArea();
-		getch();
+		wgetch(text_area_win);
 		ThePlay();
 	}
 	if (!game_over) {

@@ -131,6 +131,12 @@ void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
 		}
 	}
+
+	if (player_index == 0) {
+		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+			MVWPrintWSA(player_windows[player_index], 5, 1 + 6*i, { "(" + std::to_string(i) + ")" });
+		}
+	}
 	
 	refresh_wins({ player_windows[player_index] });
 }
