@@ -43,37 +43,27 @@ void Cribbage::WDisplayPeg(int player_index) {
 	refresh_wins({ board_win });
 }
 
-void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append) {
-	if (append) {
-		for (auto line : lines) {
-			text_area_contents.push_back(line);
-			if (text_area_contents.size() > text_area_height) {
-				text_area_contents.erase(text_area_contents.begin(), text_area_contents.begin() + text_area_height);
-			}
-		}
-	}
-	else {
-		text_area_contents = lines;
-	}
-	reset_win(text_area_win);
-	WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
-	refresh_wins({ text_area_win });
-}
+void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std::string position) {
 
-void Cribbage::MVWPrintToTextArea(std::vector<std::string> lines, bool append) {
 	if (append) {
 		for (auto line : lines) {
 			text_area_contents.push_back(line);
-			if (text_area_contents.size() > text_area_height) {
-				text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - text_area_height);
-			}
+		}
+		if (text_area_contents.size() > getmaxy(text_area_win)) {
+			text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - getmaxy(text_area_win));
 		}
 	}
 	else {
 		text_area_contents = lines;
 	}
+
 	reset_win(text_area_win);
-	WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
+	if (position == "newline") {
+		WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents, "newline");
+	}
+	else {
+		WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
+	}
 	refresh_wins({ text_area_win });
 }
 
@@ -87,19 +77,41 @@ void Cribbage::WDisplayInitialPlayArea() {
 
 void Cribbage::WDisplayPlayArea() {
 
-	wattron(play_area_win, COLOR_PAIR(5));
-	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
-	wattroff(play_area_win, COLOR_PAIR(5));
+	reset_win({ play_area_win });
+
+	
+	if (starter.size() == 2) {
+		int n_colour_pair = 6;
+
+		if ((starter.at(1) == "Clubs") || (starter.at(1) == "Spades")) {
+			n_colour_pair = 5;
+		}
+
+		wattron(play_area_win, COLOR_PAIR(n_colour_pair));
+		WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, GenerateAsciiDeckFaceUp(starter));
+		wattroff(play_area_win, COLOR_PAIR(n_colour_pair));
+	}
+	else {
+		wattron(play_area_win, COLOR_PAIR(5));
+		WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
+		wattroff(play_area_win, COLOR_PAIR(5));
+	}
+	
 
 	WDisplayThePlayPile(deck.GetCommonPiles()["the_play"]);
 
 	WDisplayPlayerHand(0);
 	WDisplayPlayerHand(1, true);
+	if (number_of_players == 3) {
+		WDisplayPlayerHand(2, true);
+	}
 
 	refresh_wins({ play_area_win });
 }
 
 void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
+
+	reset_win({ player_windows[player_index] });
 
 	if (hide_cards) {
 		wattron(player_windows[player_index], COLOR_PAIR(5));
@@ -269,6 +281,62 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 			coords[coord_name].at(0) + lines.size()-1,
 			coords[coord_name].at(1) + lines.back().size()
 		);
+	}
+
+	catch (const std::invalid_argument& e) {
+		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
+		getch();
+	}
+}
+
+void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vector<std::string> lines, std::string position) {
+	try {
+		if (coords.find(coord_name) == coords.end()) {
+			throw std::invalid_argument(coord_name + " not in coords keys");
+		}
+		if (position == "newline") {
+			if (lines.size() >= getmaxy(window)) {
+				lines.erase(lines.begin(), lines.begin() + 1);
+
+				MVWPrintWSA(
+					window,
+					coords[coord_name].at(0),
+					coords[coord_name].at(1),
+					lines
+				);
+				wmove(
+					window,
+					coords[coord_name].at(0) + lines.size(),
+					0
+				);
+			}
+			else {
+				MVWPrintWSA(
+					window,
+					coords[coord_name].at(0),
+					coords[coord_name].at(1),
+					lines
+				);
+				wmove(
+					window,
+					coords[coord_name].at(0) + lines.size(),
+					0
+				);
+			}
+		}
+		else {
+			MVWPrintWSA(
+				window,
+				coords[coord_name].at(0),
+				coords[coord_name].at(1),
+				lines
+			);
+			wmove(
+				window,
+				coords[coord_name].at(0) + lines.size() - 1,
+				coords[coord_name].at(1) + lines.back().size()
+			);
+		}
 	}
 
 	catch (const std::invalid_argument& e) {

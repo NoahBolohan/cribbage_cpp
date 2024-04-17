@@ -31,8 +31,6 @@ Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::st
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);
 
-	text_area_height = window_dims["text_area"].at(0)-2;
-
 	player0_win = CreateNewWin(window_dims["player0"]);
 	player1_win = CreateNewWin(window_dims["player1"]);
 	player2_win = CreateNewWin(window_dims["player2"]);
@@ -62,7 +60,7 @@ void Cribbage::StartGame() {
 	WDisplayInitialPlayArea();
 
 	refresh_wins();
-	getch();
+	wgetch(text_area_win);
 
 	while (!game_over) {
 		Round();
@@ -91,6 +89,8 @@ void Cribbage::Round() {
 		deck.ShuffleDeck();
 		Deal();
 		DrawStarter();
+		WDisplayPlayArea();
+		getch();
 		ThePlay();
 	}
 	if (!game_over) {
@@ -123,7 +123,7 @@ void Cribbage::Deal() {
 
 void Cribbage::DrawStarter() {
 	starter = deck.DrawCard();
-	std::cout << std::endl << "The starter is the " << starter.at(0) << " of " << starter.at(1) << "." << std::endl;
+	WPrintToTextArea({ "The starter is the " + starter.at(0) + " of " + starter.at(1) + "." }, true);
 
 	if (starter.at(0) == "Jack") {
 		AddPoints(deck.GetDealerIndex(), 2, "Jack's heels");

@@ -60,8 +60,7 @@ class Cribbage {
 		void WDisplayPlayerHand(int, bool hide_cards = false);
 		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
 		void WDisplayCrib(std::vector <std::vector <std::string>>);
-		void WPrintToTextArea(std::vector<std::string>, bool append = false);
-		void MVWPrintToTextArea(std::vector<std::string>, bool append = false);
+		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string position = "eol");
 		void WDisplayCard(WINDOW*, std::string, std::string);
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
 		void WDisplayPartialCard(WINDOW*, std::string, std::string);
@@ -70,6 +69,7 @@ class Cribbage {
 		void WPrintWAtCoord(WINDOW*, std::string, std::string, bool);
 		void WPrintWAtCoord(WINDOW*, std::string, std::vector<int>, std::string, bool);
 		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>);
+		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>, std::string);
 		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<int>, std::vector<std::string>);
 
 		void refresh_wins();
@@ -158,8 +158,6 @@ class Cribbage {
 		WINDOW* player2_win;
 
 		std::map<int, WINDOW*> player_windows;
-
-		int text_area_height = 1;
 
 		std::map < std::string, std::vector<int> > coords = {
 			{"origin", {0, 0}},
