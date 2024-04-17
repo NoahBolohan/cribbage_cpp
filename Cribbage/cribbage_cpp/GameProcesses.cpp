@@ -90,8 +90,8 @@ void Cribbage::Round() {
 		Deal();
 		DrawStarter();
 		WDisplayPlayArea();
-		wgetch(text_area_win);
 		ThePlay();
+		wgetch(text_area_win);
 	}
 	if (!game_over) {
 		TheShow();
@@ -132,8 +132,9 @@ void Cribbage::DrawStarter() {
 
 void Cribbage::ThePlay() {
 
-	std::cout << std::endl << "Starting the play. The score is the following:" << std::endl;
-	DisplayScore();
+	//std::cout << std::endl << "Starting the play. The score is the following:" << std::endl;
+	WPrintToTextArea({ "Starting the play." }, true);
+	//DisplayScore();
 
 	for (int i = 0; i < deck.GetNumberOfPlayers(); i++) {
 		active_player_indices_for_play.push_back(i);
@@ -146,8 +147,9 @@ void Cribbage::ThePlay() {
 	}
 
 	if (!game_over) {
-		std::cout << std::endl << "The play is done. The score is the following:" << std::endl;
-		DisplayScore();
+		//std::cout << std::endl << "The play is done. The score is the following:" << std::endl;
+		WPrintToTextArea({ "The play is done." }, true);
+		//DisplayScore();
 	}
 
 }
@@ -162,16 +164,19 @@ void Cribbage::UpTo31() {
 
 	while (!game_over && play_total <= 31 && std::find(active_player_indices_for_31.begin(), active_player_indices_for_31.end(), deck.GetCurrentPlayerIndex()) != active_player_indices_for_31.end()) {
 
+		WDisplayPlayArea();
+
 		int min_card_point_value = 11;
 		std::vector<std::string> played_card;
 
-		std::cout << std::endl;
-		std::cout << std::endl << "Play total is " << play_total << ". It is ";
+		//std::cout << std::endl;
+		//std::cout << std::endl << "Play total is " << play_total << ". It is ";
 		if (deck.GetCurrentPlayerIndex() == user_index) {
-			std::cout << "your turn." << std::endl;
+			WPrintToTextArea({ "It is your turn to play." }, true);
 		}
 		else {
-			std::cout << "player " << deck.GetCurrentPlayerIndex() << "s turn." << std::endl;
+			//std::cout << "player " << deck.GetCurrentPlayerIndex() << "s turn." << std::endl;
+			WPrintToTextArea({ "It is player " + std::to_string(deck.GetCurrentPlayerIndex()) + "s turn to play." }, true);
 		}
 
 		std::vector<std::vector<std::string>> current_players_hand = deck.GetHands().at(deck.GetCurrentPlayerIndex());
@@ -182,23 +187,21 @@ void Cribbage::UpTo31() {
 
 		if (play_total + min_card_point_value > 31) {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				std::cout << std::endl << "You cannot play. The turn passes." << std::endl;
+				WPrintToTextArea({ "You cannot play. The turn passes." }, true);
 			}
 			else {
-				std::cout << std::endl << "Com " << deck.GetCurrentPlayerIndex() << " cannot play. The turn passes." << std::endl;
+				WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " cannot play. The turn passes." }, true);
 			}
 
 			RemovePlayerFrom31(deck.GetCurrentPlayerIndex());
 		}
 		else if (deck.GetHands().at(deck.GetCurrentPlayerIndex()).size() == 0) {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				std::cout << "You are";
+				WPrintToTextArea({ "You are out of cards and cannot play anymore." }, true);
 			}
 			else {
-				std::cout << "Player " << deck.GetCurrentPlayerIndex() << " is";
+				WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is out of cards and cannot play anymore."}, true);
 			}
-
-			std::cout << " out of cards and cannot play anymore." << std::endl;
 
 			RemovePlayerFrom31(deck.GetCurrentPlayerIndex());
 
@@ -206,24 +209,21 @@ void Cribbage::UpTo31() {
 		}
 		else {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				std::cout << std::endl << "Your turn to play." << std::endl;
 				deck.DisplayHand(deck.GetCurrentPlayerIndex());
 				played_card = deck.ChooseCardsFromHand(*this, deck.GetCurrentPlayerIndex(), 1, "user").at(0);
 			}
 			else {
-				std::cout << std::endl << "Com " << deck.GetCurrentPlayerIndex() << "s turn to play." << std::endl;
 				played_card = deck.ChooseCardsFromHand(*this, deck.GetCurrentPlayerIndex(), 1, "com").at(0);
 			}
 			deck.ToSidePile(deck.GetCurrentPlayerIndex(), "the_play", played_card);
 			deck.ToCommonPile("the_play", played_card);
 
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				std::cout << std::endl << "You ";
+				WPrintToTextArea({ "You played the " + played_card.at(0) + " of " + played_card.at(1) + "." }, true);
 			}
 			else {
-				std::cout << std::endl << "Com " << deck.GetCurrentPlayerIndex() << " ";
+				WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " played the " + played_card.at(0) + " of " + played_card.at(1) + "."}, true);
 			}
-			std::cout << "played the " << played_card.at(0) << " of " << played_card.at(1) << std::endl;
 
 			play_total += card_value_points[played_card.at(0)];
 
@@ -231,7 +231,7 @@ void Cribbage::UpTo31() {
 				ThePlayPoints();
 			}
 
-			std::cout << "The play total is now " << play_total << ".";
+			//std::cout << "The play total is now " << play_total << ".";
 		}
 
 		if (active_player_indices_for_play.size() > 0) {

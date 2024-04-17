@@ -181,6 +181,7 @@ void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::stri
 }
 
 void Cribbage::AddPoints(int player_index, int n_points, std::string announcement) {
+	WDisplayPeg(player_index);
 	scores.at(player_index) = scores.at(player_index) + n_points;
 	AnnouncePoints(n_points, announcement);
 
@@ -193,10 +194,10 @@ void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
 	std::cout << std::endl;
 
 	if (deck.GetCurrentPlayerIndex() == user_index) {
-		std::cout << announcement << "! " << n_points << " points for you!" << std::endl;
+		WPrintToTextArea({ announcement + "! " + std::to_string(n_points) + " points for you!"}, true);
 	}
 	else {
-		std::cout << announcement << "! " << n_points << " points for player " << deck.GetCurrentPlayerIndex() << "!" << std::endl;
+		WPrintToTextArea({ announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!" }, true);
 	}
 }
 

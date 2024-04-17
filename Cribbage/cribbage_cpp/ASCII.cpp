@@ -300,14 +300,6 @@ void Cribbage::GenerateDeck() {
 
 		for (auto suit : card_suits) {
 
-			char v = value[0];
-
-			std::string value_string1 = "|v  |";
-			value_string1.at(1) = v;
-			
-			std::string value_string2 = "|  v|";
-			value_string2.at(3) = v;
-
 			char s;
 
 			if (suit == "Hearts") {
@@ -328,27 +320,69 @@ void Cribbage::GenerateDeck() {
 			std::string suit_string = "| s |";
 			suit_string.at(2) = s;
 
-			ascii_cards["full"][value][suit] = {
-				" --- ",
+			if (value == "10") {
+
+				std::string value_string1 = "|v  |";
+				value_string1.at(1) = value[0];
+				value_string1.at(2) = value[1];
+
+				std::string value_string2 = "|  v|";
+				value_string2.at(2) = value[0];
+				value_string2.at(3) = value[1];
+
+				ascii_cards["full"][value][suit] = {
+					" --- ",
+					value_string1,
+					suit_string,
+					value_string2,
+					" --- "
+				};
+
+				value_string1 = "|v";
+				value_string2 = "|v";
+				suit_string = "|s";
+
+				value_string1.at(1) = value[0];
+				value_string2.at(1) = value[1];
+				suit_string.at(1) = s;
+
+				ascii_cards["partial"][value][suit] = {
+				" -",
 				value_string1,
-				suit_string,
 				value_string2,
-				" --- "
-			};
+				suit_string,
+				" -"
+				};
+			} 
+			else {
+				std::string value_string1 = "|v  |";
+				value_string1.at(1) = value[0];
 
-			value_string1 = "|v";
-			suit_string = "|s";
+				std::string value_string2 = "|  v|";
+				value_string2.at(3) = value[0];
 
-			value_string1.at(1) = v;
-			suit_string.at(1) = v=s;
+				ascii_cards["full"][value][suit] = {
+					" --- ",
+					value_string1,
+					suit_string,
+					value_string2,
+					" --- "
+				};
 
-			ascii_cards["partial"][value][suit] = {
+				value_string1 = "|v";
+				suit_string = "|s";
+
+				value_string1.at(1) = value[0];
+				suit_string.at(1) = s;
+
+				ascii_cards["partial"][value][suit] = {
 				" -",
 				value_string1,
 				suit_string,
 				"| ",
 				" -"
-			};
+				};
+			}			
 		}
 	}
 }
