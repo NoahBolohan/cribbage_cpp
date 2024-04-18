@@ -1,4 +1,3 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
 #include <algorithm> // std::random_shuffle, std::sort
@@ -8,7 +7,6 @@
 
 #include "../headers/DeckFunctions.h"
 #include "../headers/CribbageFunctions.h"
-#include <pdcurses/curses.h>
 
 std::vector<std::string> Deck::DrawCard() {
 	std::vector<std::string> drawn_card = full_deck.at(0);

@@ -1,7 +1,6 @@
 #ifndef DECK_HEADER
 #define DECK_HEADER
 
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
 #include <map> // std::map
@@ -16,7 +15,6 @@ class Deck {
 		void ShuffleDeck();
 
 		// Hands
-		void DisplayHand(int);
 		void DealHands(int);
 		void DealHands(int, int);
 		std::vector<std::vector<std::string>> HandToPile(int, std::vector<int>);

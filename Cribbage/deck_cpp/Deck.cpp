@@ -1,4 +1,3 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
 #include <algorithm> // std::random_shuffle, std::sort
@@ -9,7 +8,8 @@
 #include "../headers/DeckFunctions.h"
 
 Deck::Deck(int n_players, int starting_dealer) {
-	std::srand(unsigned(std::time(0)));
+	//std::srand(unsigned(std::time(0)));
+	std::srand(unsigned(0));
 
 	number_of_players = n_players;
 	dealer_index = starting_dealer;

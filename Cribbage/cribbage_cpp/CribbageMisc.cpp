@@ -1,7 +1,5 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
-#include <ctime> // std::time 
 #include <cstdlib> // std::rand, std::srand
 #include <algorithm> // std::max. std::min, std::remove
 
@@ -38,7 +36,7 @@ std::vector<std::vector<std::string>> Cribbage::GetCardsFromEnd(std::vector<std:
 
 	std::vector<std::vector<std::string>> cards_to_check = {
 						cards.end() - n_cards,
-						cards.end() - 1
+						cards.end()
 	};
 
 	return cards_to_check;

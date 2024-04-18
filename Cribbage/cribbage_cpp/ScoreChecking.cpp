@@ -1,7 +1,5 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
-#include <ctime> // std::time 
 #include <cstdlib> // std::rand, std::srand
 #include <algorithm> // std::max. std::min, std::remove
 
@@ -91,10 +89,10 @@ void Cribbage::CheckRunsForShow(std::vector<std::vector<std::string>> cards) {
 
 	bool has_runs = false;
 
-	for (int subset_length = cards.size(); subset_length >= 3; subset_length--) {
+	for (auto subset_length = cards.size(); subset_length >= 3; subset_length--) {
 
 		if (!has_runs) {
-			for (auto& card_indices : ComputeSubsets(0, cards.size(), subset_length)) {
+			for (auto& card_indices : ComputeSubsets(0, int(cards.size()), int(subset_length))) {
 
 				std::vector<std::vector<std::string>> subset;
 

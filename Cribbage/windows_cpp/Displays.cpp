@@ -227,7 +227,7 @@ void Cribbage::WPrintWAtCoord(WINDOW* window, std::string coord_name, std::strin
 		wmove(
 			window,
 			coords[coord_name].at(0),
-			coords[coord_name].at(1) + line.size()
+			coords[coord_name].at(1) + int(line.size())
 		);
 	}
 
@@ -261,7 +261,7 @@ void Cribbage::WPrintWAtCoord(WINDOW* window, std::string coord_name, std::vecto
 		wmove(
 			window,
 			coords[coord_name].at(0) + offset.at(0),
-			coords[coord_name].at(1) + offset.at(1) + line.size()
+			coords[coord_name].at(1) + offset.at(1) + int(line.size())
 		);
 	}
 
@@ -284,8 +284,8 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 		);
 		wmove(
 			window,
-			coords[coord_name].at(0) + lines.size()-1,
-			coords[coord_name].at(1) + lines.back().size()
+			coords[coord_name].at(0) + int(lines.size())-1,
+			coords[coord_name].at(1) + int(lines.back().size())
 		);
 	}
 
@@ -312,7 +312,7 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 				);
 				wmove(
 					window,
-					coords[coord_name].at(0) + lines.size(),
+					coords[coord_name].at(0) + int(lines.size()),
 					0
 				);
 			}
@@ -325,7 +325,7 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 				);
 				wmove(
 					window,
-					coords[coord_name].at(0) + lines.size(),
+					coords[coord_name].at(0) + int(lines.size()),
 					0
 				);
 			}
@@ -339,8 +339,8 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 			);
 			wmove(
 				window,
-				coords[coord_name].at(0) + lines.size() - 1,
-				coords[coord_name].at(1) + lines.back().size()
+				coords[coord_name].at(0) + int(lines.size() - 1),
+				coords[coord_name].at(1) + int(lines.back().size())
 			);
 		}
 	}
@@ -364,8 +364,8 @@ void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vec
 		);
 		wmove(
 			window,
-			coords[coord_name].at(0) + offset.at(0) + lines.size(),
-			coords[coord_name].at(1) + offset.at(1) + lines.back().size()
+			coords[coord_name].at(0) + offset.at(0) + int(lines.size()),
+			coords[coord_name].at(1) + offset.at(1) + int(lines.back().size())
 		);
 	}
 

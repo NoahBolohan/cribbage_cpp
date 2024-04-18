@@ -1,8 +1,6 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
 #include <algorithm> // std::random_shuffle, std::sort
-#include <ctime> // std::time 
 #include <cstdlib> // std::rand, std::srand
 #include <iomanip> // std::setw
 

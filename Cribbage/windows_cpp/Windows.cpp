@@ -2,7 +2,6 @@
 #include <vector>
 #include <map>
 #include "../headers/Windows.h"
-#include <pdcurses/curses.h>
 
 WINDOW* CreateNewWin(std::vector<int> window_dims)
 {

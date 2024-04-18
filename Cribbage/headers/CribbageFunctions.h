@@ -32,7 +32,6 @@ class Cribbage {
 
 		void AddPoints(int, int, std::string);
 		void AnnouncePoints(int, std::string);
-		void DisplayScore();
 
 		// Score-checking
 		bool CheckFlush(std::vector<std::vector<std::string>>, int, std::string);

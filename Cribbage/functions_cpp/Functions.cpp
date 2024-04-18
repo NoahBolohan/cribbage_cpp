@@ -10,7 +10,7 @@ std::vector<std::vector<int>> ComputeSubsets(int a, int b) {
 
 	while (inc < (b - a)) {
 
-		int subsets_size = subsets.size();
+		auto subsets_size = subsets.size();
 		for (int subset_index = 0; subset_index < subsets_size; subset_index++) {
 
 			std::vector<int> subset = subsets.at(subset_index);
@@ -33,7 +33,7 @@ std::vector<std::vector<int>> ComputeSubsets(int a, int b, int n) {
 
 	while (inc < (b - a)) {
 
-		int subsets_size = subsets.size();
+		auto subsets_size = subsets.size();
 		for (int subset_index = 0; subset_index < subsets_size; subset_index++) {
 
 			std::vector<int> subset = subsets.at(subset_index);

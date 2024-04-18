@@ -1,7 +1,5 @@
-#include <iostream> // std::cout, std::cin
 #include <string> // std::string
 #include <vector> // std::vector
-#include <ctime> // std::time 
 #include <cstdlib> // std::rand, std::srand
 #include <algorithm> // std::max. std::min, std::remove
 
@@ -143,7 +141,7 @@ void Cribbage::GoPoints() {
 void Cribbage::TheShowPoints(int player_index, std::vector<std::vector<std::string>> cards_to_count) {
 
 	// Check fifteens
-	for (auto& card_indices : ComputeSubsets(0, cards_to_count.size())) {
+	for (auto& card_indices : ComputeSubsets(0, int(cards_to_count.size()))) {
 
 		std::vector<std::vector<std::string>> subset;
 
@@ -191,18 +189,11 @@ void Cribbage::AddPoints(int player_index, int n_points, std::string announcemen
 }
 
 void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
-	std::cout << std::endl;
 
 	if (deck.GetCurrentPlayerIndex() == user_index) {
 		WPrintToTextArea({ announcement + "! " + std::to_string(n_points) + " points for you!"}, true);
 	}
 	else {
 		WPrintToTextArea({ announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!" }, true);
-	}
-}
-
-void Cribbage::DisplayScore() {
-	for (int i = 0; i < scores.size(); i++) {
-		std::cout << std::endl << "Player " << i << ": " << scores.at(i) << " points";
 	}
 }
