@@ -59,17 +59,12 @@ class Cribbage {
 		void WDisplayPlayerHand(int, bool hide_cards = false);
 		void WDisplayThePlayPile(std::vector <std::vector <std::string>>);
 		void WDisplayCrib(std::vector <std::vector <std::string>>);
-		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string position = "eol");
-		void WDisplayCard(WINDOW*, std::string, std::string);
-		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int>);
-		void WDisplayPartialCard(WINDOW*, std::string, std::string);
-		void WDisplayPartialCard(WINDOW*, std::string, std::string, std::vector<int>);
+		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
+		void WDisplayPartialCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
 
-		void WPrintWAtCoord(WINDOW*, std::string, std::string, bool);
-		void WPrintWAtCoord(WINDOW*, std::string, std::vector<int>, std::string, bool);
-		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>);
-		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<std::string>, std::string);
-		void WPrintWSAAtCoord(WINDOW*, std::string, std::vector<int>, std::vector<std::string>);
+		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string position = "eol");
+		void WPrintLine(WINDOW*, std::string, bool clear_line = true, std::vector<int> offset = { 0,0 });
+		void WPrintLines(WINDOW*, std::vector<std::string>, std::string position = "newline", std::vector<int> offset = { 0,0 });
 
 		void refresh_wins();
 		void refresh_wins(std::vector<WINDOW*>);
