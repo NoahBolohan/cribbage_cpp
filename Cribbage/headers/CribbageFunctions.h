@@ -64,7 +64,7 @@ class Cribbage {
 
 		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string position = "eol");
 		void WPrintLine(WINDOW*, std::string, bool clear_line = true, std::vector<int> offset = { 0,0 });
-		void WPrintLines(WINDOW*, std::vector<std::string>, std::string position = "newline", std::vector<int> offset = { 0,0 });
+		void WPrintLines(WINDOW*, std::vector<std::string>, std::vector<int> offset = { 0,0 }, std::string position = "newline");
 
 		void refresh_wins();
 		void refresh_wins(std::vector<WINDOW*>);

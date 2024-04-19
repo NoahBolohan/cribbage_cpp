@@ -46,7 +46,7 @@ void Cribbage::WDisplayPeg(int player_index) {
 void Cribbage::WDisplayInitialPlayArea() {
 
 	wattron(play_area_win, COLOR_PAIR(5));
-	WPrintLines(play_area_win, ascii_deck_face_down, "newline", { 6,0 });
+	WPrintLines(play_area_win, ascii_deck_face_down, { 6,0 });
 	wattroff(play_area_win, COLOR_PAIR(5));
 	refresh_wins({ play_area_win });
 }
@@ -64,12 +64,12 @@ void Cribbage::WDisplayPlayArea() {
 		}
 
 		wattron(play_area_win, COLOR_PAIR(n_colour_pair));
-		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), "newline", { 6, 0 });
+		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), { 6, 0 });
 		wattroff(play_area_win, COLOR_PAIR(n_colour_pair));
 	}
 	else {
 		wattron(play_area_win, COLOR_PAIR(5));
-		WPrintLines(play_area_win, ascii_deck_face_down, "newline", { 6,0 });
+		WPrintLines(play_area_win, ascii_deck_face_down, { 6,0 });
 		wattroff(play_area_win, COLOR_PAIR(5));
 	}
 	
@@ -92,7 +92,7 @@ void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 	if (hide_cards) {
 		wattron(player_windows[player_index], COLOR_PAIR(5));
 		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
-			WPrintLines(player_windows[player_index], card_back, "", std::vector<int>{0, 6 * i});
+			WPrintLines(player_windows[player_index], card_back, {0, 6 * i}, "");
 		}
 		wattroff(player_windows[player_index], COLOR_PAIR(5));
 	}
@@ -143,7 +143,7 @@ void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit,
 		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintLines(window, ascii_cards["full"][value][suit], "newline", offset);
+	WPrintLines(window, ascii_cards["full"][value][suit], offset);
 	wattroff(window, COLOR_PAIR(n_colour_pair));
 }
 
@@ -154,7 +154,7 @@ void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::strin
 		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintLines(window, ascii_cards["partial"][value][suit], "newline", offset);
+	WPrintLines(window, ascii_cards["partial"][value][suit], offset);
 	wattroff(window, COLOR_PAIR(n_colour_pair));
 }
 
@@ -173,7 +173,7 @@ void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std
 	}
 
 	reset_win(text_area_win);
-	WPrintLines(text_area_win, text_area_contents, position);
+	WPrintLines(text_area_win, text_area_contents, { 0,0 }, position);
 	refresh_wins({ text_area_win });
 }
 
@@ -200,7 +200,7 @@ void Cribbage::WPrintLine(WINDOW* window, std::string line, bool clear_line, std
 	);
 }
 
-void Cribbage::WPrintLines(WINDOW* window, std::vector<std::string> lines, std::string position, std::vector<int> offset) {
+void Cribbage::WPrintLines(WINDOW* window, std::vector<std::string> lines, std::vector<int> offset, std::string position) {
 	if (position == "newline") {
 		if (lines.size() >= getmaxy(window)) {
 			lines.erase(lines.begin(), lines.begin() + 1);
