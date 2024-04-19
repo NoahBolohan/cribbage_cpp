@@ -13,7 +13,7 @@ void DestroyWin(WINDOW*);
 
 void MVPrintWSA(int, int, std::vector<std::string>);
 
-void MVWPrintWSA(WINDOW*, int, int, std::vector<std::string>);
+void MVWPrintWSA(WINDOW*, int, int, std::vector<std::string>, std::vector<int>);
 
 void MVWPrintWColoured(WINDOW*, int, int, std::map<int, std::vector < std::string>>);
 

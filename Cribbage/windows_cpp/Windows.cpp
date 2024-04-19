@@ -48,12 +48,16 @@ void MVPrintWSA(int y, int x, std::vector<std::string> texts)
 	}
 }
 
-void MVWPrintWSA(WINDOW* window, int y, int x, std::vector<std::string> texts)
+void MVWPrintWSA(WINDOW* window, int y, int x, std::vector<std::string> lines, std::vector<int> line_colours)
 {
-	int i = 0;
-	for (const std::string& text : texts) {
-		mvwprintw(window, y + i, x, text.c_str());
-		i++;
+	for (int i = 0; i < int(lines.size()); i++) {
+		if (line_colours.at(i) > 0) {
+			wattron(window, COLOR_PAIR(line_colours.at(i)));
+		}
+		mvwprintw(window, y + i, x, lines.at(i).c_str());
+		if (line_colours.at(i) > 0) {
+			wattroff(window, COLOR_PAIR(line_colours.at(i)));
+		}
 	}
 }
 

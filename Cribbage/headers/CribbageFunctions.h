@@ -51,7 +51,6 @@ class Cribbage {
 
 		// Display
 		void WDisplayWelcomeText();
-		void WDisplayBoard();
 		void WDisplayEmptyColouredBoard();
 		void WDisplayPeg(int);
 		void WDisplayPlayArea();
@@ -62,11 +61,11 @@ class Cribbage {
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
 		void WDisplayPartialCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
 
-		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string align = "left", std::string position = "eol");
-		void WPrintToTextArea(std::string, bool append = false, std::string align = "left", std::string position = "eol");
+		void WPrintToTextArea(std::vector<std::string>, bool append = false, int colour_pair = 0, std::string align = "left", std::string position = "eol");
+		void WPrintToTextArea(std::string, bool append = false, int colour_pair = 0, std::string align = "left", std::string position = "eol");
 
-		void WPrintLine(WINDOW*, std::string, bool clear_line = true, std::vector<int> offset = {0,0});
-		void WPrintLines(WINDOW*, std::vector<std::string>, std::vector<int> offset = { 0,0 }, std::string position = "newline");
+		void WPrintLine(WINDOW*, std::string, int, bool clear_line = true, std::vector<int> offset = {0,0});
+		void WPrintLines(WINDOW*, std::vector<std::string>, std::vector<int>, std::vector<int> offset = { 0,0 }, std::string position = "newline");
 
 		void refresh_wins();
 		void refresh_wins(std::vector<WINDOW*>);
@@ -171,6 +170,7 @@ class Cribbage {
 		std::map<std::string, std::map<int, std::vector < std::vector<int>>>> cribbage_boards_coloured_routes;
 		std::vector<std::string> welcome_text;
 		std::vector<std::string> text_area_contents;
+		std::vector<int> text_area_colours;
 		std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> ascii_cards;
 		std::vector<std::string> card_back;
 		std::vector<std::string> ascii_deck_face_down;

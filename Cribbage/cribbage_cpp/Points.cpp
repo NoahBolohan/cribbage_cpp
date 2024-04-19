@@ -191,9 +191,9 @@ void Cribbage::AddPoints(int player_index, int n_points, std::string announcemen
 void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
 
 	if (deck.GetCurrentPlayerIndex() == user_index) {
-		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for you!", true);
+		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for you!", true, user_index + 1);
 	}
 	else {
-		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!", true, "right");
+		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!", true, deck.GetCurrentPlayerIndex() + 1, "right");
 	}
 }
