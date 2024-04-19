@@ -34,21 +34,21 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage &cribba
 
 		if (player_type == "user") {
 
-			cribbage.WPrintToTextArea({ "Choose card(s) (enter the card index beneath):" }, true, "newline");
+			cribbage.WPrintToTextArea("Choose card(s) (enter the card index beneath):", true, "newline");
 
 			for (int i = 0; i < n_cards; i++) {
 
 				wgetstr(cribbage.GetTextAreaWin(),temp_input);
 				card_index_input = atoi(temp_input);
-				cribbage.WPrintToTextArea({ std::to_string(card_index_input) }, true, "newline");
+				cribbage.WPrintToTextArea(std::to_string(card_index_input), true, "newline");
 
 				while (std::find(card_indices.begin(), card_indices.end(), card_index_input) == card_indices.end() || std::find(card_indices_to_choose.begin(), card_indices_to_choose.end(), card_index_input) != card_indices_to_choose.end()) {
 
-					cribbage.WPrintToTextArea({ "Invalid card choice. Please choose again:" }, true, "newline");
+					cribbage.WPrintToTextArea("Invalid card choice. Please choose again:", true, "newline");
 
 					wgetstr(cribbage.GetTextAreaWin(), temp_input);
 					card_index_input = atoi(temp_input);
-					cribbage.WPrintToTextArea({ std::to_string(card_index_input) }, true, "newline");
+					cribbage.WPrintToTextArea(std::to_string(card_index_input), true, "newline");
 				}
 
 				card_indices_to_choose.push_back(card_index_input);
@@ -89,7 +89,7 @@ std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage &cribba
 	}
 
 	catch (const std::exception& e) {
-		cribbage.WPrintToTextArea({ e.what()});
+		cribbage.WPrintToTextArea(e.what());
 	}
 
 	return cards_to_be_chosen;

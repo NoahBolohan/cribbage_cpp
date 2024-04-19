@@ -5,7 +5,7 @@
 #include "../headers/CribbageFunctions.h"
 
 void Cribbage::WDisplayWelcomeText() {
-	WPrintLines(text_area_win, welcome_text);
+	WPrintLines(text_area_win, welcome_text, { 0,0 }, "eol");
 }
 
 void Cribbage::WDisplayBoard() {
@@ -170,6 +170,23 @@ void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std
 	}
 	else {
 		text_area_contents = lines;
+	}
+
+	reset_win(text_area_win);
+	WPrintLines(text_area_win, text_area_contents, { 0,0 }, position);
+	refresh_wins({ text_area_win });
+}
+
+void Cribbage::WPrintToTextArea(std::string line, bool append, std::string position) {
+
+	if (append) {
+		text_area_contents.push_back(line);
+		if (text_area_contents.size() > getmaxy(text_area_win)) {
+			text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - getmaxy(text_area_win));
+		}
+	}
+	else {
+		text_area_contents = { line };
 	}
 
 	reset_win(text_area_win);
