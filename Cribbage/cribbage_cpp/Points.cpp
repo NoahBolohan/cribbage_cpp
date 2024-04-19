@@ -194,6 +194,6 @@ void Cribbage::AnnouncePoints(int n_points, std::string announcement) {
 		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for you!", true);
 	}
 	else {
-		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!", true);
+		WPrintToTextArea(announcement + "! " + std::to_string(n_points) + " points for player " +std::to_string(deck.GetCurrentPlayerIndex()) + "!", true, "right");
 	}
 }

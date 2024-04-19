@@ -5,7 +5,7 @@
 #include "../headers/CribbageFunctions.h"
 
 void Cribbage::WDisplayWelcomeText() {
-	WPrintLines(text_area_win, welcome_text, { 0,0 }, "eol");
+	WPrintLines(text_area_win, welcome_text, { 0, 0 }, "eol");
 }
 
 void Cribbage::WDisplayBoard() {
@@ -158,7 +158,13 @@ void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::strin
 	wattroff(window, COLOR_PAIR(n_colour_pair));
 }
 
-void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std::string position) {
+void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std::string align, std::string position) {
+
+	if (align == "right") {
+		for (int i = 0; i < int(lines.size()); i++) {
+			lines.at(i).insert(0, getmaxx(text_area_win) - int(lines.at(i).size()), ' ');
+		}
+	}
 
 	if (append) {
 		for (auto line : lines) {
@@ -173,11 +179,15 @@ void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std
 	}
 
 	reset_win(text_area_win);
-	WPrintLines(text_area_win, text_area_contents, { 0,0 }, position);
+	WPrintLines(text_area_win, text_area_contents, { 0, 0 }, position);
 	refresh_wins({ text_area_win });
 }
 
-void Cribbage::WPrintToTextArea(std::string line, bool append, std::string position) {
+void Cribbage::WPrintToTextArea(std::string line, bool append, std::string align, std::string position) {
+
+	if (align == "right") {
+		line.insert(0, getmaxx(text_area_win) - int(line.size()), ' ');
+	}
 
 	if (append) {
 		text_area_contents.push_back(line);
@@ -190,7 +200,7 @@ void Cribbage::WPrintToTextArea(std::string line, bool append, std::string posit
 	}
 
 	reset_win(text_area_win);
-	WPrintLines(text_area_win, text_area_contents, { 0,0 }, position);
+	WPrintLines(text_area_win, text_area_contents, { 0, 0 }, position);
 	refresh_wins({ text_area_win });
 }
 

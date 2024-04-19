@@ -62,9 +62,10 @@ class Cribbage {
 		void WDisplayCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
 		void WDisplayPartialCard(WINDOW*, std::string, std::string, std::vector<int> offset = { 0,0 });
 
-		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string position = "eol");
-		void WPrintToTextArea(std::string, bool append = false, std::string position = "eol");
-		void WPrintLine(WINDOW*, std::string, bool clear_line = true, std::vector<int> offset = { 0,0 });
+		void WPrintToTextArea(std::vector<std::string>, bool append = false, std::string align = "left", std::string position = "eol");
+		void WPrintToTextArea(std::string, bool append = false, std::string align = "left", std::string position = "eol");
+
+		void WPrintLine(WINDOW*, std::string, bool clear_line = true, std::vector<int> offset = {0,0});
 		void WPrintLines(WINDOW*, std::vector<std::string>, std::vector<int> offset = { 0,0 }, std::string position = "newline");
 
 		void refresh_wins();
