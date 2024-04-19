@@ -5,11 +5,11 @@
 #include "../headers/CribbageFunctions.h"
 
 void Cribbage::WDisplayWelcomeText() {
-	WPrintWSAAtCoord(text_area_win, "text_area", welcome_text);
+	WPrintLines(text_area_win, welcome_text);
 }
 
 void Cribbage::WDisplayBoard() {
-	WPrintWSAAtCoord(board_win, "board", cribbage_boards[board_name]);
+	WPrintLines(board_win, cribbage_boards[board_name]);
 }
 
 void Cribbage::WDisplayEmptyColouredBoard() {
@@ -43,34 +43,10 @@ void Cribbage::WDisplayPeg(int player_index) {
 	refresh_wins({ board_win });
 }
 
-void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std::string position) {
-
-	if (append) {
-		for (auto line : lines) {
-			text_area_contents.push_back(line);
-		}
-		if (text_area_contents.size() > getmaxy(text_area_win)) {
-			text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - getmaxy(text_area_win));
-		}
-	}
-	else {
-		text_area_contents = lines;
-	}
-
-	reset_win(text_area_win);
-	if (position == "newline") {
-		WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents, "newline");
-	}
-	else {
-		WPrintWSAAtCoord(text_area_win, "text_area", text_area_contents);
-	}
-	refresh_wins({ text_area_win });
-}
-
 void Cribbage::WDisplayInitialPlayArea() {
 
 	wattron(play_area_win, COLOR_PAIR(5));
-	WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
+	WPrintLines(play_area_win, ascii_deck_face_down, "newline", { 6,0 });
 	wattroff(play_area_win, COLOR_PAIR(5));
 	refresh_wins({ play_area_win });
 }
@@ -88,12 +64,12 @@ void Cribbage::WDisplayPlayArea() {
 		}
 
 		wattron(play_area_win, COLOR_PAIR(n_colour_pair));
-		WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, GenerateAsciiDeckFaceUp(starter));
+		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), "newline", { 6, 0 });
 		wattroff(play_area_win, COLOR_PAIR(n_colour_pair));
 	}
 	else {
 		wattron(play_area_win, COLOR_PAIR(5));
-		WPrintWSAAtCoord(play_area_win, "origin", { 6,0 }, ascii_deck_face_down);
+		WPrintLines(play_area_win, ascii_deck_face_down, "newline", { 6,0 });
 		wattroff(play_area_win, COLOR_PAIR(5));
 	}
 	
@@ -116,7 +92,7 @@ void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 	if (hide_cards) {
 		wattron(player_windows[player_index], COLOR_PAIR(5));
 		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
-			WPrintWSAAtCoord(player_windows[player_index], "origin", { 0,6*i }, card_back);
+			WPrintLines(player_windows[player_index], card_back, "", std::vector<int>{0, 6 * i});
 		}
 		wattroff(player_windows[player_index], COLOR_PAIR(5));
 	}
@@ -160,17 +136,6 @@ void Cribbage::WDisplayCrib(std::vector <std::vector <std::string>> cards) {
 	}
 }
 
-void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit) {
-	int n_colour_pair = 6;
-
-	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 5;
-	}
-	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintWSAAtCoord(window, "origin", ascii_cards["full"][value][suit]);
-	wattroff(window, COLOR_PAIR(n_colour_pair));
-}
-
 void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit, std::vector<int> offset) {
 	int n_colour_pair = 6;
 
@@ -178,18 +143,7 @@ void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit,
 		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintWSAAtCoord(window, "origin", offset, ascii_cards["full"][value][suit]);
-	wattroff(window, COLOR_PAIR(n_colour_pair));
-}
-
-void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::string suit) {
-	int n_colour_pair = 6;
-
-	if ((suit == "Clubs") || (suit == "Spades")) {
-		n_colour_pair = 5;
-	}
-	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintWSAAtCoord(window, "origin", ascii_cards["partial"][value][suit]);
+	WPrintLines(window, ascii_cards["full"][value][suit], "newline", offset);
 	wattroff(window, COLOR_PAIR(n_colour_pair));
 }
 
@@ -200,178 +154,95 @@ void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::strin
 		n_colour_pair = 5;
 	}
 	wattron(window, COLOR_PAIR(n_colour_pair));
-	WPrintWSAAtCoord(window, "origin", offset, ascii_cards["partial"][value][suit]);
+	WPrintLines(window, ascii_cards["partial"][value][suit], "newline", offset);
 	wattroff(window, COLOR_PAIR(n_colour_pair));
 }
 
-void Cribbage::WPrintWAtCoord(WINDOW* window, std::string coord_name, std::string line, bool clear_line) {
-	try {
-		if (coords.find(coord_name) == coords.end()) {
-			throw std::invalid_argument(coord_name + " not in coords keys");
-		}
-		if (clear_line) {
-			wmove(
-				window,
-				coords[coord_name].at(0),
-				coords[coord_name].at(1)
-			);
-			wclrtoeol(window);
-		}
+void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, std::string position) {
 
-		mvwprintw(
-			window,
-			coords[coord_name].at(0),
-			coords[coord_name].at(1),
-			line.c_str()
-		);
-		wmove(
-			window,
-			coords[coord_name].at(0),
-			coords[coord_name].at(1) + int(line.size())
-		);
+	if (append) {
+		for (auto line : lines) {
+			text_area_contents.push_back(line);
+		}
+		if (text_area_contents.size() > getmaxy(text_area_win)) {
+			text_area_contents.erase(text_area_contents.begin(), text_area_contents.end() - getmaxy(text_area_win));
+		}
+	}
+	else {
+		text_area_contents = lines;
 	}
 
-	catch (const std::invalid_argument& e) {
-		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
-		getch();
-	}
-
+	reset_win(text_area_win);
+	WPrintLines(text_area_win, text_area_contents, position);
+	refresh_wins({ text_area_win });
 }
 
-void Cribbage::WPrintWAtCoord(WINDOW* window, std::string coord_name, std::vector<int> offset, std::string line, bool clear_line) {
-	try {
-		if (coords.find(coord_name) == coords.end()) {
-			throw std::invalid_argument(coord_name + " not in coords keys");
-		}
-		if (clear_line) {
-			wmove(
-				window,
-				coords[coord_name].at(0) + offset.at(0),
-				coords[coord_name].at(1) + offset.at(1)
-			);
-			wclrtoeol(window);
-		}
-
-		mvwprintw(
-			window,
-			coords[coord_name].at(0) + offset.at(0),
-			coords[coord_name].at(1) + offset.at(1),
-			line.c_str()
-		);
+void Cribbage::WPrintLine(WINDOW* window, std::string line, bool clear_line, std::vector<int> offset) {
+	if (clear_line) {
 		wmove(
 			window,
-			coords[coord_name].at(0) + offset.at(0),
-			coords[coord_name].at(1) + offset.at(1) + int(line.size())
+			offset.at(0),
+			offset.at(1)
 		);
+		wclrtoeol(window);
 	}
 
-	catch (const std::invalid_argument& e) {
-		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
-		getch();
-	}
+	mvwprintw(
+		window,
+		offset.at(0),
+		offset.at(1),
+		line.c_str()
+	);
+	wmove(
+		window,
+		offset.at(0),
+		offset.at(1) + int(line.size())
+	);
 }
 
-void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vector<std::string> lines) {
-	try {
-		if (coords.find(coord_name) == coords.end()) {
-			throw std::invalid_argument(coord_name + " not in coords keys");
-		}
-		MVWPrintWSA(
-			window,
-			coords[coord_name].at(0),
-			coords[coord_name].at(1),
-			lines
-		);
-		wmove(
-			window,
-			coords[coord_name].at(0) + int(lines.size())-1,
-			coords[coord_name].at(1) + int(lines.back().size())
-		);
-	}
+void Cribbage::WPrintLines(WINDOW* window, std::vector<std::string> lines, std::string position, std::vector<int> offset) {
+	if (position == "newline") {
+		if (lines.size() >= getmaxy(window)) {
+			lines.erase(lines.begin(), lines.begin() + 1);
 
-	catch (const std::invalid_argument& e) {
-		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
-		getch();
-	}
-}
-
-void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vector<std::string> lines, std::string position) {
-	try {
-		if (coords.find(coord_name) == coords.end()) {
-			throw std::invalid_argument(coord_name + " not in coords keys");
-		}
-		if (position == "newline") {
-			if (lines.size() >= getmaxy(window)) {
-				lines.erase(lines.begin(), lines.begin() + 1);
-
-				MVWPrintWSA(
-					window,
-					coords[coord_name].at(0),
-					coords[coord_name].at(1),
-					lines
-				);
-				wmove(
-					window,
-					coords[coord_name].at(0) + int(lines.size()),
-					0
-				);
-			}
-			else {
-				MVWPrintWSA(
-					window,
-					coords[coord_name].at(0),
-					coords[coord_name].at(1),
-					lines
-				);
-				wmove(
-					window,
-					coords[coord_name].at(0) + int(lines.size()),
-					0
-				);
-			}
-		}
-		else {
 			MVWPrintWSA(
 				window,
-				coords[coord_name].at(0),
-				coords[coord_name].at(1),
+				offset.at(0),
+				offset.at(1),
 				lines
 			);
 			wmove(
 				window,
-				coords[coord_name].at(0) + int(lines.size() - 1),
-				coords[coord_name].at(1) + int(lines.back().size())
+				offset.at(0) + int(lines.size()),
+				0
+			);
+		}
+		else {
+			MVWPrintWSA(
+				window,
+				offset.at(0),
+				offset.at(1),
+				lines
+			);
+			wmove(
+				window,
+				offset.at(0) + int(lines.size()),
+				0
 			);
 		}
 	}
-
-	catch (const std::invalid_argument& e) {
-		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
-		getch();
-	}
-}
-
-void Cribbage::WPrintWSAAtCoord(WINDOW* window, std::string coord_name, std::vector<int> offset, std::vector<std::string> lines) {
-	try {
-		if (coords.find(coord_name) == coords.end()) {
-			throw std::invalid_argument(coord_name + " not in coords keys");
-		}
+	else {
 		MVWPrintWSA(
 			window,
-			coords[coord_name].at(0) + offset.at(0),
-			coords[coord_name].at(1) + offset.at(1),
+			offset.at(0),
+			offset.at(1),
 			lines
 		);
 		wmove(
 			window,
-			coords[coord_name].at(0) + offset.at(0) + int(lines.size()),
-			coords[coord_name].at(1) + offset.at(1) + int(lines.back().size())
+			offset.at(0) + int(lines.size() - 1),
+			offset.at(1) + int(lines.back().size())
 		);
-	}
-
-	catch (const std::invalid_argument& e) {
-		WPrintWAtCoord(text_area_win, "guess_text", e.what(), true);
-		getch();
 	}
 }
 
