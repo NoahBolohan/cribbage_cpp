@@ -182,7 +182,7 @@ void Cribbage::WPrintToTextArea(std::vector<std::string> lines, bool append, int
 		}
 	}
 
-	if (align == "right") {
+	if (align == "center") {
 		for (int i = 0; i < int(lines.size()); i++) {
 			lines.at(i).insert(0, int(std::floor(0.5 * (getmaxx(text_area_win) - int(lines.at(i).size())))), ' ');
 			lines.at(i).insert(lines.at(i).end(), int(std::ceil(0.5 * (getmaxx(text_area_win) - int(lines.at(i).size())))), ' ');
