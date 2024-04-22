@@ -12,7 +12,7 @@ class Deck;
 class Cribbage {
 	public:
 		// Game processes
-		Cribbage(int, std::string, std::map<std::string, std::vector<int>>);
+		Cribbage(int);
 
 		void StartGame();
 		void InitializeScores();
@@ -72,6 +72,8 @@ class Cribbage {
 		void reset_win(WINDOW*);
 		void GenerateColourPairs();
 
+		void ResizeTerminal();
+
 		// Getters
 		WINDOW* GetTextAreaWin();
 
@@ -80,6 +82,7 @@ class Cribbage {
 		void RemovePlayerFrom31(int);
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		std::vector<std::vector<std::string>> GetCardsFromEnd(std::vector<std::vector<std::string>>, int);
+		void SetGameOptions(int);
 
 	private:
 		int number_of_players;
@@ -154,17 +157,18 @@ class Cribbage {
 
 		std::map<int, WINDOW*> player_windows;
 
-		std::map < std::string, std::vector<int> > coords = {
-			{"origin", {0, 0}},
-			{"board", {0, 0}},
-			{"text_area", {0, 0}},
-			{"play_area", {0, 0}}
-		};
+		//std::map < std::string, std::vector<int> > coords = {
+		//	{"origin", {0, 0}},
+		//	{"board", {0, 0}},
+		//	{"text_area", {0, 0}},
+		//	{"play_area", {0, 0}}
+		//};
 
 		std::map < int, std::vector<int>> peg_coords;
 
 		// ASCII members
 		std::string board_name;
+		std::map<std::string, std::vector<int>> window_dims;
 		std::map<std::string, std::vector < std::string>> cribbage_boards;
 		std::map<std::string, std::map<int, std::vector < std::string>>> cribbage_boards_coloured;
 		std::map<std::string, std::map<int, std::vector < std::vector<int>>>> cribbage_boards_coloured_routes;
@@ -176,6 +180,28 @@ class Cribbage {
 		std::vector<std::string> card_back_hori;
 		std::vector<std::string> ascii_deck_face_down;
 
+		// N-players game option maps
+		std::map<int, std::string> board_name_map = {
+			{2, "2p_simple_hori"},
+			{3, "3p_simple_hori"}
+		};
+
+		std::map<int, std::map<std::string, std::vector<int>>> window_dim_map = {
+			{
+				2, {
+					{"board", {13, 58, 0, 0}},
+					{"text_area", {34, 51, 0, 58}},
+					{"play_area", {21, 58, 13, 0}}
+				}
+			},
+			{
+				3, {
+					{"board", {15, 61, 0, 0}},
+					{"text_area", {41, 51, 0, 61}},
+					{"play_area", {26, 61, 15, 0}}
+				}
+			}
+		};
 };
 
 #endif

@@ -8,24 +8,14 @@
 #include "../headers/Functions.h"
 #include "../headers/Windows.h"
 
-Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::string, std::vector<int>> window_dims) : deck(n_players, 0) {
-	initscr();
+Cribbage::Cribbage(int n_players) : deck(n_players, 0) {
+	SetGameOptions(n_players);
+	ResizeTerminal();
 
-	resize_term(
-		window_dims["board"].at(0) + window_dims["play_area"].at(0),
-		window_dims["board"].at(1) + window_dims["text_area"].at(1)
-	);
-	refresh();
-
-	number_of_players = n_players;
-	board_name = board_name_input;
-	
-	//header_border_win = CreateNewWinBorder(window_dims["header"]);
 	board_border_win = CreateNewWinBorder(window_dims["board"]);
 	text_area_border_win = CreateNewWinBorder(window_dims["text_area"]);
 	play_area_border_win = CreateNewWinBorder(window_dims["play_area"]);
 
-	//header_win = CreateNewWin(window_dims["header"]);
 	board_win = CreateNewWin(window_dims["board"]);
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);

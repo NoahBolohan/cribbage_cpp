@@ -16,7 +16,7 @@ void Cribbage::WDisplayWelcomeText() {
 }
 
 void Cribbage::WDisplayEmptyColouredBoard() {
-	MVWPrintWColoured(board_win, coords["board"].at(0), coords["board"].at(1), cribbage_boards_coloured[board_name]);
+	MVWPrintWColoured(board_win, 0, 0, cribbage_boards_coloured[board_name]);
 }
 
 void Cribbage::WDisplayPeg(int player_index) {
@@ -369,4 +369,13 @@ void Cribbage::GenerateColourPairs() {
 	init_pair(5, COLOR_BLACK, COLOR_WHITE);
 	init_pair(6, COLOR_RED, COLOR_WHITE);
 	
+}
+
+void Cribbage::ResizeTerminal() {
+	resize_term(
+		window_dims["terminal"].at(0),
+		window_dims["terminal"].at(1)
+	);
+
+	refresh();
 }

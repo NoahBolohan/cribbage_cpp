@@ -46,3 +46,20 @@ std::vector<std::vector<std::string>> Cribbage::GetCardsFromEnd(std::vector<std:
 WINDOW* Cribbage::GetTextAreaWin() {
 	return text_area_win;
 }
+
+void Cribbage::SetGameOptions(int n_players) {
+	number_of_players = n_players;
+	board_name = board_name_map[n_players];
+	window_dims = window_dim_map[n_players];
+	window_dims.insert(
+		{
+			"terminal",
+			{
+				window_dims["board"].at(0) + window_dims["play_area"].at(0),
+				window_dims["board"].at(1) + window_dims["text_area"].at(1),
+				0,
+				0
+			}
+		}
+	);
+}
