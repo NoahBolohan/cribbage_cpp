@@ -12,8 +12,8 @@ Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::st
 	initscr();
 
 	resize_term(
-		window_dims["board"].at(0) + window_dims["text_area"].at(0),
-		window_dims["board"].at(1) + window_dims["play_area"].at(1)
+		window_dims["board"].at(0) + window_dims["play_area"].at(0),
+		window_dims["board"].at(1) + window_dims["text_area"].at(1)
 	);
 	refresh();
 
