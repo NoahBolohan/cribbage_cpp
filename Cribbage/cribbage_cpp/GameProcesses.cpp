@@ -78,6 +78,9 @@ void Cribbage::StartGame() {
 	WDisplayEmptyColouredBoard();
 	WDisplayPeg(0);
 	WDisplayPeg(1);
+	if (number_of_players == 3) {
+		WDisplayPeg(2);
+	}
 	WDisplayWelcomeText();
 	WDisplayInitialPlayArea();
 
