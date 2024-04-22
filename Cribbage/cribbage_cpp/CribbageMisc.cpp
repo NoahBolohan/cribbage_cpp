@@ -28,8 +28,9 @@ void Cribbage::RemovePlayerFrom31(int player_index) {
 }
 
 void Cribbage::PassToCrib(std::vector<std::vector<std::string>> cards) {
-	deck.ToCommonPile("crib", cards.at(0));
-	deck.ToCommonPile("crib", cards.at(1));
+	for (auto card : cards) {
+		deck.ToCommonPile("crib", card);
+	}
 }
 
 std::vector<std::vector<std::string>> Cribbage::GetCardsFromEnd(std::vector<std::vector<std::string>> cards, int n_cards) {

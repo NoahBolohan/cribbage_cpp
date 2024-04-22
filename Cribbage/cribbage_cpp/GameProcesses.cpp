@@ -129,29 +129,61 @@ void Cribbage::InitializePiles() {
 }
 
 void Cribbage::Deal() {
-	if (n_round == 1) {
-		deck.DealHands(6);
-	}
-	else {
-		deck.DealHands(deck.GetCurrentPlayerIndex(), 6);
-	}
-	
-	if (deck.GetCurrentPlayerIndex() == user_index) {
-		WPrintToTextArea(std::vector<std::string>{ "You are dealing the hands...", ""}, true, user_index + 1, "left", "eol");
-	}
-	else {
-		WPrintToTextArea(std::vector < std::string>{"Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is dealing the hands...", ""}, true, deck.GetCurrentPlayerIndex() + 1, "right");
-	}
-	WDisplayPlayArea();
-	WPrintToTextArea("You must send 2 cards to the crib.", true, user_index + 1);
-
-	for (int hand_index = 0; hand_index < deck.GetNumberOfPlayers(); hand_index++) {
-
-		if (hand_index == user_index) {
-			PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "user"));
+	if (number_of_players == 2) {
+		if (n_round == 1) {
+			deck.DealHands(6);
 		}
 		else {
-			PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "com"));
+			deck.DealHands(deck.GetCurrentPlayerIndex(), 6);
+		}
+
+		if (deck.GetCurrentPlayerIndex() == user_index) {
+			WPrintToTextArea(std::vector<std::string>{ "You are dealing the hands...", ""}, true, user_index + 1, "left", "eol");
+		}
+		else {
+			WPrintToTextArea(std::vector < std::string>{"Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is dealing the hands...", ""}, true, deck.GetCurrentPlayerIndex() + 1, "right");
+		}
+		WDisplayPlayArea();
+		WPrintToTextArea("You must send 2 cards to the crib.", true, user_index + 1);
+
+		for (int hand_index = 0; hand_index < deck.GetNumberOfPlayers(); hand_index++) {
+
+			if (hand_index == user_index) {
+				PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "user"));
+			}
+			else {
+				PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 2, "com"));
+			}
+		}
+	}
+	else {
+		if (n_round == 1) {
+			deck.DealHands(5);
+		}
+		else {
+			deck.DealHands(deck.GetCurrentPlayerIndex(), 5);
+		}
+
+		if (deck.GetCurrentPlayerIndex() == user_index) {
+			WPrintToTextArea(std::vector<std::string>{ "You are dealing the hands...", ""}, true, user_index + 1, "left", "eol");
+		}
+		else {
+			WPrintToTextArea(std::vector < std::string>{"Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is dealing the hands...", ""}, true, deck.GetCurrentPlayerIndex() + 1, "right");
+		}
+
+		PassToCrib({ deck.DrawCard() });
+
+		WDisplayPlayArea();
+		WPrintToTextArea("You must send 1 card to the crib.", true, user_index + 1);
+
+		for (int hand_index = 0; hand_index < deck.GetNumberOfPlayers(); hand_index++) {
+
+			if (hand_index == user_index) {
+				PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 1, "user"));
+			}
+			else {
+				PassToCrib(deck.ChooseCardsFromHand(*this, hand_index, 1, "com"));
+			}
 		}
 	}
 }
