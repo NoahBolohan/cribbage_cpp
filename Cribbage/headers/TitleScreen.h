@@ -3,7 +3,7 @@
 
 #include <pdcurses/curses.h>
 
-void StartGame();
+void StartGame(int);
 void DisplayTitleScreen();
 int DisplayOptionsScreen(int);
 int DisplayNPlayerMenu(char, int, int);

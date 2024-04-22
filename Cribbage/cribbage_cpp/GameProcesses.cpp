@@ -77,6 +77,7 @@ void Cribbage::StartGame() {
 	refresh_wins();
 	wgetch(text_area_win);
 
+	curs_set(TRUE);
 	while (!game_over) {
 		Round();
 		n_round++;
@@ -341,4 +342,7 @@ void Cribbage::EndGame() {
 	else {
 		WPrintToTextArea("Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is the winner, better luck next time!", true, deck.GetCurrentPlayerIndex() + 1, "right");
 	}
+	curs_set(FALSE);
+	WPrintToTextArea("Press any key to return to the main menu...", true, 0, "center");
+	wgetch(text_area_win);
 }

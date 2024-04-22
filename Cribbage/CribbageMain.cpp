@@ -1,4 +1,4 @@
-//#include "headers/CribbageFunctions.h"
+
 //
 //int main() {
 //
@@ -21,7 +21,6 @@
 int main(int argc, char* argv[])
 {
     initscr();
-    curs_set(FALSE);
     noecho();
 
     char title_screen_ch = NULL;
@@ -32,7 +31,7 @@ int main(int argc, char* argv[])
         title_screen_ch = getch();
 
         if (title_screen_ch == '1') {
-            StartGame();
+            StartGame(n_players);
         }
         else if (title_screen_ch == '2') {
             n_players = DisplayOptionsScreen(n_players);

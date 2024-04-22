@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string>
 #include "../headers/TitleScreen.h"
+#include "../headers/CribbageFunctions.h"
 
 void DisplayTitleScreen() {
     clear();
@@ -9,9 +10,10 @@ void DisplayTitleScreen() {
     mvprintw(3, 1, "3. Exit");
 }
 
-void StartGame() {
+void StartGame(int n_players) {
     clear();
-    mvprintw(0, 0, "Start game");
+    Cribbage cribbage(n_players);
+    cribbage.StartGame();
 }
 
 int DisplayOptionsScreen(int n_players) {
