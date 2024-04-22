@@ -12,7 +12,7 @@ class Deck;
 class Cribbage {
 	public:
 		// Game processes
-		Cribbage(int);
+		Cribbage(int, std::map<int, std::string>);
 
 		void StartGame();
 		void InitializeScores();
@@ -71,7 +71,6 @@ class Cribbage {
 		void refresh_wins(std::vector<WINDOW*>);
 		void reset_win(WINDOW*);
 		void GenerateColourPairs();
-
 		void ResizeTerminal();
 
 		// Getters
@@ -82,10 +81,11 @@ class Cribbage {
 		void RemovePlayerFrom31(int);
 		void PassToCrib(std::vector<std::vector<std::string>>);
 		std::vector<std::vector<std::string>> GetCardsFromEnd(std::vector<std::vector<std::string>>, int);
-		void SetGameOptions(int);
+		void SetGameOptions(int, std::map<int, std::string>);
 
 	private:
 		int number_of_players;
+		std::map<int, std::string> player_colour_map;
 
 		Deck deck;
 		

@@ -8,8 +8,8 @@
 #include "../headers/Functions.h"
 #include "../headers/Windows.h"
 
-Cribbage::Cribbage(int n_players) : deck(n_players, 0) {
-	SetGameOptions(n_players);
+Cribbage::Cribbage(int n_players, std::map<int, std::string> player_colour_map) : deck(n_players, 0) {
+	SetGameOptions(n_players, player_colour_map);
 	ResizeTerminal();
 
 	board_border_win = CreateNewWinBorder(window_dims["board"]);

@@ -361,14 +361,27 @@ void Cribbage::reset_win(WINDOW* window) {
 }
 
 void Cribbage::GenerateColourPairs() {
-	start_color();
-	init_pair(1, COLOR_CYAN, COLOR_BLACK);
-	init_pair(2, COLOR_RED, COLOR_BLACK);
-	init_pair(3, COLOR_GREEN, COLOR_BLACK);
+	for (auto const& item : player_colour_map) {
+		if (item.second == "blue") {
+			init_pair(item.first, COLOR_BLUE, COLOR_BLACK);
+		}
+		else if (item.second == "green") {
+			init_pair(item.first, COLOR_GREEN, COLOR_BLACK);
+		}
+		else if (item.second == "cyan") {
+			init_pair(item.first, COLOR_CYAN, COLOR_BLACK);
+		}
+		else if (item.second == "red") {
+			init_pair(item.first, COLOR_RED, COLOR_BLACK);
+		}
+		else if (item.second == "magenta") {
+			init_pair(item.first, COLOR_MAGENTA, COLOR_BLACK);
+		}
+	}
+
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 	init_pair(5, COLOR_BLACK, COLOR_WHITE);
 	init_pair(6, COLOR_RED, COLOR_WHITE);
-	
 }
 
 void Cribbage::ResizeTerminal() {

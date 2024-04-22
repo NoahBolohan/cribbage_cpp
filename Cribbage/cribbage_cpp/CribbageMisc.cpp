@@ -47,8 +47,9 @@ WINDOW* Cribbage::GetTextAreaWin() {
 	return text_area_win;
 }
 
-void Cribbage::SetGameOptions(int n_players) {
+void Cribbage::SetGameOptions(int n_players, std::map<int, std::string> colour_map) {
 	number_of_players = n_players;
+	player_colour_map = colour_map;
 	board_name = board_name_map[n_players];
 	window_dims = window_dim_map[n_players];
 	window_dims.insert(
