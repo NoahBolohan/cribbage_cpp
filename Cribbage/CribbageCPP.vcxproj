@@ -138,6 +138,7 @@
     <ClCompile Include="deck_cpp\Piles.cpp" />
     <ClCompile Include="deck_cpp\Players.cpp" />
     <ClCompile Include="functions_cpp\Functions.cpp" />
+    <ClCompile Include="title_screen_cpp\TitleScreen.cpp" />
     <ClCompile Include="windows_cpp\Displays.cpp" />
     <ClCompile Include="windows_cpp\Windows.cpp" />
   </ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="headers\CribbageFunctions.h" />
     <ClInclude Include="headers\DeckFunctions.h" />
     <ClInclude Include="headers\Functions.h" />
+    <ClInclude Include="headers\TitleScreen.h" />
     <ClInclude Include="headers\Windows.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

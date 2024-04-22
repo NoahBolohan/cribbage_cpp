@@ -1,14 +1,49 @@
-#include "headers/CribbageFunctions.h"
+//#include "headers/CribbageFunctions.h"
+//
+//int main() {
+//
+//	initscr();
+//	int number_of_players = 3;
+//
+//	Cribbage cribbage(number_of_players);
+//	cribbage.StartGame();
+//
+//	getch();
+//
+//	return 0;
+//}
 
-int main() {
+#include <pdcurses/curses.h>
 
-	initscr();
-	int number_of_players = 3;
+#include "./headers/TitleScreen.h"
 
-	Cribbage cribbage(number_of_players);
-	cribbage.StartGame();
 
-	getch();
+int main(int argc, char* argv[])
+{
+    initscr();
+    curs_set(FALSE);
+    noecho();
 
-	return 0;
+    char title_screen_ch = NULL;
+    int n_players = 2;
+
+    while (1) {
+        DisplayTitleScreen();
+        title_screen_ch = getch();
+
+        if (title_screen_ch == '1') {
+            StartGame();
+        }
+        else if (title_screen_ch == '2') {
+            n_players = DisplayOptionsScreen(n_players);
+        }
+        else if (title_screen_ch == '3') {
+            ExitGame();
+        }
+    }
+
+    refresh();
+    getch();
+    endwin();
+    return 0;
 }
