@@ -50,10 +50,10 @@ Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::st
 
 	player2_win = CreateNewWin(
 		{
-			7,
-			37,
+			25,
+			12,
 			getbegy(play_area_win) - 1,
-			getbegx(play_area_win) - 1,
+			41,
 		}
 	);
 
@@ -122,7 +122,6 @@ void Cribbage::Round() {
 		TheShow();
 	}
 }
-
 
 void Cribbage::InitializePiles() {
 	deck.DefineSidePiles(side_pile_names);

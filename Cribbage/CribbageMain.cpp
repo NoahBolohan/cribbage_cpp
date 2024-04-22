@@ -20,8 +20,8 @@ int main() {
 		"3p_simple_hori",
 		{
 			{"board", {15, 61, 0, 0}},
-			{"text_area", {37, 51, 0, 61}},
-			{"play_area", {22, 61, 15, 0}}
+			{"text_area", {41, 51, 0, 61}},
+			{"play_area", {26, 61, 15, 0}}
 		}
 	);
 

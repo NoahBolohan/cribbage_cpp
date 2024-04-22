@@ -572,12 +572,18 @@ void Cribbage::GenerateDeck() {
 
 void Cribbage::GenerateCardAsciis() {
 
-	card_back = {
+	card_back_vert = {
 		" --- ",
 		"|\\ /|",
 		"| X |",
 		"|/ \\|",
 		" --- ",
+	};
+
+	card_back_hori = {
+		" -  -  - ",
+		"|   X   |",
+		" -  -  - "
 	};
 
 	ascii_deck_face_down = {

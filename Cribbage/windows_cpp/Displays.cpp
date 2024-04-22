@@ -73,14 +73,14 @@ void Cribbage::WDisplayPlayArea() {
 		for (auto line : ascii_deck_face_down) {
 			card_colours.push_back(n_colour_pair);
 		}
-		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), card_colours, { int((getmaxy(play_area_win) - 7) / 2), 0 });
+		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), card_colours, { int((getmaxy(play_area_win) - 6) / 2), 0 });
 	}
 	else {
 		std::vector<int> card_colours;
 		for (auto line : ascii_deck_face_down) {
 			card_colours.push_back(5);
 		}
-		WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { int((getmaxy(play_area_win) - 7) / 2),0 });
+		WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { int((getmaxy(play_area_win) - 6) / 2),0 });
 	}
 	
 
@@ -98,27 +98,51 @@ void Cribbage::WDisplayPlayArea() {
 void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
 	reset_win({ player_windows[player_index] });
-
-	if (hide_cards) {
-		std::vector<int> card_back_colours;
-		for (auto line : card_back) {
-			card_back_colours.push_back(5);
+	if (player_index == 2) {
+		if (hide_cards) {
+			std::vector<int> card_back_colours;
+			for (auto line : card_back_hori) {
+				card_back_colours.push_back(5);
+			}
+			for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+				WPrintLines(player_windows[player_index], card_back_hori, card_back_colours, { 4 * i, 0 }, "");
+			}
 		}
-		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
-			WPrintLines(player_windows[player_index], card_back, card_back_colours, {0, 6 * i}, "");
+		else {
+			for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+				WDisplayCard(
+					player_windows[player_index],
+					deck.GetHands().at(player_index).at(i).at(0),
+					deck.GetHands().at(player_index).at(i).at(1),
+					{ 0,6 * i }
+				);
+
+			}
 		}
 	}
 	else {
-		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
-			WDisplayCard(
-				player_windows[player_index],
-				deck.GetHands().at(player_index).at(i).at(0),
-				deck.GetHands().at(player_index).at(i).at(1),
-				{ 0,6*i }
-			);
+		if (hide_cards) {
+			std::vector<int> card_back_colours;
+			for (auto line : card_back_vert) {
+				card_back_colours.push_back(5);
+			}
+			for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+				WPrintLines(player_windows[player_index], card_back_vert, card_back_colours, { 0, 6 * i }, "");
+			}
+		}
+		else {
+			for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
+				WDisplayCard(
+					player_windows[player_index],
+					deck.GetHands().at(player_index).at(i).at(0),
+					deck.GetHands().at(player_index).at(i).at(1),
+					{ 0,6 * i }
+				);
 
+			}
 		}
 	}
+	
 
 	if (player_index == 0) {
 		for (int i = 0; i < deck.GetHands().at(player_index).size(); i++) {
@@ -131,13 +155,13 @@ void Cribbage::WDisplayPlayerHand(int player_index, bool hide_cards) {
 
 void Cribbage::WDisplayThePlayPile(std::vector <std::vector <std::string>> cards) {
 	if (cards.size() == 1) {
-		WDisplayCard(play_area_win, cards.at(0).at(0), cards.at(0).at(1), {6, 7});
+		WDisplayCard(play_area_win, cards.at(0).at(0), cards.at(0).at(1), { int((getmaxy(play_area_win) - 6) / 2), 7});
 	}
 	else if (cards.size() > 1) {
-		WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), {6, 7 + 2 * (int(cards.size()) - 1)});
+		WDisplayCard(play_area_win, cards.back().at(0), cards.back().at(1), { int((getmaxy(play_area_win) - 6) / 2), 7 + 2 * (int(cards.size()) - 1)});
 
 		for (int i = 0; i < cards.size() - 1; i++) {
-			WDisplayPartialCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { 6, 7 + 2*i });
+			WDisplayPartialCard(play_area_win, cards.at(i).at(0), cards.at(i).at(1), { int((getmaxy(play_area_win) - 6) / 2), 7 + 2*i });
 		}
 	}
 }
@@ -155,7 +179,7 @@ void Cribbage::WDisplayCard(WINDOW* window, std::string value, std::string suit,
 		n_colour_pair = 5;
 	}
 	std::vector<int> card_colours;
-	for (auto line : card_back) {
+	for (auto line : card_back_vert) {
 		card_colours.push_back(n_colour_pair);
 	}
 	WPrintLines(window, ascii_cards["full"][value][suit], card_colours, offset);
@@ -168,7 +192,7 @@ void Cribbage::WDisplayPartialCard(WINDOW* window, std::string value, std::strin
 		n_colour_pair = 5;
 	}
 	std::vector<int> card_colours;
-	for (auto line : card_back) {
+	for (auto line : card_back_vert) {
 		card_colours.push_back(n_colour_pair);
 	}
 	WPrintLines(window, ascii_cards["partial"][value][suit], card_colours, offset);

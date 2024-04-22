@@ -172,7 +172,8 @@ class Cribbage {
 		std::vector<std::string> text_area_contents;
 		std::vector<int> text_area_colours;
 		std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> ascii_cards;
-		std::vector<std::string> card_back;
+		std::vector<std::string> card_back_vert;
+		std::vector<std::string> card_back_hori;
 		std::vector<std::string> ascii_deck_face_down;
 
 };
