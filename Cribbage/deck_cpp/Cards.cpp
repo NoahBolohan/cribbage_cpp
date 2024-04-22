@@ -15,6 +15,7 @@ std::vector<std::string> Deck::DrawCard() {
 	return drawn_card;
 }
 
+// TODO: Figure out how to optionally erase card from hand (in situations where chosen card doesn't fit game rules)
 std::vector<std::vector<std::string>> Deck::ChooseCardsFromHand(Cribbage &cribbage, int hand_index, int n_cards, std::string player_type) {
 
 	std::vector<std::vector<std::string>> cards_to_be_chosen;

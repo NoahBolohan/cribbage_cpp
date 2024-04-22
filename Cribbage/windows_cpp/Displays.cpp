@@ -52,7 +52,7 @@ void Cribbage::WDisplayInitialPlayArea() {
 	for (auto line : ascii_deck_face_down) {
 		card_colours.push_back(5);
 	}
-	WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { 6,0 });
+	WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { (getmaxy(play_area_win) - 7) / 2,0}); // 21 -> 6
 
 	refresh_wins({ play_area_win });
 }
@@ -73,14 +73,14 @@ void Cribbage::WDisplayPlayArea() {
 		for (auto line : ascii_deck_face_down) {
 			card_colours.push_back(n_colour_pair);
 		}
-		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), card_colours, { 6, 0 });
+		WPrintLines(play_area_win, GenerateAsciiDeckFaceUp(starter), card_colours, { int((getmaxy(play_area_win) - 7) / 2), 0 });
 	}
 	else {
 		std::vector<int> card_colours;
 		for (auto line : ascii_deck_face_down) {
 			card_colours.push_back(5);
 		}
-		WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { 6,0 });
+		WPrintLines(play_area_win, ascii_deck_face_down, card_colours, { int((getmaxy(play_area_win) - 7) / 2),0 });
 	}
 	
 

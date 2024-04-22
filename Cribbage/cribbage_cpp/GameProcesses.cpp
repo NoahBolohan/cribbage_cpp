@@ -30,9 +30,32 @@ Cribbage::Cribbage(int n_players, std::string board_name_input, std::map<std::st
 	text_area_win = CreateNewWin(window_dims["text_area"]);
 	play_area_win = CreateNewWin(window_dims["play_area"]);
 
-	player0_win = CreateNewWin(window_dims["player0"]);
-	player1_win = CreateNewWin(window_dims["player1"]);
-	player2_win = CreateNewWin(window_dims["player2"]);
+	player0_win = CreateNewWin(
+		{
+			8,
+			37,
+			getbegy(play_area_win) + getmaxy(play_area_win) - 7,
+			getbegx(play_area_win) - 1,
+		}
+	);
+
+	player1_win = CreateNewWin(
+		{
+			7,
+			37,
+			getbegy(play_area_win) - 1,
+			getbegx(play_area_win) - 1,
+		}
+	);
+
+	player2_win = CreateNewWin(
+		{
+			7,
+			37,
+			getbegy(play_area_win) - 1,
+			getbegx(play_area_win) - 1,
+		}
+	);
 
 	player_windows = {
 		{0, player0_win},
@@ -189,20 +212,20 @@ void Cribbage::UpTo31() {
 
 		if (play_total + min_card_point_value > 31) {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				WPrintToTextArea("You cannot play. The turn passes.", true, user_index + 1);
+				WPrintToTextArea(std::vector<std::string>{"You cannot play. The turn passes.", ""}, true, user_index + 1);
 			}
 			else {
-				WPrintToTextArea("Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " cannot play. The turn passes.", true, deck.GetCurrentPlayerIndex() + 1, "right");
+				WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " cannot play. The turn passes.", "" }, true, deck.GetCurrentPlayerIndex() + 1, "right");
 			}
 
 			RemovePlayerFrom31(deck.GetCurrentPlayerIndex());
 		}
 		else if (deck.GetHands().at(deck.GetCurrentPlayerIndex()).size() == 0) {
 			if (deck.GetCurrentPlayerIndex() == user_index) {
-				WPrintToTextArea("You are out of cards and cannot play anymore.", true, user_index + 1);
+				WPrintToTextArea(std::vector<std::string>{"You are out of cards and cannot play anymore.", ""}, true, user_index + 1);
 			}
 			else {
-				WPrintToTextArea("Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is out of cards and cannot play anymore.", true, deck.GetCurrentPlayerIndex() + 1, "right");
+				WPrintToTextArea({ "Player " + std::to_string(deck.GetCurrentPlayerIndex()) + " is out of cards and cannot play anymore.", "" }, true, deck.GetCurrentPlayerIndex() + 1, "right");
 			}
 
 			RemovePlayerFrom31(deck.GetCurrentPlayerIndex());
@@ -265,6 +288,7 @@ void Cribbage::TheShow() {
 
 		if (!game_over) {
 			TheShowPoints(player_index, cards_to_count);
+			WPrintToTextArea("", true, 0);
 		}
 
 		if (player_index == deck.GetDealerIndex()) {
@@ -274,6 +298,7 @@ void Cribbage::TheShow() {
 
 			if (!game_over) {
 				TheShowPoints(player_index, cards_to_count);
+				WPrintToTextArea("", true, 0);
 			}
 		}
 
@@ -282,7 +307,7 @@ void Cribbage::TheShow() {
 		}
 	}
 
-	WPrintToTextArea(std::vector < std::string>{"", "The Show is done."}, true, 0, "center");
+	WPrintToTextArea("The Show is done.", true, 0, "center");
 }
 
 void Cribbage::EndGame() {
