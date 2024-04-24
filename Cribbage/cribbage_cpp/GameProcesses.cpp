@@ -8,7 +8,7 @@
 #include "../headers/Functions.h"
 #include "../headers/Windows.h"
 
-Cribbage::Cribbage(int n_players, std::map<int, std::string> player_colour_map) : deck(n_players, 0) {
+Cribbage::Cribbage(int n_players, std::map<int, int> player_colour_map) : deck(n_players, 0) {
 	SetGameOptions(n_players, player_colour_map);
 	ResizeTerminal();
 

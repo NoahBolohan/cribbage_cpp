@@ -362,19 +362,20 @@ void Cribbage::reset_win(WINDOW* window) {
 
 void Cribbage::GenerateColourPairs() {
 	for (auto const& item : player_colour_map) {
-		if (item.second == "blue") {
-			init_pair(item.first, COLOR_BLUE, COLOR_BLACK);
-		}
-		else if (item.second == "green") {
-			init_pair(item.first, COLOR_GREEN, COLOR_BLACK);
-		}
-		else if (item.second == "cyan") {
+		
+		if (item.second == 0) {
 			init_pair(item.first, COLOR_CYAN, COLOR_BLACK);
 		}
-		else if (item.second == "red") {
+		else if (item.second == 1) {
 			init_pair(item.first, COLOR_RED, COLOR_BLACK);
 		}
-		else if (item.second == "magenta") {
+		else if (item.second == 2) {
+			init_pair(item.first, COLOR_GREEN, COLOR_BLACK);
+		}
+		else if (item.second == 3) {
+			init_pair(item.first, COLOR_BLUE, COLOR_BLACK);
+		}
+		else if (item.second == 4) {
 			init_pair(item.first, COLOR_MAGENTA, COLOR_BLACK);
 		}
 	}

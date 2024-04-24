@@ -7,13 +7,14 @@
 #include <pdcurses/curses.h>
 
 // Screen diaplays
-void StartGame(int, std::map<int, std::string>);
-void DisplayTitleScreen();
-std::tuple<int, std::map<int, std::string>> DisplayOptionsScreen(int, std::map<int, std::string>);
+void StartGame(int, std::map<int, int>);
+void DisplayTitleScreen(int);
+std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int, std::map<int, int>);
+void DisplayOptionsScreenOptions(int);
 
 // Option menu displays
-int DisplayNPlayerMenu(char, int, int);
-std::map<int, std::string> DisplayPlayerColoursMenu(char, std::map<int, std::string>, int);
+int DisplayNPlayerMenu(char, int);
+std::map<int, int> DisplayPlayerColoursMenu(char, std::map<int, int>);
 
 // Exit game
 void ExitGame();
