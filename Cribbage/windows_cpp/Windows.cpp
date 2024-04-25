@@ -27,7 +27,7 @@ WINDOW* CreateNewWinBorder(std::vector<int> window_dims)
 	WINDOW* local_win;
 
 	local_win = newwin(height, width, starty, startx);
-	wborder(local_win, '|', '|', '-', '-', '*', '+', '+', '+');
+	wborder(local_win, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(local_win);
 	return local_win;
 }
