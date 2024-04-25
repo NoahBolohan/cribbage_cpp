@@ -157,13 +157,6 @@ class Cribbage {
 
 		std::map<int, WINDOW*> player_windows;
 
-		//std::map < std::string, std::vector<int> > coords = {
-		//	{"origin", {0, 0}},
-		//	{"board", {0, 0}},
-		//	{"text_area", {0, 0}},
-		//	{"play_area", {0, 0}}
-		//};
-
 		std::map < int, std::vector<int>> peg_coords;
 
 		// ASCII members

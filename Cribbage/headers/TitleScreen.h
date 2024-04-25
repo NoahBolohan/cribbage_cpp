@@ -5,16 +5,17 @@
 #include <map>
 #include <string>
 #include <pdcurses/curses.h>
+#include "Windows.h"
 
 // Screen diaplays
 void StartGame(int, std::map<int, int>);
-void DisplayTitleScreen(int);
-std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int, std::map<int, int>);
-void DisplayOptionsScreenOptions(int);
+void DisplayTitleScreen(WINDOW*, int);
+std::tuple<int, std::map<int, int>> DisplayOptionsScreen(WINDOW*, int, std::map<int, int>);
+void DisplayOptionsScreenOptions(WINDOW*, int);
 
 // Option menu displays
-int DisplayNPlayerMenu(char, int);
-std::map<int, int> DisplayPlayerColoursMenu(char, int, std::map<int, int>);
+int DisplayNPlayerMenu(WINDOW*, char, int);
+std::map<int, int> DisplayPlayerColoursMenu(WINDOW*, char, int, std::map<int, int>);
 
 // Exit game
 void ExitGame();

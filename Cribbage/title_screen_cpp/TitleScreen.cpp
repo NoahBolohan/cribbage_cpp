@@ -4,32 +4,32 @@
 #include "../headers/TitleScreen.h"
 #include "../headers/CribbageFunctions.h"
 
-void DisplayTitleScreen(int title_screen_y) {
-    clear();
+void DisplayTitleScreen(WINDOW* window, int title_screen_y) {
+   wclear(window);
     if (title_screen_y == 0) {
-        attron(COLOR_PAIR(1));
-        mvprintw(1, 1, "Start");
-        attroff(COLOR_PAIR(1));
-        mvprintw(2, 1, "Options");
-        mvprintw(3, 1, "Exit");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 0, 0, "Start");
+        wattroff(window, COLOR_PAIR(1));
+        mvwprintw(window, 1, 0, "Options");
+        mvwprintw(window, 2, 0, "Exit");
     }
     else if (title_screen_y == 1) {
-        mvprintw(1, 1, "Start");
-        attron(COLOR_PAIR(1));
-        mvprintw(2, 1, "Options");
-        attroff(COLOR_PAIR(1));
-        mvprintw(3, 1, "Exit");
+        mvwprintw(window, 0, 0, "Start");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 1, 0, "Options");
+        wattroff(window, COLOR_PAIR(1));
+        mvwprintw(window, 2, 0, "Exit");
     }
     else if (title_screen_y == 2) {
-        mvprintw(1, 1, "Start");
-        mvprintw(2, 1, "Options");
-        attron(COLOR_PAIR(1));
-        mvprintw(3, 1, "Exit");
-        attroff(COLOR_PAIR(1));
+        mvwprintw(window, 0, 0, "Start");
+        mvwprintw(window, 1, 0, "Options");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 2, 0, "Exit");
+        wattroff(window, COLOR_PAIR(1));
     }
 
-    mvprintw(5, 1, "Navigate -- Arrow keys");
-    mvprintw(6, 1, "Select -- Enter key");
+    mvwprintw(window, 4, 0, "Navigate -- Arrow keys");
+    mvwprintw(window, 5, 0, "Select -- Enter key");
 }
 
 void StartGame(int n_players, std::map<int, int> player_colour_map) {
@@ -38,7 +38,7 @@ void StartGame(int n_players, std::map<int, int> player_colour_map) {
     cribbage.StartGame();
 }
 
-std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int n_players, std::map<int, int> colour_map) {
+std::tuple<int, std::map<int, int>> DisplayOptionsScreen(WINDOW* window, int n_players, std::map<int, int> colour_map) {
 
     char options_ch = NULL;
     int options_screen_y = 0;
@@ -48,9 +48,9 @@ std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int n_players, std::map
     std::map<int, int> player_colour_map = colour_map;
 
     while (1) {
-        DisplayOptionsScreenOptions(options_screen_y);
+        DisplayOptionsScreenOptions(window, options_screen_y);
   
-        options_ch = getch();
+        options_ch = wgetch(window);
 
         // Scroll options screen highlighter
         if (options_ch == '\x2') {
@@ -63,16 +63,16 @@ std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int n_players, std::map
         // Select highlighted item
         if (options_ch == '\n') {
             if (options_screen_y == 0) {
-                move(2, 0);
-                clrtoeol();
-                mvprintw(2, 0, "Number of players");
-                n_players_option = DisplayNPlayerMenu(options_ch, n_players_option);
+                wmove(window, 2, 0);
+                wclrtoeol(window);
+                mvwprintw(window, 2, 0, "Number of players");
+                n_players_option = DisplayNPlayerMenu(window, options_ch, n_players_option);
             }
             else if (options_screen_y == 1) {
-                move(3, 0);
-                clrtoeol();
-                mvprintw(3, 0, "Player colours");
-                player_colour_map = DisplayPlayerColoursMenu(options_ch, n_players_option, player_colour_map);
+                wmove(window, 4, 0);
+                wclrtoeol(window);
+                mvwprintw(window, 4, 0, "Player colours");
+                player_colour_map = DisplayPlayerColoursMenu(window, options_ch, n_players_option, player_colour_map);
             }
             else if (options_screen_y == 2) {
                 break;
@@ -83,38 +83,38 @@ std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int n_players, std::map
     return std::make_tuple(n_players_option, player_colour_map);
 }
 
-void DisplayOptionsScreenOptions(int options_screen_y) {
-    clear();
+void DisplayOptionsScreenOptions(WINDOW* window, int options_screen_y) {
+   wclear(window);
     if (options_screen_y == 0) {
-        mvprintw(0, 0, "Options page");
-        attron(COLOR_PAIR(1));
-        mvprintw(2, 0, "Number of players");
-        attroff(COLOR_PAIR(1));
-        mvprintw(3, 0, "Player colours");
-        mvprintw(8, 0, "Return to title screen");
+        mvwprintw(window, 0, 0, "Options page");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 2, 0, "Number of players");
+        wattroff(window, COLOR_PAIR(1));
+        mvwprintw(window, 4, 0, "Player colours");
+        mvwprintw(window, 9, 0, "Return to title screen");
     }
     else if (options_screen_y == 1) {
-        mvprintw(0, 0, "Options page");
-        mvprintw(2, 0, "Number of players");
-        attron(COLOR_PAIR(1));
-        mvprintw(3, 0, "Player colours");
-        attroff(COLOR_PAIR(1));
-        mvprintw(8, 0, "Return to title screen");
+        mvwprintw(window, 0, 0, "Options page");
+        mvwprintw(window, 2, 0, "Number of players");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 4, 0, "Player colours");
+        wattroff(window, COLOR_PAIR(1));
+        mvwprintw(window, 9, 0, "Return to title screen");
     }
     else if (options_screen_y == 2) {
-        mvprintw(0, 0, "Options page");
-        mvprintw(2, 0, "Number of players");
-        mvprintw(3, 0, "Player colours");
-        attron(COLOR_PAIR(1));
-        mvprintw(8, 0, "Return to title screen");
-        attroff(COLOR_PAIR(1));
+        mvwprintw(window, 0, 0, "Options page");
+        mvwprintw(window, 2, 0, "Number of players");
+        mvwprintw(window, 4, 0, "Player colours");
+        wattron(window, COLOR_PAIR(1));
+        mvwprintw(window, 9, 0, "Return to title screen");
+        wattroff(window, COLOR_PAIR(1));
     }
 
-    mvprintw(12, 1, "Navigate -- Arrow keys");
-    mvprintw(13, 1, "Select -- Enter key");
+    mvwprintw(window, 11, 0, "Navigate -- Arrow keys");
+    mvwprintw(window, 12, 0, "Select -- Enter key");
 }
 
-int DisplayNPlayerMenu(char options_ch, int n_players_option) {
+int DisplayNPlayerMenu(WINDOW* window, char options_ch, int n_players_option) {
 
     char n_player_menu_ch = NULL;
     int n_player_menu_x = n_players_option == 2 ? 0 : 1;
@@ -122,36 +122,29 @@ int DisplayNPlayerMenu(char options_ch, int n_players_option) {
     while (1) {
 
         // Print n-player menu, coloured accordingly
-        mvprintw(2, 17, ": ");
+        mvwprintw(window, 2, 17, ": ");
         if (n_players_option == 2) {
 
-            attron(COLOR_PAIR(1));
-            mvprintw(2, 19, "2 players");
-            attroff(COLOR_PAIR(1));
+            wattron(window, COLOR_PAIR(1));
+            mvwprintw(window, 3, 0, "2 players");
+            wattroff(window, COLOR_PAIR(1));
 
-            mvprintw(2, 28, ", ");
+            mvwprintw(window, 3, 9, ", ");
 
-            mvprintw(2, 30, "3 players");
+            mvwprintw(window, 3, 11, "3 players");
         }
         else if (n_players_option == 3) {
 
-            mvprintw(2, 19, "2 players");
+            mvwprintw(window, 3, 0, "2 players");
 
-            mvprintw(2, 28, ", ");
+            mvwprintw(window, 3, 9, ", ");
 
-            attron(COLOR_PAIR(1));
-            mvprintw(2, 30, "3 players");
-            attroff(COLOR_PAIR(1));
-        }
-        else {
-            mvprintw(2, 19, "2 players");
-
-            mvprintw(2, 28, ", ");
-
-            mvprintw(2, 30, "3 players");
+            wattron(window, COLOR_PAIR(1));
+            mvwprintw(window, 3, 11, "3 players");
+            wattroff(window, COLOR_PAIR(1));
         }
 
-        n_player_menu_ch = getch();
+        n_player_menu_ch = wgetch(window);
 
         if (n_player_menu_ch == '\x4' || n_player_menu_ch == '\x5') {
             n_player_menu_x = (n_player_menu_x + 1) % 2;
@@ -164,8 +157,8 @@ int DisplayNPlayerMenu(char options_ch, int n_players_option) {
         }
 
         if (n_player_menu_ch == '\n') {
-            move(2, 20);
-            clrtoeol();
+            wmove(window, 3, 0);
+            wclrtoeol(window);
             break;
         }
     }
@@ -173,7 +166,7 @@ int DisplayNPlayerMenu(char options_ch, int n_players_option) {
     return n_players_option;
 }
 
-std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_option, std::map<int, int> player_colour_map) {
+std::map<int, int> DisplayPlayerColoursMenu(WINDOW* window, char options_ch, int n_players_option, std::map<int, int> player_colour_map) {
 
     char player_colours_menu_ch = NULL;
     int player_colours_menu_y = 0;
@@ -184,33 +177,33 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
     while (1) {
 
         // Print player colour menu, coloured accordingly
-        mvprintw(3, 14, ":");
+        mvwprintw(window, 4, 14, ":");
 
         if (player_colours_menu_y == 0) {
-            attron(COLOR_PAIR(1));
-            mvprintw(4, 4, "Player 1: ");
-            attroff(COLOR_PAIR(1));
-            mvprintw(5, 4, "Player 2: ");
+            wattron(window, COLOR_PAIR(1));
+            mvwprintw(window, 5, 4, "Player 1: ");
+            wattroff(window, COLOR_PAIR(1));
+            mvwprintw(window, 6, 4, "Player 2: ");
 
             if (n_players_option == 3) {
-                mvprintw(6, 4, "Player 3: ");
+                mvwprintw(window, 7, 4, "Player 3: ");
             }
         }
         else if (player_colours_menu_y == 1) {
-            mvprintw(4, 4, "Player 1: ");
-            attron(COLOR_PAIR(1));
-            mvprintw(5, 4, "Player 2: ");
-            attroff(COLOR_PAIR(1));
+            mvwprintw(window, 5, 4, "Player 1: ");
+            wattron(window, COLOR_PAIR(1));
+            mvwprintw(window, 6, 4, "Player 2: ");
+            wattroff(window, COLOR_PAIR(1));
             if (n_players_option == 3) {
-                mvprintw(6, 4, "Player 3: ");
+                mvwprintw(window, 7, 4, "Player 3: ");
             }
         }
         else if (player_colours_menu_y == 2) {
-            mvprintw(4, 4, "Player 1: ");
-            mvprintw(5, 4, "Player 2: ");
-            attron(COLOR_PAIR(1));
-            mvprintw(6, 4, "Player 3: ");
-            attroff(COLOR_PAIR(1));
+            mvwprintw(window, 5, 4, "Player 1: ");
+            mvwprintw(window, 6, 4, "Player 2: ");
+            wattron(window, COLOR_PAIR(1));
+            mvwprintw(window, 7, 4, "Player 3: ");
+            wattroff(window, COLOR_PAIR(1));
         }
 
         unique_colour_choices.clear();
@@ -218,43 +211,43 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
             unique_colour_choices.push_back(player_colour_map[i]);
 
             if (player_colour_map[i] == 0) {
-                move(3 + i, 14);
-                clrtoeol();
-                attron(COLOR_PAIR(2));
-                mvprintw(3 + i, 14, "cyan");
-                attroff(COLOR_PAIR(2));
+                wmove(window, 4 + i, 14);
+                wclrtoeol(window);
+                wattron(window, COLOR_PAIR(2));
+                mvwprintw(window, 4 + i, 14, "cyan");
+                wattroff(window, COLOR_PAIR(2));
             }
             else if (player_colour_map[i] == 1) {
-                move(3 + i, 14);
-                clrtoeol();
-                attron(COLOR_PAIR(3));
-                mvprintw(3 + i, 14, "red");
-                attroff(COLOR_PAIR(3));
+                wmove(window, 4 + i, 14);
+                wclrtoeol(window);
+                wattron(window, COLOR_PAIR(3));
+                mvwprintw(window, 4 + i, 14, "red");
+                wattroff(window, COLOR_PAIR(3));
             }
             else if (player_colour_map[i] == 2) {
-                move(3 + i, 14);
-                clrtoeol();
-                attron(COLOR_PAIR(4));
-                mvprintw(3 + i, 14, "green");
-                attroff(COLOR_PAIR(4));
+                wmove(window, 4 + i, 14);
+                wclrtoeol(window);
+                wattron(window, COLOR_PAIR(4));
+                mvwprintw(window, 4 + i, 14, "green");
+                wattroff(window, COLOR_PAIR(4));
             }
             else if (player_colour_map[i] == 3) {
-                move(3 + i, 14);
-                clrtoeol();
-                attron(COLOR_PAIR(5));
-                mvprintw(3 + i, 14, "magenta");
-                attroff(COLOR_PAIR(5));
+                wmove(window, 4 + i, 14);
+                wclrtoeol(window);
+                wattron(window, COLOR_PAIR(5));
+                mvwprintw(window, 4 + i, 14, "magenta");
+                wattroff(window, COLOR_PAIR(5));
             }
             else if (player_colour_map[i] == 4) {
-                move(3 + i, 14);
-                clrtoeol();
-                attron(COLOR_PAIR(6));
-                mvprintw(3 + i, 14, "blue");
-                attroff(COLOR_PAIR(6));
+                wmove(window, 4 + i, 14);
+                wclrtoeol(window);
+                wattron(window, COLOR_PAIR(6));
+                mvwprintw(window, 4 + i, 14, "blue");
+                wattroff(window, COLOR_PAIR(6));
             }
         }
 
-        player_colours_menu_ch = getch();
+        player_colours_menu_ch = wgetch(window);
 
         // Scroll player colours menu highlighter
         if (player_colours_menu_ch == '\x2') {
@@ -316,13 +309,13 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
         }
 
         if (player_colours_menu_ch == '\n') {
-            move(4, 0);
-            clrtoeol();
-            move(5, 0);
-            clrtoeol();
+            wmove(window, 5, 0);
+            wclrtoeol(window);
+            wmove(window, 6, 0);
+            wclrtoeol(window);
             if (n_players_option == 3) {
-                move(6, 0);
-                clrtoeol();
+                wmove(window, 7, 0);
+                wclrtoeol(window);
             }
             break;
         }

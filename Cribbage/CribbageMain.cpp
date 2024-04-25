@@ -3,8 +3,10 @@
 
 int main(int argc, char* argv[])
 {
+    WINDOW* menu_screen_border_window;
+    WINDOW* menu_screen_window;
+
     initscr();
-    keypad(stdscr, TRUE);
     curs_set(FALSE);
 
     start_color();
@@ -25,9 +27,16 @@ int main(int argc, char* argv[])
         {3, 2}
     };
 
+    std::vector<int> menu_size = { 15, 24 };
+
+    resize_term(menu_size.at(0), menu_size.at(1));
+    menu_screen_window = CreateNewWin({ menu_size.at(0), menu_size.at(1), 0, 0 });
+    menu_screen_border_window = CreateNewWinBorder({ menu_size.at(0), menu_size.at(1), 0, 0 });
+    keypad(menu_screen_window, TRUE);
+    
     while (1) {
-        DisplayTitleScreen(title_screen_y);
-        title_screen_ch = getch();
+        DisplayTitleScreen(menu_screen_window, title_screen_y);
+        title_screen_ch = wgetch(menu_screen_window);
 
         // Scroll title screen highlighter
         if (title_screen_ch == '\x2') {
@@ -43,7 +52,7 @@ int main(int argc, char* argv[])
                 StartGame(n_players, player_colour_map);
             }
             else if (title_screen_y == 1) {
-                tie(n_players, player_colour_map) = DisplayOptionsScreen(n_players, player_colour_map);
+                tie(n_players, player_colour_map) = DisplayOptionsScreen(menu_screen_window, n_players, player_colour_map);
             }
             else if (title_screen_y == 2) {
                 ExitGame();
@@ -52,7 +61,7 @@ int main(int argc, char* argv[])
     }
 
     refresh();
-    getch();
+    wgetch(menu_screen_window);
     endwin();
     return 0;
 }
