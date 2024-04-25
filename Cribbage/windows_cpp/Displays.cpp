@@ -373,10 +373,10 @@ void Cribbage::GenerateColourPairs() {
 			init_pair(item.first, COLOR_GREEN, COLOR_BLACK);
 		}
 		else if (item.second == 3) {
-			init_pair(item.first, COLOR_BLUE, COLOR_BLACK);
+			init_pair(item.first, COLOR_MAGENTA, COLOR_BLACK);
 		}
 		else if (item.second == 4) {
-			init_pair(item.first, COLOR_MAGENTA, COLOR_BLACK);
+			init_pair(item.first, COLOR_BLUE, COLOR_BLACK);
 		}
 	}
 

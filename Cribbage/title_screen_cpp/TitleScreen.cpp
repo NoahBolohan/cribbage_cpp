@@ -238,6 +238,20 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
                 mvprintw(3 + i, 14, "green");
                 attroff(COLOR_PAIR(4));
             }
+            else if (player_colour_map[i] == 3) {
+                move(3 + i, 14);
+                clrtoeol();
+                attron(COLOR_PAIR(5));
+                mvprintw(3 + i, 14, "magenta");
+                attroff(COLOR_PAIR(5));
+            }
+            else if (player_colour_map[i] == 4) {
+                move(3 + i, 14);
+                clrtoeol();
+                attron(COLOR_PAIR(6));
+                mvprintw(3 + i, 14, "blue");
+                attroff(COLOR_PAIR(6));
+            }
         }
 
         player_colours_menu_ch = getch();
@@ -272,10 +286,10 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
                 unique_colour_choices.end()
             );
             
-            colour_idx = (colour_idx + 1) % 3;
+            colour_idx = (colour_idx + 1) % 5;
 
             while (std::find(unique_colour_choices.begin(), unique_colour_choices.end(), colour_idx) != unique_colour_choices.end()) {
-                colour_idx = (colour_idx + 1) % 3;
+                colour_idx = (colour_idx + 1) % 5;
             }
 
             player_colour_map[player_colours_menu_y + 1] = colour_idx;
@@ -292,10 +306,10 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
                 unique_colour_choices.end()
             );
 
-            colour_idx = (colour_idx + 2) % 3;
+            colour_idx = (colour_idx + 4) % 5;
 
             while (std::find(unique_colour_choices.begin(), unique_colour_choices.end(), colour_idx) != unique_colour_choices.end()) {
-                colour_idx = (colour_idx + 2) % 3;
+                colour_idx = (colour_idx + 4) % 5;
             }
 
             player_colour_map[player_colours_menu_y + 1] = colour_idx;
