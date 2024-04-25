@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string>
+#include <algorithm>
 #include "../headers/TitleScreen.h"
 #include "../headers/CribbageFunctions.h"
 
@@ -176,6 +177,9 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
 
     char player_colours_menu_ch = NULL;
     int player_colours_menu_y = 0;
+    int colour_idx;
+
+    std::vector<int> unique_colour_choices;
 
     while (1) {
 
@@ -209,8 +213,10 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
             attroff(COLOR_PAIR(1));
         }
 
-
+        unique_colour_choices.clear();
         for (int i = 1; i <= n_players_option; i++) {
+            unique_colour_choices.push_back(player_colour_map[i]);
+
             if (player_colour_map[i] == 0) {
                 move(3 + i, 14);
                 clrtoeol();
@@ -255,10 +261,44 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_optio
         }
 
         if (player_colours_menu_ch == '\x5') {
-            player_colour_map[player_colours_menu_y + 1] = (player_colour_map[player_colours_menu_y + 1] + 1) % 3;
+            colour_idx = player_colour_map[player_colours_menu_y + 1];
+
+            unique_colour_choices.erase(
+                std::remove(
+                    unique_colour_choices.begin(),
+                    unique_colour_choices.end(),
+                    colour_idx
+                ),
+                unique_colour_choices.end()
+            );
+            
+            colour_idx = (colour_idx + 1) % 3;
+
+            while (std::find(unique_colour_choices.begin(), unique_colour_choices.end(), colour_idx) != unique_colour_choices.end()) {
+                colour_idx = (colour_idx + 1) % 3;
+            }
+
+            player_colour_map[player_colours_menu_y + 1] = colour_idx;
         }
         else if (player_colours_menu_ch == '\x4') {
-            player_colour_map[player_colours_menu_y + 1] = (player_colour_map[player_colours_menu_y + 1] + 2) % 3;
+            colour_idx = player_colour_map[player_colours_menu_y + 1];
+
+            unique_colour_choices.erase(
+                std::remove(
+                    unique_colour_choices.begin(),
+                    unique_colour_choices.end(),
+                    colour_idx
+                ),
+                unique_colour_choices.end()
+            );
+
+            colour_idx = (colour_idx + 2) % 3;
+
+            while (std::find(unique_colour_choices.begin(), unique_colour_choices.end(), colour_idx) != unique_colour_choices.end()) {
+                colour_idx = (colour_idx + 2) % 3;
+            }
+
+            player_colour_map[player_colours_menu_y + 1] = colour_idx;
         }
 
         if (player_colours_menu_ch == '\n') {
