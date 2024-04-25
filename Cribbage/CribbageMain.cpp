@@ -4,7 +4,6 @@
 int main(int argc, char* argv[])
 {
     initscr();
-    noecho();
     keypad(stdscr, TRUE);
     curs_set(FALSE);
 
