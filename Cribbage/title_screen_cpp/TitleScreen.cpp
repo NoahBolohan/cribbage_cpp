@@ -71,7 +71,7 @@ std::tuple<int, std::map<int, int>> DisplayOptionsScreen(int n_players, std::map
                 move(3, 0);
                 clrtoeol();
                 mvprintw(3, 0, "Player colours");
-                player_colour_map = DisplayPlayerColoursMenu(options_ch, player_colour_map);
+                player_colour_map = DisplayPlayerColoursMenu(options_ch, n_players_option, player_colour_map);
             }
             else if (options_screen_y == 2) {
                 break;
@@ -172,7 +172,7 @@ int DisplayNPlayerMenu(char options_ch, int n_players_option) {
     return n_players_option;
 }
 
-std::map<int, int> DisplayPlayerColoursMenu(char options_ch, std::map<int, int> player_colour_map) {
+std::map<int, int> DisplayPlayerColoursMenu(char options_ch, int n_players_option, std::map<int, int> player_colour_map) {
 
     char player_colours_menu_ch = NULL;
     int player_colours_menu_y = 0;
@@ -187,14 +187,19 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, std::map<int, int> 
             mvprintw(4, 4, "Player 1: ");
             attroff(COLOR_PAIR(1));
             mvprintw(5, 4, "Player 2: ");
-            mvprintw(6, 4, "Player 3: ");
+
+            if (n_players_option == 3) {
+                mvprintw(6, 4, "Player 3: ");
+            }
         }
         else if (player_colours_menu_y == 1) {
             mvprintw(4, 4, "Player 1: ");
             attron(COLOR_PAIR(1));
             mvprintw(5, 4, "Player 2: ");
             attroff(COLOR_PAIR(1));
-            mvprintw(6, 4, "Player 3: ");
+            if (n_players_option == 3) {
+                mvprintw(6, 4, "Player 3: ");
+            }
         }
         else if (player_colours_menu_y == 2) {
             mvprintw(4, 4, "Player 1: ");
@@ -205,26 +210,26 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, std::map<int, int> 
         }
 
 
-        for (auto& item : player_colour_map) {
-            if (item.second == 0) {
-                move(3 + item.first, 14);
+        for (int i = 1; i <= n_players_option; i++) {
+            if (player_colour_map[i] == 0) {
+                move(3 + i, 14);
                 clrtoeol();
                 attron(COLOR_PAIR(2));
-                mvprintw(3 + item.first, 14, "cyan");
+                mvprintw(3 + i, 14, "cyan");
                 attroff(COLOR_PAIR(2));
             }
-            else if (item.second == 1) {
-                move(3 + item.first, 14);
+            else if (player_colour_map[i] == 1) {
+                move(3 + i, 14);
                 clrtoeol();
                 attron(COLOR_PAIR(3));
-                mvprintw(3 + item.first, 14, "red");
+                mvprintw(3 + i, 14, "red");
                 attroff(COLOR_PAIR(3));
             }
-            else if (item.second == 2) {
-                move(3 + item.first, 14);
+            else if (player_colour_map[i] == 2) {
+                move(3 + i, 14);
                 clrtoeol();
                 attron(COLOR_PAIR(4));
-                mvprintw(3 + item.first, 14, "green");
+                mvprintw(3 + i, 14, "green");
                 attroff(COLOR_PAIR(4));
             }
         }
@@ -233,10 +238,20 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, std::map<int, int> 
 
         // Scroll player colours menu highlighter
         if (player_colours_menu_ch == '\x2') {
-            player_colours_menu_y = (player_colours_menu_y + 1) % 3;
+            if (n_players_option == 3) {
+                player_colours_menu_y = (player_colours_menu_y + 1) % 3;
+            }
+            else {
+                player_colours_menu_y = (player_colours_menu_y + 1) % 2;
+            }
         }
         else if (player_colours_menu_ch == '\x3') {
-            player_colours_menu_y = (player_colours_menu_y + 2) % 3;
+            if (n_players_option == 3) {
+                player_colours_menu_y = (player_colours_menu_y + 2) % 3;
+            }
+            else {
+                player_colours_menu_y = (player_colours_menu_y + 1) % 2;
+            }
         }
 
         if (player_colours_menu_ch == '\x5') {
@@ -251,8 +266,10 @@ std::map<int, int> DisplayPlayerColoursMenu(char options_ch, std::map<int, int> 
             clrtoeol();
             move(5, 0);
             clrtoeol();
-            move(6, 0);
-            clrtoeol();
+            if (n_players_option == 3) {
+                move(6, 0);
+                clrtoeol();
+            }
             break;
         }
     }

@@ -14,7 +14,7 @@ void DisplayOptionsScreenOptions(int);
 
 // Option menu displays
 int DisplayNPlayerMenu(char, int);
-std::map<int, int> DisplayPlayerColoursMenu(char, std::map<int, int>);
+std::map<int, int> DisplayPlayerColoursMenu(char, int, std::map<int, int>);
 
 // Exit game
 void ExitGame();
