@@ -126,21 +126,21 @@ int DisplayNPlayerMenu(WINDOW* window, char options_ch, int n_players_option) {
         if (n_players_option == 2) {
 
             wattron(window, COLOR_PAIR(1));
-            mvwprintw(window, 3, 0, "2 players");
+            mvwprintw(window, 3, 4, "2 players");
             wattroff(window, COLOR_PAIR(1));
 
-            mvwprintw(window, 3, 9, ", ");
+            mvwprintw(window, 3, 13, ", ");
 
-            mvwprintw(window, 3, 11, "3 players");
+            mvwprintw(window, 3, 15, "3 players");
         }
         else if (n_players_option == 3) {
 
-            mvwprintw(window, 3, 0, "2 players");
+            mvwprintw(window, 3, 4, "2 players");
 
-            mvwprintw(window, 3, 9, ", ");
+            mvwprintw(window, 3, 14, ", ");
 
             wattron(window, COLOR_PAIR(1));
-            mvwprintw(window, 3, 11, "3 players");
+            mvwprintw(window, 3, 15, "3 players");
             wattroff(window, COLOR_PAIR(1));
         }
 

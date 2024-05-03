@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
         {3, 2}
     };
 
-    std::vector<int> menu_size = { 15, 24 };
+    std::vector<int> menu_size = { 15, 26 };
 
     resize_term(menu_size.at(0), menu_size.at(1));
     menu_screen_border_window_1 = newwin(1, menu_size.at(1), 0, 0);
@@ -49,16 +49,45 @@ int main(int argc, char* argv[])
     while (1) {
 
         if (border_flip >= 10000) {
-            wborder(menu_screen_border_window_1, '|', '|', '-', '-', '+', '+', '+', '+');
+            
+            for (int i = 0; i < getmaxx(menu_screen_border_window_1); i++) {
+                const char* string_to_print = "-";
+
+                if (i == 0 || i == getmaxx(menu_screen_border_window_1) - 1) {
+                    string_to_print = "+";
+                }
+
+                if (i % 2) {
+                    mvwprintw(menu_screen_border_window_1, 0, i, string_to_print);
+                }
+                else {
+                    wattron(menu_screen_border_window_1, COLOR_PAIR(1));
+                    mvwprintw(menu_screen_border_window_1, 0, i, string_to_print);
+                    wattroff(menu_screen_border_window_1, COLOR_PAIR(1));
+                }
+            }
             wrefresh(menu_screen_border_window_1);
-            wborder(menu_screen_border_window_2, '|', '|', '-', '-', '+', '+', '+', '+');
-            wrefresh(menu_screen_border_window_2);
         }
         else {
-            wborder(menu_screen_border_window_1, '|', '|', '-', '-', '*', '*', '*', '*');
+
+            for (int i = 0; i < getmaxx(menu_screen_border_window_1); i++) {
+
+                const char* string_to_print = "-";
+
+                if (i == 0 || i == getmaxx(menu_screen_border_window_1) - 1) {
+                    string_to_print = "+";
+                }
+
+                if (i % 2) {
+                    wattron(menu_screen_border_window_1, COLOR_PAIR(1));
+                    mvwprintw(menu_screen_border_window_1, 0, i, string_to_print);
+                    wattroff(menu_screen_border_window_1, COLOR_PAIR(1));
+                }
+                else {
+                    mvwprintw(menu_screen_border_window_1, 0, i, string_to_print);
+                }
+            }
             wrefresh(menu_screen_border_window_1);
-            wborder(menu_screen_border_window_2, '|', '|', '-', '-', '*', '*', '*', '*');
-            wrefresh(menu_screen_border_window_2);
         }
         border_flip = (border_flip + 1) % 20000;
         
